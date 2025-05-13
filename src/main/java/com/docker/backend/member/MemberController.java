@@ -1,25 +1,33 @@
 package com.docker.backend.member;
 
+import com.docker.backend.dto.MemberDTO;
 import com.docker.backend.model.Member;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
 
-    @PostMapping("/register")
-    public void memberRegister(Member member) {
-
-    }
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public void memberLogin(Member member) {
+    public ResponseEntity<?> login(@RequestBody MemberDTO request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity.ok("Authenticated");
     }
 
-    @GetMapping("/logout")
-    public void memberLogout() {
+    @PostMapping("/register")
+    public void memberRegister(@RequestBody Member member) {
+
     }
 }
