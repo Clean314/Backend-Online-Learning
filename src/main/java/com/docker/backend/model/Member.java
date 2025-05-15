@@ -14,6 +14,7 @@ public class Member {
     private Long id;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private MemberRole role;
 
     private String email;
