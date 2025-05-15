@@ -12,7 +12,7 @@ public class MemberDTO {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private MemberRole role;
 
     private String email;
