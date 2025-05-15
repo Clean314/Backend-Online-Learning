@@ -2,7 +2,6 @@ package com.docker.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -14,16 +13,12 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private MemberRole role;
 
-    @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private String password;
 
     private LocalDateTime createdAt;
