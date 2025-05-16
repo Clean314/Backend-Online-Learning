@@ -1,7 +1,5 @@
 package com.docker.backend.config;
 
-import com.docker.backend.model.Member;
-import com.docker.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

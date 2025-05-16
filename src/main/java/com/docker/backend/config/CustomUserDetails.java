@@ -1,6 +1,5 @@
 package com.docker.backend.config;
 
-import com.docker.backend.model.Member;
 import com.docker.backend.model.MemberRole;
 import lombok.Data;
 import lombok.Getter;

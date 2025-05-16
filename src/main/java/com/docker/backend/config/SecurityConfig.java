@@ -1,8 +1,5 @@
 package com.docker.backend.config;
 
-import com.docker.backend.filter.JwtTokenGeneratorFilter;
-import com.docker.backend.filter.JwtTokenValidatorFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,12 +19,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final JwtTokenValidatorFilter jwtTokenValidatorFilter;
-    private final JwtTokenGeneratorFilter jwtTokenGeneratorFilter;
-    private final MemberAuthenticationProvider memberAuthenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
