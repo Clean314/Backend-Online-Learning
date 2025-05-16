@@ -1,6 +1,6 @@
 package com.docker.backend.entity;
 
-import com.prj.runningLMS.enums.Status;
+import com.docker.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
