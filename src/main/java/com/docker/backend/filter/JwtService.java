@@ -1,6 +1,6 @@
 package com.docker.backend.filter;
 
-import com.docker.backend.constants.ApplicationConstants;
+import com.docker.backend.constant.ApplicationConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

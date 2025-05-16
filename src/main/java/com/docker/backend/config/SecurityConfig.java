@@ -1,5 +1,8 @@
 package com.docker.backend.config;
 
+import com.docker.backend.filter.JwtTokenGeneratorFilter;
+import com.docker.backend.filter.JwtTokenValidatorFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,12 +22,17 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final MemberAuthenticationProvider memberAuthenticationProvider;
+    private final JwtTokenValidatorFilter jwtTokenValidatorFilter;
+    private final JwtTokenGeneratorFilter jwtTokenGeneratorFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // CORS 활성화
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth

@@ -1,6 +1,6 @@
 package com.docker.backend.filter;
 
-import com.docker.backend.constants.ApplicationConstants;
+import com.docker.backend.constant.ApplicationConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.docker.backend.model;
+package com.docker.backend.enums;
 
 import lombok.Getter;
 
@@ -12,5 +12,4 @@ public enum MemberRole {
     MemberRole(String key) {
         this.key = key;
     }
-
 }

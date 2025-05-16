@@ -1,6 +1,6 @@
 package com.docker.backend.service;
 
-import com.docker.backend.model.Member;
+import com.docker.backend.entity.Member;
 import com.docker.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

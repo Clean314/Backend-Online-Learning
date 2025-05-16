@@ -1,6 +1,6 @@
 package com.docker.backend.controller;
 
-import com.docker.backend.model.Member;
+import com.docker.backend.entity.Member;
 import com.docker.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
