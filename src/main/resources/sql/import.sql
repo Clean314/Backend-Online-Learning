@@ -1,7 +1,7 @@
 -- member
 INSERT INTO member (id, email, password, name, role, created_at) VALUES (1,'test@email.com', 'test111', '홍길동', 'STUDENT', now());
 INSERT INTO member (id, email, password, name, role, created_at) VALUES (2,'test11@email.com', 'test222', '김철수', 'STUDENT', now());
-INSERT INTO member (id, email, password, name, role, created_at) VALUES (3,'test22@email.com', 'test333', '김영희', 'INSTRUCTOR', now());
+INSERT INTO member (id, email, password, name, role, created_at) VALUES (3,'test22@email.com', 'test333', '김영희', 'EDUCATOR', now());
 INSERT INTO member (id, email, password, name, role, created_at) VALUES (4,'test33@email.com', 'test444', '김돌돌', 'STUDENT', now());
 
 -- enrollment
