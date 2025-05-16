@@ -1,6 +1,7 @@
 package com.docker.backend.entity;
 
-import com.prj.runningLMS.enums.MemberRole;
+
+import com.docker.backend.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

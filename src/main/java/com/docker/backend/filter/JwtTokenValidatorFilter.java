@@ -1,64 +1,45 @@
 package com.docker.backend.filter;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.IOException;
-import io.jsonwebtoken.security.Keys;
+import com.docker.backend.constant.ApplicationConstants;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.core.env.Environment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
-public class JWTTokenValidatorFilter extends OncePerRequestFilter {
-    /**
-     * @param request
-     * @param response
-     * @param filterChain
-     * @throws ServletException
-     * @throws IOException
-     */
+@Component
+@RequiredArgsConstructor
+public class JwtTokenValidatorFilter extends OncePerRequestFilter {
+
+    private final JwtService jwtService;
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        String jwt = request.getHeader(ApplicationConstants.JWT_HEADER);
-        if(null != jwt) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String token = request.getHeader(ApplicationConstants.JWT_HEADER);
+        if (token != null) {
             try {
-                Environment env = getEnvironment();
-                if (null != env) {
-                    String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY,
-                            ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
-                    SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-                    if(null !=secretKey) {
-                        Claims claims = Jwts.parser().verifyWith(secretKey)
-                                .build().parseSignedClaims(jwt).getPayload();
-                        String username = String.valueOf(claims.get("username"));
-                        String authorities = String.valueOf(claims.get("authorities"));
-                        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
-                                AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-                }
-
-            } catch (Exception exception) {
-                throw new BadCredentialsException("Invalid Token received!");
+                Authentication authentication = jwtService.validateToken(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (JwtException ex) {
+                throw new BadCredentialsException("Invalid JWT token", ex);
             }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getServletPath().equals("/member");
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/auth/");
     }
 
 }
