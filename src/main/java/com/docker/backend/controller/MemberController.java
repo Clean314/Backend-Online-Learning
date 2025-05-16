@@ -20,4 +20,9 @@ public class MemberController {
         Member member = memberService.findByEmail(email);
         return ResponseEntity.ok(member);
     }
+
+    @GetMapping("/my-page")
+    public String myPage() {
+        return "my-page";
+    }
 }
