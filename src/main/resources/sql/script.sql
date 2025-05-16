@@ -13,7 +13,7 @@ CREATE TABLE member(
     role varchar2(20),
     created_at date,
     updated_at date,
-    CONSTRAINT role_ck CHECK (role IN('STUDENT', 'INSTRUCTOR'))
+    CONSTRAINT role_ck CHECK (role IN('STUDENT', 'EDUCATOR'))
 );
 CREATE TABLE enrollment(
     id number primary key,
