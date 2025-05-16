@@ -26,11 +26,17 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader(ApplicationConstants.JWT_HEADER);
         if (token != null) {
-            try {
-                Authentication authentication = jwtService.validateToken(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (JwtException ex) {
-                throw new BadCredentialsException("Invalid JWT token", ex);
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7); // "Banner " 접두어 제거
+            }
+
+            if (!token.isBlank()) {
+                try {
+                    Authentication authentication = jwtService.validateToken(token);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } catch (JwtException ex) {
+                    throw new BadCredentialsException("Invalid JWT token", ex);
+                }
             }
         }
         filterChain.doFilter(request, response);

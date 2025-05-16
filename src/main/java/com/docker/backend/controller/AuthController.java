@@ -35,7 +35,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateToken(authentication);
         return ResponseEntity.ok()
-                .header(ApplicationConstants.JWT_HEADER, token)
+                .header(ApplicationConstants.JWT_HEADER, "Bearer " + token)
                 .body(new LoginResponseDTO("Authenticated", token));
     }
 

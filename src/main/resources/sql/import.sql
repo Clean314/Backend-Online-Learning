@@ -1,8 +1,8 @@
 -- member
-INSERT INTO member (id, email, password, name, role, created_at) VALUES (1,'test@email.com', '{bcrypt}$2a$12$YKw2mg1Uu7zr/Diw3NwVUe6UozIO179NKNbB0TH012sa4IHjAfYVi', '홍길동', 'STUDENT', now());
-INSERT INTO member (id, email, password, name, role, created_at) VALUES (2,'test11@email.com', '{bcrypt}$2a$12$8SBxYG988lsn6SBS5NlD2e48AUB8YLIm12C/y4IBUzqbMjk89ivUS', '김철수', 'STUDENT', now());
-INSERT INTO member (id, email, password, name, role, created_at) VALUES (3,'test22@email.com', '{bcrypt}$2a$12$M48gpxGahQ1dXIW0bicv4eallKaCkSKGjTQHzvdbQtv7iLIVSSSEa', '김영희', 'EDUCATOR', now());
-INSERT INTO member (id, email, password, name, role, created_at) VALUES (4,'test33@email.com', '{bcrypt}$2a$12$yDElrWj8qwkfrBojYA1r.e2OWUBCtktcZekvhXLlCM2xnwjHdTMDe', '김돌돌', 'STUDENT', now());
+INSERT INTO member (email, password, name, role, created_at) VALUES ('test@email.com', '{bcrypt}$2a$12$YKw2mg1Uu7zr/Diw3NwVUe6UozIO179NKNbB0TH012sa4IHjAfYVi', '홍길동', 'STUDENT', now());
+INSERT INTO member (email, password, name, role, created_at) VALUES ('test11@email.com', '{bcrypt}$2a$12$8SBxYG988lsn6SBS5NlD2e48AUB8YLIm12C/y4IBUzqbMjk89ivUS', '김철수', 'STUDENT', now());
+INSERT INTO member (email, password, name, role, created_at) VALUES ('test22@email.com', '{bcrypt}$2a$12$M48gpxGahQ1dXIW0bicv4eallKaCkSKGjTQHzvdbQtv7iLIVSSSEa', '김영희', 'EDUCATOR', now());
+INSERT INTO member (email, password, name, role, created_at) VALUES ('test33@email.com', '{bcrypt}$2a$12$yDElrWj8qwkfrBojYA1r.e2OWUBCtktcZekvhXLlCM2xnwjHdTMDe', '김돌돌', 'STUDENT', now());
 
 -- enrollment
 INSERT INTO enrollment(id, status, created_at, member_id) VALUES (1, 'ENROLLED', now(), 1);
