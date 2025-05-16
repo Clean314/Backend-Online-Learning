@@ -1,5 +1,8 @@
 package com.docker.backend.model;
 
+import lombok.Getter;
+
+@Getter
 public enum MemberRole {
     STUDENT("ROLE_STUDENT"),
     EDUCATOR("ROLE_EDUCATOR");
@@ -10,7 +13,4 @@ public enum MemberRole {
         this.key = key;
     }
 
-    public String getKey() {
-        return key;
-    }
 }

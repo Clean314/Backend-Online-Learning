@@ -11,4 +11,9 @@ public class MemberController {
 
 
     }
+
+    @GetMapping("/my-page")
+    public String myPage() {
+        return "my-page";
+    }
 }
