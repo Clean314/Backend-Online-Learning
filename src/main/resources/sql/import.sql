@@ -20,3 +20,4 @@ INSERT INTO course(id, name, created_at, enrollment_id) VALUES (3, 'startDB', no
 INSERT INTO course(id, name, created_at, enrollment_id) VALUES (4, 'Cloud', now(), 1);
 INSERT INTO course(id, name, created_at, enrollment_id) VALUES (5, 'computer', now(), 3);
 INSERT INTO course(id, name, created_at, enrollment_id) VALUES (6, 'music', now(), 1);
+

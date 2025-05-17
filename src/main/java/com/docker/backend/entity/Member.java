@@ -3,6 +3,7 @@ package com.docker.backend.entity;
 
 import com.docker.backend.enums.MemberRole;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class Member {
 
     @Id
