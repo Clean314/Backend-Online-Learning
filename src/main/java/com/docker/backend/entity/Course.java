@@ -1,6 +1,8 @@
 package com.docker.backend.entity;
 
+import com.docker.backend.entity.user.Educator;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class Course {
 
     @Id
@@ -22,11 +23,16 @@ public class Course {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    @ManyToOne
-    @JoinColumn(name = "enrollment_id", nullable = false)
-    private Enrollment enrollment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Educator educator;
 
-    @OneToMany(mappedBy = "course")
-    private List<Lecture> lectures;
+    private int maxEnrollment;
+
+//    @OneToMany
+//    @JoinColumn(name = "enrollment_id", nullable = false)
+//    private Enrollment enrollment;
+//
+//    @OneToMany(mappedBy = "course")
+//    private List<Lecture> lectures;
 
 }

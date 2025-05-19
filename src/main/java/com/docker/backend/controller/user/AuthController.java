@@ -1,10 +1,10 @@
-package com.docker.backend.controller;
+package com.docker.backend.controller.user;
 
 import com.docker.backend.constant.ApplicationConstants;
 import com.docker.backend.dto.LoginRequestDTO;
 import com.docker.backend.dto.LoginResponseDTO;
 import com.docker.backend.filter.JwtService;
-import com.docker.backend.entity.Member;
+import com.docker.backend.entity.user.Member;
 import com.docker.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

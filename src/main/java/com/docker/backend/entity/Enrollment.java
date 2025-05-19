@@ -1,16 +1,14 @@
 package com.docker.backend.entity;
 
+import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.Status;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class Enrollment {
 
     @Id
@@ -18,16 +16,21 @@ public class Enrollment {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING) // DB에 String값으로 넣어야함 -> 추가시 오류x
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Course course;
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Version
+    private Long version; // 낙관적 락 (동시성 방지)
 
-    @OneToMany(mappedBy = "enrollment")
-    private List<Course> courses;
+    public Enrollment(Student student, Course course, Status status) {
+    }
 }

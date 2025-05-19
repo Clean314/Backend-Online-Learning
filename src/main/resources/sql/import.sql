@@ -8,7 +8,7 @@ INSERT INTO member (email, password, name, role, created_at) VALUES ('test11@ema
 INSERT INTO member (email, password, name, role, created_at) VALUES ('test22@email.com', '{bcrypt}$2a$12$kWIMlnfu.0vBbK4FQbBoHOnVVjZ9cz5qB3W021aW4yB17lyTJkoRu', '김영희', 'EDUCATOR', now());
 INSERT INTO member (email, password, name, role, created_at) VALUES ('test33@email.com', '{bcrypt}$2a$12$YX5PLN9pswbMEoO/XnS4QeZctpYl3Sx9rUPGTF.JrW0WpjCjjWgzK', '김돌돌', 'STUDENT', now());
 
--- enrollment
+/*-- enrollment
 INSERT INTO enrollment(id, status, created_at, member_id) VALUES (1, 'ENROLLED', now(), 1);
 INSERT INTO enrollment(id, status, created_at, member_id) VALUES (2, 'COMPLETED', now(), 2);
 INSERT INTO enrollment(id, status, created_at, member_id) VALUES (3, 'ENROLLED', now(), 3);
@@ -19,5 +19,4 @@ INSERT INTO course(id, name, created_at, enrollment_id) VALUES (2, 'SpringBoot',
 INSERT INTO course(id, name, created_at, enrollment_id) VALUES (3, 'startDB', now(), 1);
 INSERT INTO course(id, name, created_at, enrollment_id) VALUES (4, 'Cloud', now(), 1);
 INSERT INTO course(id, name, created_at, enrollment_id) VALUES (5, 'computer', now(), 3);
-INSERT INTO course(id, name, created_at, enrollment_id) VALUES (6, 'music', now(), 1);
-
+INSERT INTO course(id, name, created_at, enrollment_id) VALUES (6, 'music', now(), 1);*/

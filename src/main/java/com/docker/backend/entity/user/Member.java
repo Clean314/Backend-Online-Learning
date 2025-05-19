@@ -1,17 +1,16 @@
-package com.docker.backend.entity;
+package com.docker.backend.entity.user;
 
 
 import com.docker.backend.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "role")
 public class Member {
 
     @Id
@@ -33,7 +32,7 @@ public class Member {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    @OneToMany(mappedBy = "member")
-    private List<Enrollment> enrollments;
+//    @OneToMany(mappedBy = "member")
+//    private List<Enrollment> enrollments;
 
 }
