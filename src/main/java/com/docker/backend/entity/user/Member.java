@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "role")
-public class Member {
+@DiscriminatorColumn(name = "member_type")
+public abstract class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +39,4 @@ public class Member {
 
     @LastModifiedDate
     private LocalDateTime updated_at;
-
 }
