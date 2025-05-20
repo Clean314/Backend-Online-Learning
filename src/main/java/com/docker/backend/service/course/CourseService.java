@@ -1,32 +1,43 @@
 package com.docker.backend.service.course;
 
+import com.docker.backend.dto.CourseCreateRequest;
+import com.docker.backend.dto.CourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Educator;
+import com.docker.backend.entity.user.Member;
+import com.docker.backend.entity.user.Student;
+import com.docker.backend.repository.MemberRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final MemberRepository memberRepository;
 
-    @Transactional
-    public CourseDto createCourse(Educator educator, CourseCreateRequest req) {
-        Course course = new Course(req.getName(), req.getCode(), req.getSemester(), req.getMaxEnrollment(), educator);
-        return CourseDto.from(courseRepository.save(course));
+    public Course createCourse(Educator educator, CourseCreateRequest req) {
+        Course course = new Course();
+        course.setCourseName(req.getName());
+        course.setMaxEnrollment(req.getMaxEnrollment());
+        course.setPoint(req.getPoint());
+        course.setEducator(educator);
+        return courseRepository.save(course);
     }
 
-    @Transactional
-    public List<CourseDto> getProfessorCourses(Educator educator) {
-        return courseRepository.findByEducatorId(educator)
-                .stream()
-                .map(CourseDto::from)
-                .toList();
+    public List<Course> getCoursesByEducator(Educator educator) {
+        return courseRepository.findByEducatorId(educator.getId());
+    }
+
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
     }
 
 }

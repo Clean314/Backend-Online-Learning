@@ -1,5 +1,7 @@
 package com.docker.backend.service.enrollment;
 
+import com.docker.backend.dto.EnrollRequest;
+import com.docker.backend.dto.EnrollmentDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Enrollment;
 import com.docker.backend.entity.user.Student;
@@ -11,27 +13,27 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
     private final CourseRepository courseRepository;
 
-    @Transactional
     public void enroll(Student student, Long courseId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException("유효한 강의가 아닙니다."));
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
 
         if (enrollmentRepository.existsByStudentAndCourse(student, course)) {
-            throw new IllegalArgumentException("이미 신청된 강의입니다.");
+            throw new IllegalArgumentException("Already enrolled.");
         }
 
         long enrolledCount = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
-
-        Status status = enrolledCount < course.getMaxEnrollment()
-                ? Status.ENROLLED
-                : Status.WAITING;
+        Status status = enrolledCount < course.getMaxEnrollment() ? Status.ENROLLED : Status.WAITING;
 
         enrollmentRepository.save(new Enrollment(student, course, status));
     }
@@ -39,18 +41,18 @@ public class EnrollmentService {
     @Transactional
     public void cancelEnroll(Student student, Long courseId) {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCourseId(student, courseId)
-                .orElseThrow(() -> new EntityNotFoundException("신청한 강의가 아닙니다."));
-
-        enrollment.setStatus(Status.WITHDRAWN);
-        enrollmentRepository.save(enrollment);
+                .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
+        enrollment.cancel();
     }
 
-
-    @Transactional
-    public List<EnrollmentDto> getMyEnrollments(Student student) {
-        return enrollmentRepo.findByStudent(student)
-                .stream()
-                .map(EnrollmentDto::from)
-                .toList();
+    public List<EnrollmentDTO> getMyEnrollments(Student student) {
+        return enrollmentRepository.findByStudent(student).stream()
+                .map(e -> new EnrollmentDTO(
+                        e.getCourse().getCourseName(),
+                        e.getCourse().getEducator().getName(),
+                        e.getCourse().getPoint(),
+                        e.getStatus()))
+                .collect(Collectors.toList());
     }
+
 }

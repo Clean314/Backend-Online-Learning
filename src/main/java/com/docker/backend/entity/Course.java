@@ -5,12 +5,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Course {
 
     @Id
@@ -18,21 +20,21 @@ public class Course {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String courseName;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    @Column(nullable = false)
+    private int maxEnrollment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Educator educator;
 
-    private int maxEnrollment;
+    @Column(nullable = false)
+    private int point;
 
-//    @OneToMany
-//    @JoinColumn(name = "enrollment_id", nullable = false)
-//    private Enrollment enrollment;
-//
-//    @OneToMany(mappedBy = "course")
-//    private List<Lecture> lectures;
+    @CreatedDate
+    private LocalDateTime created_at;
+
+    @LastModifiedDate
+    private LocalDateTime updated_at;
 
 }

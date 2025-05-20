@@ -4,11 +4,14 @@ package com.docker.backend.entity.user;
 import com.docker.backend.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "role")
 public class Member {
@@ -29,10 +32,10 @@ public class Member {
     @Column(length = 30, nullable = false)
     private String name;
 
+    @CreatedDate
     private LocalDateTime created_at;
-    private LocalDateTime updated_at;
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Enrollment> enrollments;
+    @LastModifiedDate
+    private LocalDateTime updated_at;
 
 }
