@@ -1,4 +1,5 @@
 # backend
+member가 security의 기본 user 구현체이고 admin, student, educator가 이를 상속함<br>
 student는 enrollment(수강) 기능을 사용할 수 있음<br>
 educator는 course(강의) 기능을 사용할 수 있음<br>
 student와 educator는 서로 구분되어 보안 제한이 있음<br>
