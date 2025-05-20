@@ -1,2 +1,5 @@
 # backend
-
+student는 enrollment(수강) 기능을 사용할 수 있음<br>
+educator는 course(강의) 기능을 사용할 수 있음<br>
+student와 educator는 서로 구분되어 보안 제한이 있음<br>
+admin은 권한 계층의 최상위로 설정해서 student, educator의 기능을 가지도록 했음
