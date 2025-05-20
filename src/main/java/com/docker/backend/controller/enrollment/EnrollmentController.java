@@ -2,9 +2,8 @@ package com.docker.backend.controller.enrollment;
 
 import com.docker.backend.dto.EnrollRequest;
 import com.docker.backend.dto.EnrollmentDTO;
-import com.docker.backend.entity.Enrollment;
+import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Student;
-import com.docker.backend.service.MemberService;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,4 +39,9 @@ public class EnrollmentController {
     public ResponseEntity<List<EnrollmentDTO>> getMyEnrollments(@AuthenticationPrincipal Student student) {
         return ResponseEntity.ok(enrollmentService.getMyEnrollments(student));
     }
+
+//    @GetMapping("/courses")
+//    public ResponseEntity<List<Course>> getEnableCourses(@AuthenticationPrincipal Student student) {
+//
+//    }
 }

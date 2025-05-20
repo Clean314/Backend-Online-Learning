@@ -1,6 +1,5 @@
 package com.docker.backend.service.enrollment;
 
-import com.docker.backend.dto.EnrollRequest;
 import com.docker.backend.dto.EnrollmentDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Enrollment;
