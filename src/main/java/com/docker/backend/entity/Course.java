@@ -20,9 +20,6 @@ public class Course {
     private Long id;
 
     @Column(nullable = false)
-    private String courseCode;
-
-    @Column(nullable = false)
     private String courseName;
 
     @Column(nullable = false)
@@ -37,6 +34,9 @@ public class Course {
 
     @Column(nullable = false)
     private int point;
+
+    @Column(nullable = false)
+    private int maxEnrollment;
 
     private String description;
 

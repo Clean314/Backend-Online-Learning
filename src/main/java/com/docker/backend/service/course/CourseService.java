@@ -25,12 +25,12 @@ public class CourseService {
     public ResponseEntity<Void> createCourse(Educator educator, CourseDTO req) {
         Course course = new Course();
         course.setCourseName(req.getCourseName());
-        course.setCourseCode(req.getCourseCode());
         course.setCategory(req.getCategory());
         course.setDifficulty(req.getDifficulty());
         course.setPoint(req.getPoint());
         course.setEducator(educator);
         course.setDescription(req.getDescription());
+        course.setMaxEnrollment(req.getMaxEnrollment());
         courseRepository.save(course);
         return ResponseEntity.ok().build();
     }

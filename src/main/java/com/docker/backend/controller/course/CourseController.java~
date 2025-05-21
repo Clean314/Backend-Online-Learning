@@ -21,7 +21,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    @GetMapping
+    @GetMapping("/my-courses")
     public ResponseEntity<List<CourseDTO>> getMyCourses(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Educator educator = (Educator) userDetails.getMember();
