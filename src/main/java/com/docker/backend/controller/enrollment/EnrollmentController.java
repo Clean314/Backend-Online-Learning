@@ -1,8 +1,7 @@
 package com.docker.backend.controller.enrollment;
 
 import com.docker.backend.dto.EnrollRequest;
-import com.docker.backend.dto.EnrollmentDTO;
-import com.docker.backend.entity.Course;
+import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +35,12 @@ public class EnrollmentController {
     }
 
     @GetMapping("/my-enrollments")
-    public ResponseEntity<List<EnrollmentDTO>> getMyEnrollments(@AuthenticationPrincipal Student student) {
-        return ResponseEntity.ok(enrollmentService.getMyEnrollments(student));
+    public ResponseEntity<List<EnrollmentCourseDTO>> getMyEnrollments(@AuthenticationPrincipal Student student) {
+        return ResponseEntity.ok(enrollmentService.getEnrolledCourses(student));
     }
 
-//    @GetMapping("/courses")
-//    public ResponseEntity<List<Course>> getEnableCourses(@AuthenticationPrincipal Student student) {
-//
-//    }
+    @GetMapping("/courses")
+    public ResponseEntity<List<EnrollmentCourseDTO>> getEnableCourses(@AuthenticationPrincipal Student student) {
+        return ResponseEntity.ok(enrollmentService.getAllEnrollmentCourses(student));
+    }
 }

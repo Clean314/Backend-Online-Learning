@@ -1,5 +1,6 @@
 package com.docker.backend.service;
 
+import com.docker.backend.dto.MemberDTO;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +16,21 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     public Member register(Member member) {
+        if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        }
+
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member);
     }
 
-    public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+    public MemberDTO getProfile(Member member) {
+        memberRepository.findById(member.getId());
+        return new MemberDTO(member.getId(), member.getEmail(), member.getName(), member.getRole(), member.getDescription());
     }
 
-    public Member findById(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + id));
+    public boolean existsByEmail(String email) {
+        return memberRepository.findByEmail(email).isPresent();
     }
+
 }

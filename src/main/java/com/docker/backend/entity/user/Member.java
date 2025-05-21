@@ -34,6 +34,8 @@ public abstract class Member {
     @Column(length = 30, nullable = false)
     private String name;
 
+    private String description;
+
     @CreatedDate
     private LocalDateTime created_at;
 

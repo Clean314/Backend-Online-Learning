@@ -25,6 +25,8 @@ VALUES (3, 'E250520'),
 INSERT INTO admin (id)
 VALUES (5);
 
+ALTER TABLE member ALTER COLUMN id RESTART WITH 6;
+
 /*-- enrollment
 INSERT INTO enrollment(id, status, created_at, member_id) VALUES (1, 'ENROLLED', now(), 1);
 INSERT INTO enrollment(id, status, created_at, member_id) VALUES (2, 'COMPLETED', now(), 2);

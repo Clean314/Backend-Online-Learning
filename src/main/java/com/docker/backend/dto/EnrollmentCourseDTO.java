@@ -1,14 +1,15 @@
 package com.docker.backend.dto;
 
+import com.docker.backend.enums.Difficulty;
 import com.docker.backend.enums.Status;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
 @AllArgsConstructor
-public class EnrollmentDTO {
+public class EnrollmentCourseDTO {
+    private String courseCode;
     private String courseName;
     private String educatorName;
-    private int point;
+    private String category;
+    private Difficulty difficulty;
     private Status status;
 }

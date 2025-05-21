@@ -1,5 +1,8 @@
 package com.docker.backend.controller.user;
 
+import com.docker.backend.config.CustomUserDetails;
+import com.docker.backend.dto.MemberDTO;
+import com.docker.backend.entity.user.Educator;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +18,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/profile")
-    public ResponseEntity<Member> getProfile(Authentication authentication) {
-        String email = authentication.getName();
-        Member member = memberService.findByEmail(email);
-        return ResponseEntity.ok(member);
+    public ResponseEntity<MemberDTO> getProfile(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        return ResponseEntity.ok(memberService.getProfile(userDetails.getMember()));
     }
 
     @GetMapping("/my-page")
