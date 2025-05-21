@@ -26,7 +26,7 @@ public class MemberService {
 
     public MemberDTO getProfile(Member member) {
         memberRepository.findById(member.getId());
-        return new MemberDTO(member.getId(), member.getEmail(), member.getName(), member.getRole(), member.getDescription());
+        return new MemberDTO(member.getId(),  member.getName(), member.getEmail(), member.getRole(), member.getDescription());
     }
 
     public boolean existsByEmail(String email) {
