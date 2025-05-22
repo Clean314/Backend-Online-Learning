@@ -16,7 +16,9 @@ public class CourseDTO {
     private Difficulty difficulty;
     private int point;
     private String description;
+
     private int maxEnrollment;
+    private int availableEnrollment;
 
     public CourseDTO(Course course) {
         this.courseName = course.getCourseName();

@@ -39,6 +39,8 @@ public class Course {
     @Column(nullable = false)
     private int maxEnrollment;
 
+    private int availableEnrollment;
+
     private String description;
 
     @CreatedDate
