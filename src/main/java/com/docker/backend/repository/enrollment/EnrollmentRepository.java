@@ -14,4 +14,5 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     Optional<Enrollment> findByStudentAndCourseId(Student student, Long courseId);
     List<Enrollment> findByStudent(Student student);
     long countByCourseAndStatus(Course course, Status status);
+    List<Enrollment> findByStudentAndStatus(Student student, Status status);
 }

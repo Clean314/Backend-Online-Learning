@@ -3,6 +3,10 @@ package com.docker.backend.controller.user;
 import com.docker.backend.constant.ApplicationConstants;
 import com.docker.backend.dto.LoginRequestDTO;
 import com.docker.backend.dto.LoginResponseDTO;
+import com.docker.backend.dto.RegisterRequestDTO;
+import com.docker.backend.entity.user.Educator;
+import com.docker.backend.entity.user.Student;
+import com.docker.backend.enums.MemberRole;
 import com.docker.backend.filter.JwtService;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.service.MemberService;
@@ -40,12 +44,28 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody Member member) {
-        if (member.getRole() == null) {
+    public ResponseEntity<String> registerUser(@RequestBody RegisterRequestDTO req) {
+        if (req.getRole() == null) {
             return ResponseEntity.badRequest().body("회원 역할(role)은 필수입니다.");
         }
-        Member saved = memberService.register(member);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("User registered with ID: " + saved.getId());
+
+        if (memberService.existsByEmail(req.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 사용 중인 이메일입니다.");
+        }
+
+        Member member = switch (MemberRole.valueOf(req.getRole().name().toUpperCase())) {
+            case MemberRole.STUDENT -> new Student();
+            case MemberRole.EDUCATOR -> new Educator();
+            default -> throw new IllegalArgumentException("유효하지 않은 역할입니다.");
+        };
+
+        member.setEmail(req.getEmail());
+        member.setPassword(req.getPassword());
+        member.setName(req.getName());
+        member.setRole(MemberRole.valueOf(req.getRole().name().toUpperCase()));
+        memberService.register(member);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 완료");
     }
+
 }

@@ -1,12 +1,12 @@
 package com.docker.backend.service.course;
 
-import com.docker.backend.dto.CourseCreateRequest;
+import com.docker.backend.dto.CourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Educator;
-import com.docker.backend.repository.MemberRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,23 +17,29 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final MemberRepository memberRepository;
 
-    public Course createCourse(Educator educator, CourseCreateRequest req) {
+    public List<CourseDTO> getAllCourses() {
+        return courseRepository.findAll().stream()
+                .map(CourseDTO::new)
+                .toList();
+    }
+
+    public List<CourseDTO> getMyCourses(Educator educator) {
+        return courseRepository.findByEducatorId(educator.getId()).stream()
+                .map(CourseDTO::new)
+                .toList();
+    }
+
+    public ResponseEntity<Void> createCourse(Educator educator, CourseDTO req) {
         Course course = new Course();
-        course.setCourseName(req.getName());
-        course.setMaxEnrollment(req.getMaxEnrollment());
+        course.setCourseName(req.getCourseName());
+        course.setCategory(req.getCategory());
+        course.setDifficulty(req.getDifficulty());
         course.setPoint(req.getPoint());
         course.setEducator(educator);
-        return courseRepository.save(course);
+        course.setDescription(req.getDescription());
+        course.setMaxEnrollment(req.getMaxEnrollment());
+        courseRepository.save(course);
+        return ResponseEntity.ok().build();
     }
-
-    public List<Course> getCoursesByEducator(Educator educator) {
-        return courseRepository.findByEducatorId(educator.getId());
-    }
-
-    public List<Course> getAllCourses() {
-        return courseRepository.findAll();
-    }
-
 }

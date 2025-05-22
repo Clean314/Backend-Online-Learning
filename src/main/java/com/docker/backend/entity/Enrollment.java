@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Enrollment {
 
@@ -43,9 +45,5 @@ public class Enrollment {
         this.student = student;
         this.course = course;
         this.status = status;
-    }
-
-    public void cancel() {
-        this.status = Status.WITHDRAWN;
     }
 }

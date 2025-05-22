@@ -1,8 +1,9 @@
 package com.docker.backend.service.enrollment;
 
-import com.docker.backend.dto.EnrollmentDTO;
+import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Enrollment;
+import com.docker.backend.entity.user.Educator;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.Status;
 import com.docker.backend.repository.course.CourseRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,27 +33,60 @@ public class EnrollmentService {
             throw new IllegalArgumentException("Already enrolled.");
         }
 
-        long enrolledCount = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
-        Status status = enrolledCount < course.getMaxEnrollment() ? Status.ENROLLED : Status.WAITING;
-
-        enrollmentRepository.save(new Enrollment(student, course, status));
+        enrollmentRepository.save(new Enrollment(student, course, Status.ENROLLED));
     }
 
     @Transactional
     public void cancelEnroll(Student student, Long courseId) {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCourseId(student, courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
-        enrollment.cancel();
+        enrollment.setStatus(Status.WITHDRAWN);
     }
 
-    public List<EnrollmentDTO> getMyEnrollments(Student student) {
-        return enrollmentRepository.findByStudent(student).stream()
-                .map(e -> new EnrollmentDTO(
-                        e.getCourse().getCourseName(),
-                        e.getCourse().getEducator().getName(),
-                        e.getCourse().getPoint(),
-                        e.getStatus()))
+    public List<EnrollmentCourseDTO> getEnrolledCourses(Student student) {
+        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.ENROLLED));
+    }
+
+    public List<EnrollmentCourseDTO> getCompletedCourses(Student student) {
+        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.COMPLETED));
+    }
+
+    public List<EnrollmentCourseDTO> getAllEnrollmentCourses(Student student) {
+        Map<Long, Status> statusMap = enrollmentRepository.findByStudent(student).stream()
+                .collect(Collectors.toMap(
+                        e -> e.getCourse().getId(),
+                        Enrollment::getStatus
+
+
+                ));
+
+        return courseRepository.findAll().stream()
+                .map(course -> {
+                    Status status = statusMap.get(course.getId());
+                    Status courseStatus = (status != null) ? status : Status.AVAILABLE;
+
+                    return new EnrollmentCourseDTO(
+                            course.getCourseName(),
+                            course.getEducator().getName(),
+                            course.getCategory(),
+                            course.getDifficulty(),
+                            courseStatus
+                    );
+                })
                 .collect(Collectors.toList());
     }
 
+    private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) {
+        return enrollments.stream().map(enrollment -> {
+            Course course = enrollment.getCourse();
+            Educator educator = course.getEducator();
+            return new EnrollmentCourseDTO(
+                    course.getCourseName(),
+                    educator.getName(),
+                    course.getCategory(),
+                    course.getDifficulty(),
+                    enrollment.getStatus()
+            );
+        }).collect(Collectors.toList());
+    }
 }

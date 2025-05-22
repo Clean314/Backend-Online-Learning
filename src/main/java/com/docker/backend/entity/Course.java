@@ -1,8 +1,8 @@
 package com.docker.backend.entity;
 
 import com.docker.backend.entity.user.Educator;
+import com.docker.backend.enums.Difficulty;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,7 +23,11 @@ public class Course {
     private String courseName;
 
     @Column(nullable = false)
-    private int maxEnrollment;
+    private String category;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
 
     @ManyToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name = "educator_id")
@@ -31,6 +35,11 @@ public class Course {
 
     @Column(nullable = false)
     private int point;
+
+    @Column(nullable = false)
+    private int maxEnrollment;
+
+    private String description;
 
     @CreatedDate
     private LocalDateTime createdAt;
