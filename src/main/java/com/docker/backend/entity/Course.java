@@ -39,6 +39,7 @@ public class Course {
     @Column(nullable = false)
     private int maxEnrollment;
 
+    @Column(nullable = false)
     private int availableEnrollment;
 
     private String description;

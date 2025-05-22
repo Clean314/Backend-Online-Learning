@@ -28,5 +28,4 @@ public class CourseDTO {
         this.point = course.getPoint();
         this.maxEnrollment = course.getMaxEnrollment();
     }
-
 }

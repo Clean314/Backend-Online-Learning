@@ -19,26 +19,33 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional // 트랜잭션 처리 (수강신청은 인원이 몰린다고 생각했기 때문)
+@Transactional
 public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
     private final CourseRepository courseRepository;
 
     public void enroll(Student student, Long courseId) {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
+        Course course = courseRepository.findByIdForUpdate(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
 
         if (enrollmentRepository.existsByStudentAndCourse(student, course)) {
-            throw new IllegalArgumentException("이미 신청하신 강의입니다.");
+            throw new IllegalArgumentException("Already enrolled.");
         }
 
-        enrollmentRepository.save(new Enrollment(student, course, Status.ENROLLED));
+        long enrolledCount = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
+        if (enrolledCount >= course.getMaxEnrollment()) {
+            throw new IllegalStateException("Course is full.");
+        }
+
+        Enrollment enrollment = new Enrollment(student, course, Status.ENROLLED);
+        enrollmentRepository.save(enrollment);
     }
 
     public void cancelEnroll(Student student, Long courseId) {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCourseId(student, courseId)
-                .orElseThrow(() -> new EntityNotFoundException("수강 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
+
         enrollment.setStatus(Status.WITHDRAWN);
     }
 
@@ -46,46 +53,45 @@ public class EnrollmentService {
         return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.ENROLLED));
     }
 
-    public List<EnrollmentCourseDTO> getCompletedCourses(Student student) {
-        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.COMPLETED));
-    }
-
     public List<EnrollmentCourseDTO> getAllEnrollmentCourses(Student student) {
         Map<Long, Status> statusMap = enrollmentRepository.findByStudent(student).stream()
                 .collect(Collectors.toMap(
                         e -> e.getCourse().getId(),
                         Enrollment::getStatus
-
-
                 ));
 
         return courseRepository.findAll().stream()
                 .map(course -> {
-                    Status status = statusMap.get(course.getId());
-                    Status courseStatus = (status != null) ? status : Status.AVAILABLE;
+                    Status status = statusMap.getOrDefault(course.getId(), Status.AVAILABLE);
+                    long enrolled = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
+                    int available = course.getMaxEnrollment() - (int) enrolled;
 
                     return new EnrollmentCourseDTO(
                             course.getCourseName(),
                             course.getEducator().getName(),
                             course.getCategory(),
                             course.getDifficulty(),
-                            courseStatus
+                            status,
+                            available
                     );
                 })
                 .collect(Collectors.toList());
     }
 
-    // Enrollment -> EnrollmentCourseDTO 로 변환하는 메서드
-    private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) {
+    private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) { // Enrollment -> EnrollmentCourseDTO 로 변환하는 메서드
         return enrollments.stream().map(enrollment -> {
             Course course = enrollment.getCourse();
             Educator educator = course.getEducator();
+            long enrolled = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
+            int available = course.getMaxEnrollment() - (int) enrolled;
+
             return new EnrollmentCourseDTO(
                     course.getCourseName(),
                     educator.getName(),
                     course.getCategory(),
                     course.getDifficulty(),
-                    enrollment.getStatus()
+                    enrollment.getStatus(),
+                    available
             );
         }).collect(Collectors.toList());
     }
