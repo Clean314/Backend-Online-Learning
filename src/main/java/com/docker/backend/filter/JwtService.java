@@ -1,15 +1,17 @@
 package com.docker.backend.filter;
 
+import com.docker.backend.config.CustomUserDetails;
+import com.docker.backend.config.MemberDetailsService;
 import com.docker.backend.constant.ApplicationConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 public class JwtService {
 
     private final Environment env;
+    @Qualifier("customUserDetailsService")
+    private final MemberDetailsService memberDetailsService;
 
     private SecretKey getSigningKey() {
         String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY,
@@ -51,7 +55,15 @@ public class JwtService {
 
         String username = claims.get("username", String.class);
         String authorities = claims.get("authorities", String.class);
-        return new UsernamePasswordAuthenticationToken(username, null,
-                AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
+
+        CustomUserDetails userDetails = (CustomUserDetails)
+                memberDetailsService.loadUserByUsername(username);
+
+        return new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
     }
+
 }

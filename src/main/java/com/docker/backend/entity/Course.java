@@ -1,11 +1,14 @@
 package com.docker.backend.entity;
 
+import com.docker.backend.entity.user.Educator;
+import com.docker.backend.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,16 +20,34 @@ public class Course {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String courseName;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    @Column(nullable = false)
+    private String category;
 
-    @ManyToOne
-    @JoinColumn(name = "enrollment_id", nullable = false)
-    private Enrollment enrollment;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
 
-    @OneToMany(mappedBy = "course")
-    private List<Lecture> lectures;
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "educator_id")
+    private Educator educator;
+
+    @Column(nullable = false)
+    private int point;
+
+    @Column(nullable = false)
+    private int maxEnrollment;
+
+    @Column(nullable = false)
+    private int availableEnrollment;
+
+    private String description;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 }

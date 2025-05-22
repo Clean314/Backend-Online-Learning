@@ -1,23 +1,15 @@
 package com.docker.backend.dto;
 
-import com.docker.backend.entity.user.Member;
 import com.docker.backend.enums.MemberRole;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class MemberDTO {
-    private Long id;
+public class RegisterRequestDTO {
     private String name;
     private String email;
+    private String password;
     private MemberRole role;
     private String description;
-
 }

@@ -1,14 +1,14 @@
 package com.docker.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class Lecture {
 
     @Id
@@ -19,16 +19,16 @@ public class Lecture {
     private String title;
 
     @Column(length = 1000, nullable = false)
-    private String video_url;
+    private String videoUrl;
 
     @Column(length = 255)
-    private String file_name;
+    private String fileName;
 
     @Column(length = 1000)
-    private String file_path;
+    private String filePath;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "course_id")

@@ -1,17 +1,21 @@
 package com.docker.backend.entity;
 
-
+import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.Status;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Enrollment {
 
     @Id
@@ -19,16 +23,27 @@ public class Enrollment {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING) // DB에 String값으로 넣어야함 -> 추가시 오류x
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Course course;
 
-    @OneToMany(mappedBy = "enrollment")
-    private List<Course> courses;
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @Version
+    private Long version; // 낙관적 락 (동시성 방지)
+
+    public Enrollment(Student student, Course course, Status status) {
+        this.student = student;
+        this.course = course;
+        this.status = status;
+    }
 }

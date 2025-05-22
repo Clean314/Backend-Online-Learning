@@ -18,9 +18,9 @@ public class Memo {
     @Column(length = 1000, nullable = false)
     private String content;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime cratedAt;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
-    private Lecture lecture_id;
+    private Lecture lectureId;
 }
