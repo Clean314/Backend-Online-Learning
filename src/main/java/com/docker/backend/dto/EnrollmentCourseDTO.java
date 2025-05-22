@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class EnrollmentCourseDTO {
-    private String courseCode;
     private String courseName;
     private String educatorName;
     private String category;

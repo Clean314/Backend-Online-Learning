@@ -43,16 +43,6 @@ public class AuthController {
                 .body(new LoginResponseDTO("Authenticated", token));
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<String> registerUser(@RequestBody Member member) {
-//        if (member.getRole() == null) {
-//            return ResponseEntity.badRequest().body("회원 역할(role)은 필수입니다.");
-//        }
-//        Member saved = memberService.register(member);
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body("User registered with ID: " + saved.getId());
-//    }
-
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterRequestDTO req) {
         if (req.getRole() == null) {

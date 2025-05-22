@@ -66,7 +66,6 @@ public class EnrollmentService {
                     Status courseStatus = (status != null) ? status : Status.AVAILABLE;
 
                     return new EnrollmentCourseDTO(
-                            course.getCourseCode(),
                             course.getCourseName(),
                             course.getEducator().getName(),
                             course.getCategory(),
@@ -82,7 +81,6 @@ public class EnrollmentService {
             Course course = enrollment.getCourse();
             Educator educator = course.getEducator();
             return new EnrollmentCourseDTO(
-                    course.getCourseCode(),
                     course.getCourseName(),
                     educator.getName(),
                     course.getCategory(),

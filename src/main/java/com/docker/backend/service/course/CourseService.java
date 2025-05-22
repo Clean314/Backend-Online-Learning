@@ -18,8 +18,16 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
-    public List<Course> getMyCourses(Educator educator) {
-        return courseRepository.findByEducatorId(educator.getId());
+    public List<CourseDTO> getAllCourses() {
+        return courseRepository.findAll().stream()
+                .map(CourseDTO::new)
+                .toList();
+    }
+
+    public List<CourseDTO> getMyCourses(Educator educator) {
+        return courseRepository.findByEducatorId(educator.getId()).stream()
+                .map(CourseDTO::new)
+                .toList();
     }
 
     public ResponseEntity<Void> createCourse(Educator educator, CourseDTO req) {

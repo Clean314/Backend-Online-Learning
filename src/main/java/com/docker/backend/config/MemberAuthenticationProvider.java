@@ -19,17 +19,6 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public Authentication authenticate(Authentication authentication) {
-//        String username = authentication.getName();
-//        String password = authentication.getCredentials().toString();
-//        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
-//        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-//            throw new BadCredentialsException("Invalid credentials");
-//        }
-//        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-//    }
-
     @Override
     public Authentication authenticate(Authentication authentication) {
         String username = authentication.getName();
