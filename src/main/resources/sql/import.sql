@@ -7,10 +7,11 @@
 
 -- Insert Members (Discriminator: STUDENT and EDUCATOR)
 INSERT INTO member (id, role, email, password, name, created_at, updated_at, member_type) VALUES
-(1, 'STUDENT', 'student1@test.com', '{bcrypt}$2a$12$TS6jp5rY/cJTlx6IrqBKf.O167DzF7XCbOjL2PezF.nmbDfCKnQbO', '학생1', NOW(), NOW(), 'STUDENT'),
-(2, 'STUDENT', 'student2@test.com', '{bcrypt}$2a$12$RzUhS6XS8VDkjrLWldZas.m1/3gg1TciPMeTTDPrCSczdRiDmFxnK', '학생2', NOW(), NOW(), 'STUDENT'),
-(3, 'EDUCATOR', 'educator1@test.com', '{bcrypt}$2a$12$fQBvxmSppjAh2CUsrSKHsuZ1K7jfexESNcYFaY.gvziktaYyzWtGu', '교수1', NOW(), NOW(), 'EDUCATOR'),
-(4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', NOW(), NOW(), 'EDUCATOR');
+(1, 'STUDENT', 'student1@test.com', '{bcrypt}$2a$12$YE5.5u8Dqcz.aBlUc.2u9.BS/fy8syAZ.HsZhsIc0GY8rdWZH8Yh2', '학생1', now(), now(), 'STUDENT'),
+(2, 'STUDENT', 'student2@test.com', '{bcrypt}$2a$12$mY/6mHlcHjC5VCDgh7IqCe6Y3WTjdHXvjetKq14fflcVF8Rqdixpu', '학생2',  now(), now(), 'STUDENT'),
+(3, 'EDUCATOR', 'educator1@test.com', '{bcrypt}$2a$12$qBibhD/ms7yKDT1XTtmg8uCPXB4677gPMRAFeOJeuM/zuh.rJfqsO', '교수1',  now(), now(), 'EDUCATOR'),
+(4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$cRfRapBcbyPGzHOtv0xS..Y7ULgqC.RDvJkst8COc.bNYNr.ZhsZy', '교수2',  now(), now(), 'EDUCATOR'),
+(5, 'ADMIN', 'admin@test.com', '{bcrypt}$2a$12$GoIYCEHvgq4TIpth9fQ0rejpGcdKYKH3iBL73pRKlIwTTnxTs24IO', '교수2',  now(), now(), 'ADMIN');
 
 -- Insert Students
 INSERT INTO student (id, student_number) VALUES
@@ -22,12 +23,20 @@ INSERT INTO educator (id, educator_number) VALUES
 (3, 'E2025001'),
 (4, 'E2025002');
 
--- Insert Courses
-INSERT INTO course (id, course_name, max_enrollment, educator_id, point, created_at, updated_at) VALUES
-(1, 'Spring Framework', 30, 3, 5, NOW(), NOW()),
-(2, 'Data Structures', 40, 4, 3, NOW(), NOW());
+-- Insert Admin
+INSERT INTO admin (id, admin_number) VALUES
+(5, 'A2025001');
+
+INSERT INTO course
+(id, course_name, category, difficulty, educator_id, point, max_enrollment, available_enrollment, description, created_at, updated_at)
+VALUES
+(1, 'Spring Framework', 'Backend', 'MEDIUM', 3, 5, 30, 30, 'Spring Framework 기초 강의', now(), now()),
+(2, 'Data Structures', 'Computer Science', 'EASY', 4, 3, 40, 40, '자료구조 입문 강의', now(), now());
+
 
 -- Insert Enrollments
-INSERT INTO enrollment (id, status, student_id, course_id, created_at, updated_at, version) VALUES
-(1, 'ENROLLED', 1, 1, NOW(), NOW(), 0),
-(2, 'COMPLETED', 2, 2, NOW(), NOW(), 0);
+INSERT INTO enrollment
+(id, status, student_id, course_id, created_at, updated_at, version)
+VALUES
+(1, 'ENROLLED', 1, 1, now(), now(), 0),
+(2, 'ENROLLED', 2, 2, now(), now(), 0);
