@@ -1,6 +1,5 @@
 package com.docker.backend.controller.enrollment;
 
-import com.docker.backend.dto.EnrollRequest;
 import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.service.enrollment.EnrollmentService;
@@ -20,23 +19,23 @@ public class EnrollmentController {
 
      private final EnrollmentService enrollmentService;
 
-     @PostMapping("/enroll")
+    @GetMapping
+    public ResponseEntity<List<EnrollmentCourseDTO>> getMyEnrollments(@AuthenticationPrincipal Student student) {
+        return ResponseEntity.ok(enrollmentService.getEnrolledCourses(student));
+    }
+
+     @PostMapping("/{id}")
      public ResponseEntity<Void> enroll(@AuthenticationPrincipal Student student,
-                                        @RequestBody EnrollRequest req) {
-         enrollmentService.enroll(student, req.getCourseId());
+                                        @PathVariable Long courseId) {
+         enrollmentService.enroll(student, courseId);
          return ResponseEntity.ok().build();
      }
 
-    @PostMapping("/cancel")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> cancel(@AuthenticationPrincipal Student student,
-                                       @RequestBody EnrollRequest req) {
-        enrollmentService.cancelEnroll(student, req.getCourseId());
+                                       @PathVariable Long courseId) {
+        enrollmentService.cancelEnroll(student, courseId);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/my-enrollments")
-    public ResponseEntity<List<EnrollmentCourseDTO>> getMyEnrollments(@AuthenticationPrincipal Student student) {
-        return ResponseEntity.ok(enrollmentService.getEnrolledCourses(student));
     }
 
     @GetMapping("/courses")
