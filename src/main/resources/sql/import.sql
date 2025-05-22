@@ -23,8 +23,8 @@ INSERT INTO educator (id, educator_number) VALUES
 
 -- Insert Courses
 INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
-('Spring Framework', '백엔드', 'EASY', 30, 30, 3, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Data Structures', '컴퓨터공학', 'EASY', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('Spring Framework', '프로그래밍', 'EASY', 30, 30, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Data Structures', '데이터베이스', 'EASY', 40, 40, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
 INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, version) VALUES

@@ -10,6 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseDTO {
+    @JsonProperty("course_id")
+    private Long id;
+
     @JsonProperty("course_name")
     private String courseName;
 
@@ -28,6 +31,7 @@ public class CourseDTO {
     private int availableEnrollment;
 
     public CourseDTO(Course course) {
+        this.id = course.getId();
         this.courseName = course.getCourseName();
         this.category = course.getCategory();
         this.difficulty = course.getDifficulty();

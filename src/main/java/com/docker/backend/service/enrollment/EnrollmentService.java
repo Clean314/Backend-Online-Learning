@@ -67,12 +67,15 @@ public class EnrollmentService {
                     int available = course.getMaxEnrollment() - (int) enrolled;
 
                     return new EnrollmentCourseDTO(
+                            course.getId(),
                             course.getCourseName(),
                             course.getEducator().getName(),
                             course.getCategory(),
                             course.getDifficulty(),
+                            course.getPoint(),
                             status,
-                            available
+                            available,
+                            course.getMaxEnrollment()
                     );
                 })
                 .collect(Collectors.toList());
@@ -86,12 +89,15 @@ public class EnrollmentService {
             int available = course.getMaxEnrollment() - (int) enrolled;
 
             return new EnrollmentCourseDTO(
+                    course.getId(),
                     course.getCourseName(),
                     educator.getName(),
                     course.getCategory(),
                     course.getDifficulty(),
+                    course.getPoint(),
                     enrollment.getStatus(),
-                    available
+                    available,
+                    course.getMaxEnrollment()
             );
         }).collect(Collectors.toList());
     }
