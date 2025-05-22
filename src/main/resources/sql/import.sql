@@ -4,13 +4,12 @@
 -- 1: test11, 2: test22, 3: test33, 4: test44, test55, test66, test77,test88, test99, test1010, test1111, test1212, , ,
 
 
-
--- Insert Members (Discriminator: STUDENT and EDUCATOR)
+-- Insert Members
 INSERT INTO member (id, role, email, password, name, created_at, updated_at, member_type) VALUES
-(1, 'STUDENT', 'student1@test.com', '{bcrypt}$2a$12$TS6jp5rY/cJTlx6IrqBKf.O167DzF7XCbOjL2PezF.nmbDfCKnQbO', '학생1', NOW(), NOW(), 'STUDENT'),
-(2, 'STUDENT', 'student2@test.com', '{bcrypt}$2a$12$RzUhS6XS8VDkjrLWldZas.m1/3gg1TciPMeTTDPrCSczdRiDmFxnK', '학생2', NOW(), NOW(), 'STUDENT'),
-(3, 'EDUCATOR', 'educator1@test.com', '{bcrypt}$2a$12$fQBvxmSppjAh2CUsrSKHsuZ1K7jfexESNcYFaY.gvziktaYyzWtGu', '교수1', NOW(), NOW(), 'EDUCATOR'),
-(4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', NOW(), NOW(), 'EDUCATOR');
+(1, 'STUDENT', 'student1@test.com', '{bcrypt}$2a$12$TS6jp5rY/cJTlx6IrqBKf.O167DzF7XCbOjL2PezF.nmbDfCKnQbO', '학생1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT'),
+(2, 'STUDENT', 'student2@test.com', '{bcrypt}$2a$12$RzUhS6XS8VDkjrLWldZas.m1/3gg1TciPMeTTDPrCSczdRiDmFxnK', '학생2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT'),
+(3, 'EDUCATOR', 'educator1@test.com', '{bcrypt}$2a$12$fQBvxmSppjAh2CUsrSKHsuZ1K7jfexESNcYFaY.gvziktaYyzWtGu', '교수1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
+(4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR');
 
 -- Insert Students
 INSERT INTO student (id, student_number) VALUES
@@ -23,11 +22,11 @@ INSERT INTO educator (id, educator_number) VALUES
 (4, 'E2025002');
 
 -- Insert Courses
-INSERT INTO course (id, course_name, max_enrollment, educator_id, point, created_at, updated_at) VALUES
-(1, 'Spring Framework', 30, 3, 5, NOW(), NOW()),
-(2, 'Data Structures', 40, 4, 3, NOW(), NOW());
+INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
+('Spring Framework', '백엔드', 'EASY', 30, 30, 3, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Data Structures', '컴퓨터공학', 'EASY', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
-INSERT INTO enrollment (id, status, student_id, course_id, created_at, updated_at, version) VALUES
-(1, 'ENROLLED', 1, 1, NOW(), NOW(), 0),
-(2, 'COMPLETED', 2, 2, NOW(), NOW(), 0);
+INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, version) VALUES
+('ENROLLED', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
+('COMPLETED', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
