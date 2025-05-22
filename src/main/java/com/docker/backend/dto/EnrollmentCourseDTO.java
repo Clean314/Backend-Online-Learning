@@ -4,10 +4,8 @@ import com.docker.backend.enums.Difficulty;
 import com.docker.backend.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
 public class EnrollmentCourseDTO {
 
     @JsonProperty("course_id")
