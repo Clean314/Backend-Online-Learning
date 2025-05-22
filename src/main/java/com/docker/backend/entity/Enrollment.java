@@ -31,10 +31,10 @@ public class Enrollment {
     private Course course;
 
     @CreatedDate
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     @Version
     private Long version; // 낙관적 락 (동시성 방지)

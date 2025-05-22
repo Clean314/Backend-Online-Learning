@@ -26,15 +26,16 @@ public class Course {
     private int maxEnrollment;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "educator_id")
     private Educator educator;
 
     @Column(nullable = false)
     private int point;
 
     @CreatedDate
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
 }
