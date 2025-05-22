@@ -20,7 +20,7 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
-    private final AuthUtil authUtil;
+    private final AuthUtil authUtil; // Authentication(인증 정보)에서 사용자 정보 빼기 위한 커스텀 클래스
 
     @GetMapping
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
@@ -28,17 +28,17 @@ public class CourseController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<List<CourseDTO>> getMyCourses(Authentication authentication) {
-        Educator educator = authUtil.getEducator(authentication);
+    public ResponseEntity<List<CourseDTO>> getMyCourses(Authentication authentication) { // Authentication 은 요청 헤더에서 토큰을 받아오게 됨
+        Educator educator = authUtil.getEducator(authentication); // 목적에 맞는 사용자 추출해오기
         return ResponseEntity.ok(courseService.getMyCourses(educator));
     }
 
     @PostMapping
     public ResponseEntity<Void> createCourse(Authentication authentication,
-                                             @RequestBody CourseDTO req) {
+                                             @RequestBody CourseDTO req) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
         Educator educator = authUtil.getEducator(authentication);
         courseService.createCourse(educator, req);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
     }
 }
 
