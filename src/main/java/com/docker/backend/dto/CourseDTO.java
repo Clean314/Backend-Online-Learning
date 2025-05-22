@@ -21,7 +21,10 @@ public class CourseDTO {
     private int point;
     private String description;
 
+    @JsonProperty("max_enrollment")
     private int maxEnrollment;
+
+    @JsonProperty("available_enrollment")
     private int availableEnrollment;
 
     public CourseDTO(Course course) {
