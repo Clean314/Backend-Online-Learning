@@ -26,6 +26,11 @@ public class EnrollmentController {
     private final AuthUtil authUtil;
 
     @GetMapping
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+        return ResponseEntity.ok(courseService.getAllCourses());
+    }
+
+    @GetMapping("/my")
     public ResponseEntity<List<EnrollmentCourseDTO>> getMyEnrollments(Authentication authentication) {
         Student student = authUtil.getStudent(authentication);
         return ResponseEntity.ok(enrollmentService.getEnrolledCourses(student));
@@ -53,8 +58,4 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getAllEnrollmentCourses(student));
     }
 
-    @GetMapping("/all-courses")
-    public ResponseEntity<List<CourseDTO>> getAllCourses() {
-        return ResponseEntity.ok(courseService.getAllCourses());
-    }
 }

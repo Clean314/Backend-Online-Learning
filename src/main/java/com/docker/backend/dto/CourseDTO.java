@@ -8,16 +8,23 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CourseDTO {
     @JsonProperty("course_name")
     private String courseName;
+
+    @JsonProperty("educator_name")
+    private String educatorName;
 
     private String category;
     private Difficulty difficulty;
     private int point;
     private String description;
 
+    @JsonProperty("max_enrollment")
     private int maxEnrollment;
+
+    @JsonProperty("available_enrollment")
     private int availableEnrollment;
 
     public CourseDTO(Course course) {
@@ -28,5 +35,4 @@ public class CourseDTO {
         this.point = course.getPoint();
         this.maxEnrollment = course.getMaxEnrollment();
     }
-
 }
