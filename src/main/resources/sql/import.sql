@@ -10,7 +10,8 @@ INSERT INTO member (id, role, email, password, name, created_at, updated_at, mem
 (1, 'STUDENT', 'student1@test.com', '{bcrypt}$2a$12$TS6jp5rY/cJTlx6IrqBKf.O167DzF7XCbOjL2PezF.nmbDfCKnQbO', '학생1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT'),
 (2, 'STUDENT', 'student2@test.com', '{bcrypt}$2a$12$RzUhS6XS8VDkjrLWldZas.m1/3gg1TciPMeTTDPrCSczdRiDmFxnK', '학생2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT'),
 (3, 'EDUCATOR', 'educator1@test.com', '{bcrypt}$2a$12$fQBvxmSppjAh2CUsrSKHsuZ1K7jfexESNcYFaY.gvziktaYyzWtGu', '교수1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
-(4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR');
+(4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
+(5, 'ADMIN', 'admin1@test.com', '{bcrypt}$2a$12$ENDBvTiJb4KAj.IhFp6XAeLuL4n7fOkcKhIgOaIfcoDumgqIpTcC6', '관리자1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN');
 
 
 -- Insert Students
@@ -23,6 +24,9 @@ INSERT INTO educator (id, educator_number) VALUES
 (3, 'E2025001'),
 (4, 'E2025002');
 
+-- Insert admin
+INSERT INTO admin (id, admin_number) VALUES
+(5, 'A2025001');
 
 -- Insert Courses
 INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES

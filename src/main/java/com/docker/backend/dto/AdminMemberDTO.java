@@ -1,6 +1,9 @@
 package com.docker.backend.dto;
 
 import com.docker.backend.enums.MemberRole;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

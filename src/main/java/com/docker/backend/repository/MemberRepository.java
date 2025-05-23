@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
-    @Query("SELECT m FROM Member m WHERE m.role != 'ADMIN' ORDER BY m.createdAt DESC LIMIT 10")
-    List<Member> orderByTOP10Member();
+
+    List<Member> findAllByOrderByCreatedAtDesc();
 }

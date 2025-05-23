@@ -17,13 +17,17 @@ import java.util.List;
 public class AdminService {
 
     private final AdminMemberRepository adminRepository;
+    private final MemberRepository memberRepository;
 
     // 관리자가 아닌 member전체 가입일 순으로 나옴 10개
     public List<AdminMemberDTO> getAllMembers(){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        return adminRepository.orderByTop10Member().stream()
+        List<Member> all = memberRepository.findAllByOrderByCreatedAtDesc();
+        List<AdminMemberDTO> nonAdmins = all.stream()
+                .filter(m -> !(m instanceof Admin))
+                .limit(10)
                 .map(member -> new AdminMemberDTO(
                         member.getId(),
                         member.getName(),
@@ -32,6 +36,7 @@ public class AdminService {
                         member.getCreatedAt().format(formatter)  // LocalDateTime → String 변환
                 ))
                 .toList();
+        return nonAdmins;
     }
 
 

@@ -1,7 +1,7 @@
 package com.docker.backend.entity.user;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import com.docker.backend.enums.MemberRole;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 

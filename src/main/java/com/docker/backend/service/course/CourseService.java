@@ -22,7 +22,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
 
     public List<CourseDTO> getAllCourses() {
-        return courseRepository.findAll().stream().map(course -> {
+        return courseRepository.findAllByOrderByCreatedAtDesc().stream().map(course -> {  // .findAll() -> 강의 등록일순으로 정렬로 바꿈
             Educator educator = course.getEducator();
             return new CourseDTO(
                     course.getCourseName(),
