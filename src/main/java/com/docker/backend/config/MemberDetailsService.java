@@ -1,6 +1,5 @@
 package com.docker.backend.config;
 
-
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

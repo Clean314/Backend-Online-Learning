@@ -1,8 +1,10 @@
 package com.docker.backend.service.course;
 
 import com.docker.backend.dto.CourseDTO;
+import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Educator;
+import com.docker.backend.enums.Status;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +25,6 @@ public class CourseService {
         return courseRepository.findAll().stream().map(course -> {
             Educator educator = course.getEducator();
             return new CourseDTO(
-                    course.getId(),
                     course.getCourseName(),
                     educator.getName(),
                     course.getCategory(),

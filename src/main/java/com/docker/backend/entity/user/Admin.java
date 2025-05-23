@@ -10,5 +10,4 @@ import lombok.Setter;
 @Setter
 @DiscriminatorValue("ADMIN")
 public class Admin extends Member {
-    private String adminNumber;
 }

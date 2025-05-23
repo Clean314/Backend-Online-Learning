@@ -1,6 +1,5 @@
 package com.docker.backend.config;
 
-
 import com.docker.backend.entity.user.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
