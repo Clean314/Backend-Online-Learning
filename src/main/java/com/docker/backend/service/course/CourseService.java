@@ -25,6 +25,7 @@ public class CourseService {
         return courseRepository.findAll().stream().map(course -> {
             Educator educator = course.getEducator();
             return new CourseDTO(
+                    course.getId(),
                     course.getCourseName(),
                     educator.getName(),
                     course.getCategory(),
