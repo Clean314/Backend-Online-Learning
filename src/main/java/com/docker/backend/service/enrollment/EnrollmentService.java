@@ -74,6 +74,7 @@ public class EnrollmentService {
                             course.getCategory(),
                             course.getDifficulty(),
                             status,
+                            course.getPoint(),
                             course.getMaxEnrollment(),
                             available
                     );
@@ -103,6 +104,7 @@ public class EnrollmentService {
                     course.getCategory(),
                     course.getDifficulty(),
                     enrollment.getStatus(),
+                    course.getPoint(),
                     course.getMaxEnrollment(),
                     available
             );

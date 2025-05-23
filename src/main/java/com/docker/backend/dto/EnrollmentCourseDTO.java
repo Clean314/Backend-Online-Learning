@@ -23,6 +23,8 @@ public class EnrollmentCourseDTO {
     private Difficulty difficulty;
     private Status status;
 
+    private int point;
+
     @JsonProperty("max_enrollment")
     private int maxEnrollment;
 
