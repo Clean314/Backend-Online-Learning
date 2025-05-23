@@ -27,9 +27,11 @@ INSERT INTO admin (id, admin_number) VALUES
 (5, 'A2025001');
 
 -- Insert Courses
-INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES ('Advanced Java', '프로그래밍', 'MEDIUM', 50, 50, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
+('Advanced Java', '프로그래밍', 'MEDIUM', 50, 50, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Network Fundamentals', '네트워크', 'EASY',   40, 40, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('AI Basics', 'AI', 'EASY', 30, 30, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),                                    ('SQL 고급 튜닝', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('AI Basics', 'AI', 'EASY', 30, 30, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('SQL 고급 튜닝', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('웹 보안 기초', '보안', 'MEDIUM', 20, 20, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
