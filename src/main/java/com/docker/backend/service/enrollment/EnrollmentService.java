@@ -1,5 +1,6 @@
 package com.docker.backend.service.enrollment;
 
+import com.docker.backend.dto.CourseDTO;
 import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Enrollment;
@@ -77,6 +78,14 @@ public class EnrollmentService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public List<CourseDTO> getEnableCourses(Student student) {
+        return enrollmentRepository.findByStudentAndStatus(student, Status.AVAILABLE).stream()
+                .map(Enrollment::getCourse)
+                .map(CourseDTO::new)
+                .collect(Collectors.toList());
+    }
+
 
     private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) { // Enrollment -> EnrollmentCourseDTO 로 변환하는 메서드
         return enrollments.stream().map(enrollment -> {
