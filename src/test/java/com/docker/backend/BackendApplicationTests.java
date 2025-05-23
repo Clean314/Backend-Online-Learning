@@ -13,6 +13,7 @@ class BackendApplicationTests {
 	@Autowired
 	private MemberRepository memberRepository;
 
+	// mysql연결 확인용
 	@Test
 	public void showAllMembers() {
 		List<Member> members = memberRepository.findAll();
