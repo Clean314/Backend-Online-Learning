@@ -10,11 +10,15 @@ import lombok.Getter;
 @Getter
 public class EnrollmentCourseDTO {
 
+    @JsonProperty("course_id")
+    private Long courseId;
+
     @JsonProperty("course_name")
     private String courseName;
 
     @JsonProperty("educator_name")
     private String educatorName;
+
     private String category;
     private Difficulty difficulty;
     private Status status;
