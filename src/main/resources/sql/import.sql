@@ -22,11 +22,14 @@ INSERT INTO educator (id, educator_number) VALUES
 (4, 'E2025002');
 
 -- Insert Courses
-INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
-('Spring Framework', '백엔드', 'EASY', 30, 30, 3, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Data Structures', '컴퓨터공학', 'EASY', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES ('Advanced Java', '프로그래밍', 'MEDIUM', 50, 50, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Network Fundamentals', '네트워크', 'EASY',   40, 40, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('AI Basics', 'AI', 'EASY', 30, 30, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),                                    ('SQL 고급 튜닝', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 보안 기초', '보안', 'MEDIUM', 20, 20, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
 INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, version) VALUES
 ('ENROLLED', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
-('COMPLETED', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+('COMPLETED', 1, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
+('ENROLLED', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
+('COMPLETED', 2, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
