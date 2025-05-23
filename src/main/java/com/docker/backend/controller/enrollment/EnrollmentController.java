@@ -4,7 +4,6 @@ import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.CourseDTO;
 import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.user.Student;
-import com.docker.backend.service.course.CourseService;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,12 +21,12 @@ import java.util.List;
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;
-    private final CourseService courseService;
     private final AuthUtil authUtil;
 
     @GetMapping
-    public ResponseEntity<List<CourseDTO>> getAllCourses() {
-        return ResponseEntity.ok(courseService.getAllCourses());
+    public ResponseEntity<List<EnrollmentCourseDTO>> getAllCourses(Authentication authentication) {
+        Student student = authUtil.getStudent(authentication);
+        return ResponseEntity.ok(enrollmentService.getAllEnrollmentCourses(student));
     }
 
     @GetMapping("/my")
@@ -52,10 +51,10 @@ public class EnrollmentController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/available")
-    public ResponseEntity<List<EnrollmentCourseDTO>> getAvailableCourses(Authentication authentication) {
-        Student student = authUtil.getStudent(authentication);
-        return ResponseEntity.ok(enrollmentService.getAllEnrollmentCourses(student));
-    }
+//    @GetMapping("/available")
+//    public ResponseEntity<List<CourseDTO>> getAvailableCourses(Authentication authentication) {
+//        Student student = authUtil.getStudent(authentication);
+//        return ResponseEntity.ok(enrollmentService.getEnableCourses(student));
+//    }
 
 }

@@ -1,10 +1,8 @@
 package com.docker.backend.service.course;
 
 import com.docker.backend.dto.CourseDTO;
-import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Educator;
-import com.docker.backend.enums.Status;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,7 @@ public class CourseService {
         return courseRepository.findAllByOrderByCreatedAtDesc().stream().map(course -> {  // .findAll() -> 강의 등록일순으로 정렬로 바꿈
             Educator educator = course.getEducator();
             return new CourseDTO(
+                    course.getId(),
                     course.getCourseName(),
                     educator.getName(),
                     course.getCategory(),

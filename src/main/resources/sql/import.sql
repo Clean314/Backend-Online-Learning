@@ -6,13 +6,11 @@
 
 -- Insert Members
 INSERT INTO member (id, role, email, password, name, created_at, updated_at, member_type) VALUES
-
 (1, 'STUDENT', 'student1@test.com', '{bcrypt}$2a$12$TS6jp5rY/cJTlx6IrqBKf.O167DzF7XCbOjL2PezF.nmbDfCKnQbO', '학생1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT'),
 (2, 'STUDENT', 'student2@test.com', '{bcrypt}$2a$12$RzUhS6XS8VDkjrLWldZas.m1/3gg1TciPMeTTDPrCSczdRiDmFxnK', '학생2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT'),
 (3, 'EDUCATOR', 'educator1@test.com', '{bcrypt}$2a$12$fQBvxmSppjAh2CUsrSKHsuZ1K7jfexESNcYFaY.gvziktaYyzWtGu', '교수1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
 (4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
 (5, 'ADMIN', 'admin1@test.com', '{bcrypt}$2a$12$ENDBvTiJb4KAj.IhFp6XAeLuL4n7fOkcKhIgOaIfcoDumgqIpTcC6', '관리자1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN');
-
 
 -- Insert Students
 INSERT INTO student (id, student_number) VALUES
@@ -29,12 +27,14 @@ INSERT INTO admin (id, admin_number) VALUES
 (5, 'A2025001');
 
 -- Insert Courses
-INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
-('Spring Framework', '백엔드', 'EASY', 30, 30, 3, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Data Structures', '컴퓨터공학', 'EASY', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES ('Advanced Java', '프로그래밍', 'MEDIUM', 50, 50, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Network Fundamentals', '네트워크', 'EASY',   40, 40, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('AI Basics', 'AI', 'EASY', 30, 30, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),                                    ('SQL 고급 튜닝', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 보안 기초', '보안', 'MEDIUM', 20, 20, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
 INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, version) VALUES
 ('ENROLLED', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
-('COMPLETED', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
+('COMPLETED', 1, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
+('ENROLLED', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
+('COMPLETED', 2, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

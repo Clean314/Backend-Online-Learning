@@ -1,5 +1,6 @@
 package com.docker.backend.service.enrollment;
 
+import com.docker.backend.dto.CourseDTO;
 import com.docker.backend.dto.EnrollmentCourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Enrollment;
@@ -50,7 +51,8 @@ public class EnrollmentService {
     }
 
     public List<EnrollmentCourseDTO> getEnrolledCourses(Student student) {
-        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.ENROLLED));
+        return mapToDTO(enrollmentRepository.findByStudent(student));
+//        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.ENROLLED));
     }
 
     public List<EnrollmentCourseDTO> getAllEnrollmentCourses(Student student) {
@@ -63,20 +65,31 @@ public class EnrollmentService {
         return courseRepository.findAll().stream()
                 .map(course -> {
                     Status status = statusMap.getOrDefault(course.getId(), Status.AVAILABLE);
-                    long enrolled = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
+                    long enrolled = enrollmentRepository.countByCourseAndStatus(course, (Status.ENROLLED));
                     int available = course.getMaxEnrollment() - (int) enrolled;
 
                     return new EnrollmentCourseDTO(
+                            course.getId(),
                             course.getCourseName(),
                             course.getEducator().getName(),
                             course.getCategory(),
                             course.getDifficulty(),
                             status,
+                            course.getPoint(),
+                            course.getMaxEnrollment(),
                             available
                     );
                 })
                 .collect(Collectors.toList());
     }
+
+//    public List<CourseDTO> getEnableCourses(Student student) {
+//        return enrollmentRepository.findByStudentAndStatus(student, Status.AVAILABLE).stream()
+//                .map(Enrollment::getCourse)
+//                .map(CourseDTO::new)
+//                .collect(Collectors.toList());
+//    }
+
 
     private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) { // Enrollment -> EnrollmentCourseDTO 로 변환하는 메서드
         return enrollments.stream().map(enrollment -> {
@@ -86,11 +99,14 @@ public class EnrollmentService {
             int available = course.getMaxEnrollment() - (int) enrolled;
 
             return new EnrollmentCourseDTO(
+                    course.getId(),
                     course.getCourseName(),
                     educator.getName(),
                     course.getCategory(),
                     course.getDifficulty(),
                     enrollment.getStatus(),
+                    course.getPoint(),
+                    course.getMaxEnrollment(),
                     available
             );
         }).collect(Collectors.toList());

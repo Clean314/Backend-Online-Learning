@@ -10,6 +10,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseDTO {
+
+    @JsonProperty("course_id")
+    private Long courseId;
+
     @JsonProperty("course_name")
     private String courseName;
 
