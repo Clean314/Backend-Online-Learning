@@ -74,18 +74,19 @@ public class EnrollmentService {
                             course.getCategory(),
                             course.getDifficulty(),
                             status,
+                            course.getMaxEnrollment(),
                             available
                     );
                 })
                 .collect(Collectors.toList());
     }
 
-    public List<CourseDTO> getEnableCourses(Student student) {
-        return enrollmentRepository.findByStudentAndStatus(student, Status.AVAILABLE).stream()
-                .map(Enrollment::getCourse)
-                .map(CourseDTO::new)
-                .collect(Collectors.toList());
-    }
+//    public List<CourseDTO> getEnableCourses(Student student) {
+//        return enrollmentRepository.findByStudentAndStatus(student, Status.AVAILABLE).stream()
+//                .map(Enrollment::getCourse)
+//                .map(CourseDTO::new)
+//                .collect(Collectors.toList());
+//    }
 
 
     private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) { // Enrollment -> EnrollmentCourseDTO 로 변환하는 메서드
@@ -102,6 +103,7 @@ public class EnrollmentService {
                     course.getCategory(),
                     course.getDifficulty(),
                     enrollment.getStatus(),
+                    course.getMaxEnrollment(),
                     available
             );
         }).collect(Collectors.toList());
