@@ -51,7 +51,8 @@ public class EnrollmentService {
     }
 
     public List<EnrollmentCourseDTO> getEnrolledCourses(Student student) {
-        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.ENROLLED));
+        return mapToDTO(enrollmentRepository.findByStudent(student));
+//        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.ENROLLED));
     }
 
     public List<EnrollmentCourseDTO> getAllEnrollmentCourses(Student student) {
@@ -64,7 +65,7 @@ public class EnrollmentService {
         return courseRepository.findAll().stream()
                 .map(course -> {
                     Status status = statusMap.getOrDefault(course.getId(), Status.AVAILABLE);
-                    long enrolled = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
+                    long enrolled = enrollmentRepository.countByCourseAndStatus(course, (Status.ENROLLED));
                     int available = course.getMaxEnrollment() - (int) enrolled;
 
                     return new EnrollmentCourseDTO(
