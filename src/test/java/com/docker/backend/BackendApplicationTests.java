@@ -1,9 +1,6 @@
 package com.docker.backend;
 
-import com.docker.backend.dto.AdminMemberDTO;
-import com.docker.backend.entity.user.Admin;
 import com.docker.backend.entity.user.Member;
-import com.docker.backend.enums.MemberRole;
 import com.docker.backend.repository.MemberRepository;
 import com.docker.backend.repository.admin.AdminMemberRepository;
 import org.junit.jupiter.api.Test;
@@ -23,16 +20,18 @@ class BackendApplicationTests {
 	private AdminMemberRepository adminMemberRepository;
 
 	// mysql연결 확인용
-	//@Test
+	@Test
 	public void showAllMembers() {
 		List<Member> members = memberRepository.findAll();
 		for (Member m : members) {
 
 			System.out.println(m.getName());
+			System.out.println(m.getCreatedAt());
+			System.out.println(m.getUpdatedAt());
 		}
 	}
 
-	@Test
+	//@Test
 	public void showDescMember(){
 		List<Member> mem = memberRepository.findAllByOrderByCreatedAtDesc();
 		log.info("조회된 관리자 수: {}", mem.size());
