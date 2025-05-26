@@ -1,12 +1,10 @@
 package com.docker.backend.controller.admin;
 
-import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.dto.admin.AdminMemberDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.service.admin.AdminService;
-import com.docker.backend.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,16 +36,17 @@ public class AdminController {
 
     // 수정 전에 보여주는 리스트
     @GetMapping("/list/memberUpdate")
-    public ResponseEntity<List<AdminMemberDTO>> adminMemberUpdateList(){
+    public ResponseEntity<List<AdminMemberDTO>> adminMemberUpdateList() {
         return ResponseEntity.ok(adminService.getMemeberList());
     }
 
     // 관리자가 사용자 이름, 역할? 수정
     @PatchMapping("/list/memberUpdate/{id}")
-    public ResponseEntity<Void> adminUpdateMember(@PathVariable("id") Long memId, @RequestBody Member member){
+    public ResponseEntity<Void> adminUpdateMember(@PathVariable("id") Long memId, @RequestBody Member member) {
         adminService.adminUpdateMember(memId, member);
         return ResponseEntity.ok().build();
     }
+
     // 사용자 삭제
     @DeleteMapping("/list/memberDelete/{id}")
     public ResponseEntity<Void> adminMemberDelete(@PathVariable("id") Long memId) {
@@ -57,20 +56,33 @@ public class AdminController {
 
     // 업데이트 전에 보여주는 강의 리스트
     @GetMapping("/list/courseUpdate")
-    public ResponseEntity<List<AdminCourseDetailDTO>> adminCourseUpdateList(){
+    public ResponseEntity<List<AdminCourseDetailDTO>> adminCourseUpdateList() {
         return ResponseEntity.ok(adminService.getCourseList());
     }
+
     // 등록된 강의 수정
     @PatchMapping("/list/courseUpdate/{id}")
-    public ResponseEntity<Void> adminUpdateCourse(@PathVariable("id") Long couId, Course course){
+    public ResponseEntity<Void> adminUpdateCourse(@PathVariable("id") Long couId, Course course) {
         adminService.adminUpdateCourse(couId, course);
         return ResponseEntity.ok().build();
     }
+
     // 등록된 강의 삭제
     @DeleteMapping("/list/courseDelete/{id}")
-    public ResponseEntity<Void> adminDeleteCourse(@PathVariable("id") Long couId){
+    public ResponseEntity<Void> adminDeleteCourse(@PathVariable("id") Long couId) {
         adminService.adminDeleteCourse(couId);
         return ResponseEntity.noContent().build();
+    }
+
+    // 사용자 검색
+    @GetMapping("/list/findMember")
+    public ResponseEntity<List<AdminMemberDTO>> adminFindMember(@RequestParam String name) {
+        return ResponseEntity.ok(adminService.searchMember(name));
+    }
+    // 강의 검색
+    @GetMapping("/list/findCourse")
+    public ResponseEntity<List<AdminCourseDetailDTO>> adminFindCourse(@RequestParam String courseName) {
+        return ResponseEntity.ok(adminService.serchCourse(courseName));
     }
 
 

@@ -105,13 +105,43 @@ public class AdminService {
         co.setMaxEnrollment(course.getMaxEnrollment());
         courseRepository.save(co);
     }
+
+    // 등록된 강의 삭제
     public void adminDeleteCourse(Long couId){
         Course course = courseRepository.findById(couId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 강의가 존재하지 않습니다."));
         courseRepository.delete(course);
-
     }
+    // 사용자 검색
+    public List<AdminMemberDTO> searchMember(String name) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Member> all = memberRepository.findByName(name);
 
+        if (all.isEmpty()) {
+            throw new EntityNotFoundException("일치하는 사용자가 없습니다.");
+        }
 
+        return all.stream()
+                .filter(m -> !(m instanceof Admin)) // 관리자 제외
+                .map(member -> {
+                    AdminMemberDTO dto = new AdminMemberDTO(member);
+                    String date = member.getUpdatedAt() != null
+                            ? member.getUpdatedAt().format(formatter)
+                            : member.getCreatedAt().format(formatter);
+                    dto.setUpdateAt(date);
+                    return dto;
+                })
+                .toList();
+    }
+    public List<AdminCourseDetailDTO> serchCourse(String courseName){
+        List<Course> courses = courseRepository.findByCourseName(courseName);
+
+        if(courses.isEmpty()){
+            throw new EntityNotFoundException("일치하는 강의가 없습니다");
+        }
+        return courses.stream()
+                .map(AdminCourseDetailDTO::new)
+                .toList();
+    }
 
 }

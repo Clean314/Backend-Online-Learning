@@ -1,5 +1,6 @@
 package com.docker.backend.repository.course;
 
+import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.entity.Course;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findByIdForUpdate(@Param("id") Long id);
 
     List<Course> findAllByOrderByCreatedAtDesc();
+    List<Course> findByCourseName(String courseName);
 }
