@@ -37,8 +37,9 @@ public class CourseController {
     public ResponseEntity<Long> createCourse(Authentication authentication,
                                              @RequestBody CourseDTO req) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
         Educator educator = authUtil.getEducator(authentication);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(courseService.createCourse(educator, req)); // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
+        courseService.createCourse(educator, req);
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+                .bo; // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
     }
 }
 

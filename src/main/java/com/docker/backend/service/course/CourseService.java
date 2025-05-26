@@ -56,7 +56,7 @@ public class CourseService {
         }).collect(Collectors.toList());
     }
 
-    public ResponseEntity<Void> createCourse(Educator educator, CourseDTO req) {
+    public Long createCourse(Educator educator, CourseDTO req) {
         Course course = new Course();
         course.setCourseName(req.getCourseName());
         course.setCategory(req.getCategory());
@@ -65,7 +65,6 @@ public class CourseService {
         course.setEducator(educator);
         course.setDescription(req.getDescription());
         course.setMaxEnrollment(req.getMaxEnrollment());
-        courseRepository.save(course);
-        return ResponseEntity.ok().build();
+        return courseRepository.save(course).getId();
     }
 }
