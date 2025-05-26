@@ -93,7 +93,6 @@ public class AdminService {
         co.setCategory(course.getCategory());
         co.setDifficulty(course.getDifficulty());
         co.setPoint(course.getPoint());
-        co.
     }
 
 }
