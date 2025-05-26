@@ -1,15 +1,11 @@
-package com.docker.backend.dto;
+package com.docker.backend.dto.admin;
 
+import com.docker.backend.entity.user.Member;
 import com.docker.backend.enums.MemberRole;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,5 +17,12 @@ public class AdminMemberDTO {
     private String email;
     private MemberRole role;
     private String createdAt;
+    private String updateAt;
 
+    public AdminMemberDTO(Member member) {
+        this.id = member.getId();
+        this.name = member.getName();
+        this.email = member.getEmail();
+        this.role = member.getRole();
+    }
 }
