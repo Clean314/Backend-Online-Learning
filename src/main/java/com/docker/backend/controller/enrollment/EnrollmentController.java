@@ -51,10 +51,4 @@ public class EnrollmentController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/available")
-//    public ResponseEntity<List<CourseDTO>> getAvailableCourses(Authentication authentication) {
-//        Student student = authUtil.getStudent(authentication);
-//        return ResponseEntity.ok(enrollmentService.getEnableCourses(student));
-//    }
-
 }
