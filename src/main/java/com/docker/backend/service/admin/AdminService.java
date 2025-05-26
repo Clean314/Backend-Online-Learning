@@ -109,6 +109,7 @@ public class AdminService {
         Course course = courseRepository.findById(couId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 강의가 존재하지 않습니다."));
         courseRepository.delete(course);
+
     }
 
 
