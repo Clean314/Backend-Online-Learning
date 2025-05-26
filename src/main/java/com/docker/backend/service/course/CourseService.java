@@ -37,9 +37,23 @@ public class CourseService {
     }
 
     public List<CourseDTO> getMyCourses(Educator educator) {
-        return courseRepository.findByEducatorId(educator.getId()).stream()
-                .map(CourseDTO::new)
-                .toList();
+//        return courseRepository.findByEducatorId(educator.getId()).stream()
+//                .map(CourseDTO::new)
+//                .toList();
+
+        return courseRepository.findAll().stream().map(course -> {
+            return new CourseDTO(
+                    course.getId(),
+                    course.getCourseName(),
+                    educator.getName(),
+                    course.getCategory(),
+                    course.getDifficulty(),
+                    course.getPoint(),
+                    course.getDescription(),
+                    course.getMaxEnrollment(),
+                    course.getAvailableEnrollment()
+            );
+        }).collect(Collectors.toList());
     }
 
     public ResponseEntity<Void> createCourse(Educator educator, CourseDTO req) {
