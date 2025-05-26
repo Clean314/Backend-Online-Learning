@@ -3,6 +3,7 @@ package com.docker.backend.controller.admin;
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.dto.admin.AdminMemberDTO;
+import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.service.admin.AdminService;
 import com.docker.backend.service.course.CourseService;
@@ -43,9 +44,15 @@ public class AdminController {
 
     // 관리자가 사용자 이름, 역할? 수정
     @PatchMapping("/list/memberUpdate/{id}")
-    public ResponseEntity<Void> adminUpdateMember(@PathVariable Long memId, @RequestBody Member member){
+    public ResponseEntity<Void> adminUpdateMember(@PathVariable("id") Long memId, @RequestBody Member member){
         adminService.adminUpdateMember(memId, member);
         return ResponseEntity.ok().build();
+    }
+    // 사용자 삭제
+    @DeleteMapping("/list/memberDelete/{id}")
+    public ResponseEntity<Void> adminMemberDelete(@PathVariable("id") Long memId) {
+        adminService.adminDeleteMember(memId);
+        return ResponseEntity.noContent().build();
     }
 
     // 업데이트 전에 보여주는 강의 리스트
@@ -53,4 +60,18 @@ public class AdminController {
     public ResponseEntity<List<AdminCourseDetailDTO>> adminCourseUpdateList(){
         return ResponseEntity.ok(adminService.getCourseList());
     }
+    // 등록된 강의 수정
+    @PatchMapping("/list/courseUpdate/{id}")
+    public ResponseEntity<Void> adminUpdateCourse(@PathVariable("id") Long couId, Course course){
+        adminService.adminUpdateCourse(couId, course);
+        return ResponseEntity.ok().build();
+    }
+    // 등록된 강의 삭제
+    @DeleteMapping("/list/courseDelete/{id}")
+    public ResponseEntity<Void> adminDeleteCourse(@PathVariable("id") Long couId){
+        adminService.adminDeleteCourse(couId);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

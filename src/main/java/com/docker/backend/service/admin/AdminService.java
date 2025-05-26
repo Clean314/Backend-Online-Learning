@@ -52,15 +52,6 @@ public class AdminService {
     }
 
 
-    // 사용자 정보수정(관리자)
-    public void adminUpdateMember(Long memId, Member member){
-
-        Member mem = memberRepository.findById(memId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
-        mem.setName(member.getName());
-        mem.setRole(member.getRole());
-        memberRepository.save(mem);
-    }
     // 사용자 수정 전에 보여주는 리스트
     public List<AdminMemberDTO> getMemeberList(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -78,22 +69,48 @@ public class AdminService {
                 })
                 .toList();
     }
+    // 사용자 정보수정(관리자)
+    public void adminUpdateMember(Long memId, Member member){
 
-    // 등록된 강의 수전 전에 보여주는 리스트
+        Member mem = memberRepository.findById(memId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+        mem.setName(member.getName());
+        mem.setRole(member.getRole());
+        memberRepository.save(mem);
+    }
+
+    // 등록된 사용자 삭제
+    public void adminDeleteMember(Long memId) {
+        Member member = memberRepository.findById(memId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다. ID: " + memId));
+
+        memberRepository.delete(member);
+    }
+
+    // 등록된 강의 수정 전에 보여주는 리스트
     public List<AdminCourseDetailDTO> getCourseList(){
         List<Course> all = courseRepository.findAllByOrderByCreatedAtDesc();
         return all.stream()
                 .map(AdminCourseDetailDTO::new)
                 .toList();
     }
-
+    // 등록된 강의 수정
     public void adminUpdateCourse(Long couId, Course course){
         Course co = courseRepository.findById(couId)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        co.setCourseName(course.getCourseName());
         co.setCategory(course.getCategory());
         co.setDifficulty(course.getDifficulty());
         co.setPoint(course.getPoint());
-        co.
+        co.setMaxEnrollment(course.getMaxEnrollment());
+        courseRepository.save(co);
     }
+    public void adminDeleteCourse(Long couId){
+        Course course = courseRepository.findById(couId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 강의가 존재하지 않습니다."));
+        courseRepository.delete(course);
+    }
+
+
 
 }
