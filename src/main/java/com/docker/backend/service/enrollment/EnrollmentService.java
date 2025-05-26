@@ -51,7 +51,6 @@ public class EnrollmentService {
 
     public List<EnrollmentCourseDTO> getEnrolledCourses(Student student) {
         return mapToDTO(enrollmentRepository.findByStudent(student));
-//        return mapToDTO(enrollmentRepository.findByStudentAndStatus(student, Status.ENROLLED));
     }
 
     public List<EnrollmentCourseDTO> getAllEnrollmentCourses(Student student) {
@@ -81,13 +80,6 @@ public class EnrollmentService {
                 })
                 .collect(Collectors.toList());
     }
-
-//    public List<CourseDTO> getEnableCourses(Student student) {
-//        return enrollmentRepository.findByStudentAndStatus(student, Status.AVAILABLE).stream()
-//                .map(Enrollment::getCourse)
-//                .map(CourseDTO::new)
-//                .collect(Collectors.toList());
-//    }
 
 
     private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) { // Enrollment -> EnrollmentCourseDTO 로 변환하는 메서드

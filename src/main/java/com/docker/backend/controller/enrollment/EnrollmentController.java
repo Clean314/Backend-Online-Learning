@@ -37,7 +37,7 @@ public class EnrollmentController {
 
     @PostMapping("/{courseId}") // path 변수 url
     public ResponseEntity<Void> enroll(Authentication authentication,
-                                       @PathVariable Long courseId) { // @PathVariable 은 url 에서 path 로 들어온 데이터를 가져옴. ex) /enrollments/1 
+                                       @PathVariable("courseId") Long courseId) { // @PathVariable 은 url 에서 path 로 들어온 데이터를 가져옴. ex) /enrollments/1
         Student student = authUtil.getStudent(authentication);
         enrollmentService.enroll(student, courseId); // url로 들어온 courseId 값을 이용한다
         return ResponseEntity.status(HttpStatus.CREATED).build();
