@@ -1,9 +1,9 @@
 package com.docker.backend.controller.user;
 
 import com.docker.backend.constant.ApplicationConstants;
-import com.docker.backend.dto.LoginRequestDTO;
-import com.docker.backend.dto.LoginResponseDTO;
-import com.docker.backend.dto.RegisterRequestDTO;
+import com.docker.backend.dto.member.LoginRequestDTO;
+import com.docker.backend.dto.member.LoginResponseDTO;
+import com.docker.backend.dto.member.RegisterRequestDTO;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.MemberRole;

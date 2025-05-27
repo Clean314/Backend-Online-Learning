@@ -1,12 +1,11 @@
 package com.docker.backend.service.course;
 
-import com.docker.backend.dto.CourseDTO;
+import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

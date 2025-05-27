@@ -1,4 +1,4 @@
-package com.docker.backend.dto;
+package com.docker.backend.dto.course;
 
 import com.docker.backend.entity.Course;
 import com.docker.backend.enums.Difficulty;

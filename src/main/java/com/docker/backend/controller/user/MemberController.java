@@ -1,9 +1,7 @@
 package com.docker.backend.controller.user;
 
 import com.docker.backend.config.CustomUserDetails;
-import com.docker.backend.dto.MemberDTO;
-import com.docker.backend.entity.user.Educator;
-import com.docker.backend.entity.user.Member;
+import com.docker.backend.dto.member.MemberDTO;
 import com.docker.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
