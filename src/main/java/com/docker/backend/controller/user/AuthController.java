@@ -40,7 +40,7 @@ public class AuthController {
         String token = jwtService.generateToken(authentication);
         return ResponseEntity.ok()
                 .header(ApplicationConstants.JWT_HEADER, "Bearer " + token)
-                .body(new LoginResponseDTO("Authenticated", token));
+                .body(new LoginResponseDTO("Authenticated"));
     }
 
     @PostMapping("/register")

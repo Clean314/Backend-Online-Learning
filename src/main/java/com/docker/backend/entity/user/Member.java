@@ -2,6 +2,7 @@ package com.docker.backend.entity.user;
 
 
 import com.docker.backend.enums.MemberRole;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public abstract class Member {
     @Column(length = 100, nullable = false, unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // JSON 응답에서 제외, 요청 시에만 사용
     @Column(length = 100, nullable = false)
     private String password;
 
