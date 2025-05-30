@@ -33,7 +33,6 @@ public class Course {
     private Difficulty difficulty;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "educator_id")
     private Educator educator;
 
     @Column(nullable = false)

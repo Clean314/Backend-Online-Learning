@@ -1,10 +1,9 @@
 package com.docker.backend.service;
 
-import com.docker.backend.dto.MemberDTO;
+import com.docker.backend.dto.member.MemberDTO;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

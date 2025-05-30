@@ -1,4 +1,4 @@
-package com.docker.backend.dto;
+package com.docker.backend.dto.enrollment;
 
 import com.docker.backend.enums.Difficulty;
 import com.docker.backend.enums.Status;

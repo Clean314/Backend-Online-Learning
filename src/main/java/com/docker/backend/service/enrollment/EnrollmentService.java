@@ -1,6 +1,6 @@
 package com.docker.backend.service.enrollment;
 
-import com.docker.backend.dto.EnrollmentCourseDTO;
+import com.docker.backend.dto.enrollment.EnrollmentCourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Enrollment;
 import com.docker.backend.entity.user.Educator;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +47,10 @@ public class EnrollmentService {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCourseId(student, courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
 
-        enrollment.setStatus(Status.WITHDRAWN);
+        if (enrollment.getStatus() == Status.COMPLETED) {
+            return;
+        }
+        enrollmentRepository.delete(enrollment);
     }
 
     public List<EnrollmentCourseDTO> getEnrolledCourses(Student student) {
@@ -101,5 +105,9 @@ public class EnrollmentService {
                     available
             );
         }).collect(Collectors.toList());
+    }
+
+    public Integer getCountByCourseId(Long courseId) {
+        return enrollmentRepository.countByCourseId(courseId);
     }
 }

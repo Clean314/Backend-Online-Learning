@@ -18,4 +18,3 @@ public class AuthUtil {
         return (Student) userDetails.getMember();
     }
 }
-

@@ -1,7 +1,7 @@
 package com.docker.backend.controller.course;
 
 import com.docker.backend.config.AuthUtil;
-import com.docker.backend.dto.CourseDTO;
+import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,23 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getMyCourses(educator));
     }
 
+    @PatchMapping("/course-id/{courseId}")
+    public ResponseEntity<Void> updateCourse(Authentication authentication,
+                                             @PathVariable("courseId") Long courseId,
+                                             @RequestBody CourseDTO req) {
+        Educator educator = authUtil.getEducator(authentication);
+        courseService.updateCourse(educator, courseId, req);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/course-id/{courseId}")
+    public ResponseEntity<Void> deleteCourse(Authentication authentication,
+                                             @PathVariable("courseId") Long courseId) {
+        Educator educator = authUtil.getEducator(authentication);
+        courseService.deleteCourse(educator, courseId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
     public ResponseEntity<Long> createCourse(Authentication authentication,
                                              @RequestBody CourseDTO req) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
@@ -41,4 +58,3 @@ public class CourseController {
                 .body(courseService.createCourse(educator, req)); // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
     }
 }
-
