@@ -4,6 +4,7 @@ import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.repository.course.CourseRepository;
+import com.docker.backend.service.enrollment.EnrollmentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final EnrollmentService enroollmentService;
 
     public List<CourseDTO> getAllCourses() {
         return courseRepository.findAllByOrderByCreatedAtDesc().stream().map(course -> {  // .findAll() -> 강의 등록일순으로 정렬로 바꿈
@@ -68,7 +70,7 @@ public class CourseService {
         }).orElseThrow(() -> new IllegalArgumentException("Course not found"));
     }
 
-public void updateCourse(Educator educator, Long courseId, CourseDTO req) {
+    public void updateCourse(Educator educator, Long courseId, CourseDTO req) {
 
         Course course = courseRepository.findByEducatorAndId(educator, courseId).orElseThrow(() -> new IllegalArgumentException("Course not found"));
 
@@ -79,6 +81,17 @@ public void updateCourse(Educator educator, Long courseId, CourseDTO req) {
         course.setDescription(req.getDescription());
         course.setMaxEnrollment(req.getMaxEnrollment());
         courseRepository.save(course);
+    }
+
+    public void deleteCourse(Educator educator, Long courseId) {
+        Course course = courseRepository.findByEducatorAndId(educator, courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        if (enroollmentService.getCountByCourseId(courseId) > 0) {
+            throw new IllegalArgumentException("Cannot delete course with existing enrollments");
+        }
+
+        courseRepository.delete(course);
     }
 
     public Long createCourse(Educator educator, CourseDTO req) {

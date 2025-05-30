@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -104,5 +105,9 @@ public class EnrollmentService {
                     available
             );
         }).collect(Collectors.toList());
+    }
+
+    public Integer getCountByCourseId(Long courseId) {
+        return enrollmentRepository.countByCourseId(courseId);
     }
 }

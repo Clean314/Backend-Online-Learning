@@ -48,6 +48,14 @@ public class CourseController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/course-id/{courseId}")
+    public ResponseEntity<Void> deleteCourse(Authentication authentication,
+                                             @PathVariable("courseId") Long courseId) {
+        Educator educator = authUtil.getEducator(authentication);
+        courseService.deleteCourse(educator, courseId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
     public ResponseEntity<Long> createCourse(Authentication authentication,
                                              @RequestBody CourseDTO req) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
