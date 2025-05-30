@@ -1,5 +1,6 @@
 package com.docker.backend.config;
 
+import com.docker.backend.constant.ApplicationConstants;
 import com.docker.backend.filter.JwtTokenGeneratorFilter;
 import com.docker.backend.filter.JwtTokenValidatorFilter;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +61,9 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
+
+        // 로그인 시 토큰 정보 조회하기 위해 헤더 접근 허용
+        configuration.setExposedHeaders(List.of(ApplicationConstants.JWT_HEADER));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
