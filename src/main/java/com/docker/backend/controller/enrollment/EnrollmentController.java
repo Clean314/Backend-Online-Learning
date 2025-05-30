@@ -1,14 +1,7 @@
 package com.docker.backend.controller.enrollment;
 
 import com.docker.backend.config.AuthUtil;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import com.docker.backend.dto.enrollment.EnrollmentCourseDTO;
-=======
-=======
->>>>>>> Stashed changes
-import com.docker.backend.dto.EnrollmentCourseDTO;
->>>>>>> Stashed changes
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import lombok.RequiredArgsConstructor;
