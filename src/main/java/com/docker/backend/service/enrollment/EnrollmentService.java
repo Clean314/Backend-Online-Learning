@@ -45,7 +45,10 @@ public class EnrollmentService {
     public void cancelEnroll(Student student, Long courseId) {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCourseId(student, courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
-//        enrollment.setStatus(Status.WITHDRAWN);
+
+        if (enrollment.getStatus() == Status.COMPLETED) {
+            return;
+        }
         enrollmentRepository.delete(enrollment);
     }
 
