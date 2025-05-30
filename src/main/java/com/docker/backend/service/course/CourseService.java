@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final EnrollmentService enroollmentService;
+    private final EnrollmentService enrollmentService;
 
     public List<CourseDTO> getAllCourses() {
         return courseRepository.findAllByOrderByCreatedAtDesc().stream().map(course -> {  // .findAll() -> 강의 등록일순으로 정렬로 바꿈
@@ -54,25 +54,13 @@ public class CourseService {
         }).collect(Collectors.toList());
     }
 
-    public CourseDTO getCourseByEducatorAndCourseId(Educator educator, Long courseId) {
-        return courseRepository.findByEducatorAndId(educator, courseId).map(course -> {
-            return new CourseDTO(
-                    course.getId(),
-                    course.getCourseName(),
-                    educator.getName(),
-                    course.getCategory(),
-                    course.getDifficulty(),
-                    course.getPoint(),
-                    course.getDescription(),
-                    course.getMaxEnrollment(),
-                    course.getAvailableEnrollment()
-            );
-        }).orElseThrow(() -> new IllegalArgumentException("Course not found"));
-    }
-
     public void updateCourse(Educator educator, Long courseId, CourseDTO req) {
+        Course course = courseRepository.findByEducatorAndId(educator, courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
 
-        Course course = courseRepository.findByEducatorAndId(educator, courseId).orElseThrow(() -> new IllegalArgumentException("Course not found"));
+        if (enrollmentService.getCountByCourseId(courseId) > 0) {
+            throw new IllegalArgumentException("Cannot update course with existing enrollments");
+        }
 
         course.setCourseName(req.getCourseName());
         course.setCategory(req.getCategory());
@@ -87,7 +75,7 @@ public class CourseService {
         Course course = courseRepository.findByEducatorAndId(educator, courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found"));
 
-        if (enroollmentService.getCountByCourseId(courseId) > 0) {
+        if (enrollmentService.getCountByCourseId(courseId) > 0) {
             throw new IllegalArgumentException("Cannot delete course with existing enrollments");
         }
 

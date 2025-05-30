@@ -49,5 +49,4 @@ public class Course {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-
 }

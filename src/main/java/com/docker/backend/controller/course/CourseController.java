@@ -33,12 +33,6 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getMyCourses(educator));
     }
 
-    @GetMapping("/course-id/{courseId}")
-    public ResponseEntity<CourseDTO> getCourseById(Authentication authentication, @PathVariable("courseId") Long courseId) {
-        Educator educator = authUtil.getEducator(authentication);
-        return ResponseEntity.ok(courseService.getCourseByEducatorAndCourseId(educator, courseId));
-    }
-
     @PatchMapping("/course-id/{courseId}")
     public ResponseEntity<Void> updateCourse(Authentication authentication,
                                              @PathVariable("courseId") Long courseId,
@@ -64,4 +58,3 @@ public class CourseController {
                 .body(courseService.createCourse(educator, req)); // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
     }
 }
-
