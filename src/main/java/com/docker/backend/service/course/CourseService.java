@@ -36,9 +36,6 @@ public class CourseService {
     }
 
     public List<CourseDTO> getMyCourses(Educator educator) {
-//        return courseRepository.findByEducatorId(educator.getId()).stream()
-//                .map(CourseDTO::new)
-//                .toList();
 
         return courseRepository.findAll().stream().map(course -> {
             return new CourseDTO(
@@ -53,6 +50,35 @@ public class CourseService {
                     course.getAvailableEnrollment()
             );
         }).collect(Collectors.toList());
+    }
+
+    public CourseDTO getCourseByEducatorAndCourseId(Educator educator, Long courseId) {
+        return courseRepository.findByEducatorAndId(educator, courseId).map(course -> {
+            return new CourseDTO(
+                    course.getId(),
+                    course.getCourseName(),
+                    educator.getName(),
+                    course.getCategory(),
+                    course.getDifficulty(),
+                    course.getPoint(),
+                    course.getDescription(),
+                    course.getMaxEnrollment(),
+                    course.getAvailableEnrollment()
+            );
+        }).orElseThrow(() -> new IllegalArgumentException("Course not found"));
+    }
+
+public void updateCourse(Educator educator, Long courseId, CourseDTO req) {
+
+        Course course = courseRepository.findByEducatorAndId(educator, courseId).orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        course.setCourseName(req.getCourseName());
+        course.setCategory(req.getCategory());
+        course.setDifficulty(req.getDifficulty());
+        course.setPoint(req.getPoint());
+        course.setDescription(req.getDescription());
+        course.setMaxEnrollment(req.getMaxEnrollment());
+        courseRepository.save(course);
     }
 
     public Long createCourse(Educator educator, CourseDTO req) {

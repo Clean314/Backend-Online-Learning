@@ -2,6 +2,9 @@ package com.docker.backend.repository.course;
 
 import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.entity.Course;
+import com.docker.backend.entity.Enrollment;
+import com.docker.backend.entity.user.Educator;
+import com.docker.backend.entity.user.Student;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -17,6 +20,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT c FROM Course c WHERE c.id = :id")
     Optional<Course> findByIdForUpdate(@Param("id") Long id);
+
+    Optional<Course> findByEducatorAndId(Educator educator, Long id);
 
     List<Course> findAllByOrderByCreatedAtDesc();
     List<Course> findByCourseName(String courseName);

@@ -33,6 +33,21 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getMyCourses(educator));
     }
 
+    @GetMapping("/course-id/{courseId}")
+    public ResponseEntity<CourseDTO> getCourseById(Authentication authentication, @PathVariable("courseId") Long courseId) {
+        Educator educator = authUtil.getEducator(authentication);
+        return ResponseEntity.ok(courseService.getCourseByEducatorAndCourseId(educator, courseId));
+    }
+
+    @PatchMapping("/course-id/{courseId}")
+    public ResponseEntity<Void> updateCourse(Authentication authentication,
+                                             @PathVariable("courseId") Long courseId,
+                                             @RequestBody CourseDTO req) {
+        Educator educator = authUtil.getEducator(authentication);
+        courseService.updateCourse(educator, courseId, req);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
     public ResponseEntity<Long> createCourse(Authentication authentication,
                                              @RequestBody CourseDTO req) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
