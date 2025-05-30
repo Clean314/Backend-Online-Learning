@@ -10,12 +10,13 @@ INSERT INTO member (id, role, email, password, name, created_at, updated_at, mem
 (2, 'STUDENT', 'student2@test.com', '{bcrypt}$2a$12$RzUhS6XS8VDkjrLWldZas.m1/3gg1TciPMeTTDPrCSczdRiDmFxnK', '학생2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT'),
 (3, 'EDUCATOR', 'educator1@test.com', '{bcrypt}$2a$12$fQBvxmSppjAh2CUsrSKHsuZ1K7jfexESNcYFaY.gvziktaYyzWtGu', '교수1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
 (4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
-(5, 'ADMIN', 'admin1@test.com', '{bcrypt}$2a$12$ENDBvTiJb4KAj.IhFp6XAeLuL4n7fOkcKhIgOaIfcoDumgqIpTcC6', '관리자1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN');
-
+(5, 'ADMIN', 'admin1@test.com', '{bcrypt}$2a$12$ENDBvTiJb4KAj.IhFp6XAeLuL4n7fOkcKhIgOaIfcoDumgqIpTcC6', '관리자1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN'),
+(6, 'STUDENT', 'student3@test.com', '{bcrypt})$2a$12$ZamGwkqByDXK0R4uVdqAGeNlCKoCCcAOFbi92wQnXMKwIr5On/ZOm', '학생1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT');
 -- Insert Students
 INSERT INTO student (id, student_number) VALUES
 (1, 'S2025001'),
-(2, 'S2025002');
+(2, 'S2025002'),
+(6, 'S2025003');
 
 -- Insert Educators
 INSERT INTO educator (id, educator_number) VALUES
@@ -40,3 +41,18 @@ INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, v
 ('COMPLETED', 1, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
 ('ENROLLED', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
 ('COMPLETED', 2, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+--Insert Lecture
+INSERT INTO lecture (title, video_url, course_id, created_at, updated_at) VALUES
+('1주차', 'https://www.youtube.com/watch?v=6KguK-Tm2uE&list=PLrNWr7uHHlkX8pAcaKmK6tHjqx87qtUfg&index=1', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('2주차', 'https://www.youtube.com/watch?v=m9mH7cAQoy8&list=PLrNWr7uHHlkX8pAcaKmK6tHjqx87qtUfg&index=2', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('3주차', 'https://www.youtube.com/watch?v=QnpDsUouHUk&list=PLrNWr7uHHlkX8pAcaKmK6tHjqx87qtUfg&index=3', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('4주차', 'https://www.youtube.com/watch?v=LdprWjUpzPU&list=PLrNWr7uHHlkX8pAcaKmK6tHjqx87qtUfg&index=4', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('5주차', 'https://www.youtube.com/watch?v=svboyFGioKM&list=PLrNWr7uHHlkX8pAcaKmK6tHjqx87qtUfg&index=5', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('6주차', 'https://www.youtube.com/watch?v=UttpjKulRHY&list=PLrNWr7uHHlkX8pAcaKmK6tHjqx87qtUfg&index=6', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('첫번째', 'https://www.youtube.com/watch?v=jdTsJzXmgU0&list=PLuHgQVnccGMCeAy-2-llhw3nWoQKUvQck&index=1', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('두번째', 'https://www.youtube.com/watch?v=qR90tdW0Hbo&list=PLuHgQVnccGMCeAy-2-llhw3nWoQKUvQck&index=2', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('세번째', 'https://www.youtube.com/watch?v=kyFrm3zKryE&list=PLuHgQVnccGMCeAy-2-llhw3nWoQKUvQck&index=3', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('1-1', 'https://www.youtube.com/watch?v=PE6dA5ZnI9o', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('강의를 들어가기 전에1', 'https://www.youtube.com/watch?v=z9chRlD1tec', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('강의를 들어가기 전에2', 'https://www.youtube.com/watch?v=IAMdPn3YCG4', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

@@ -11,8 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AdminCourseDetailDTO {@JsonProperty("course_id")
-private Long courseId;
+public class AdminCourseDetailDTO {
+
+    @JsonProperty("course_id")
+    private Long courseId;
 
     @JsonProperty("course_name")
     private String courseName;

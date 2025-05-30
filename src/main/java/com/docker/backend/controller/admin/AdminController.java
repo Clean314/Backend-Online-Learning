@@ -2,10 +2,11 @@ package com.docker.backend.controller.admin;
 
 import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.dto.admin.AdminMemberDTO;
-import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.service.admin.AdminService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +50,15 @@ public class AdminController {
 
     // 사용자 삭제
     @DeleteMapping("/list/memberDelete/{id}")
-    public ResponseEntity<Void> adminMemberDelete(@PathVariable("id") Long memId) {
-        adminService.adminDeleteMember(memId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> adminMemberDelete(@PathVariable("id") Long memId) {
+        try{
+            adminService.adminDeleteMember(memId);
+            return ResponseEntity.ok("해당 학생이 성공적으로 탈퇴처리가 되었습니다.");
+        } catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        } catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("사용자의 상태를 확인 후 삭제해주세요.");
+        }
     }
 
     // 업데이트 전에 보여주는 강의 리스트
@@ -62,27 +69,44 @@ public class AdminController {
 
     // 등록된 강의 수정
     @PatchMapping("/list/courseUpdate/{id}")
-    public ResponseEntity<Void> adminUpdateCourse(@PathVariable("id") Long couId, Course course) {
+    public ResponseEntity<Void> adminUpdateCourse(@PathVariable("id") Long couId, @RequestBody AdminCourseDetailDTO course) {
         adminService.adminUpdateCourse(couId, course);
         return ResponseEntity.ok().build();
     }
 
     // 등록된 강의 삭제
     @DeleteMapping("/list/courseDelete/{id}")
-    public ResponseEntity<Void> adminDeleteCourse(@PathVariable("id") Long couId) {
-        adminService.adminDeleteCourse(couId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> adminDeleteCourse(@PathVariable("id") Long courseId) {
+        try {
+            adminService.adminDeleteCourse(courseId);
+            return ResponseEntity.ok("강의가 성공적으로 삭제되었습니다.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 강의를 찾을 수 없습니다.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("해당 강의의 상태를 확인 후 삭제해주세요.");
+        }
     }
 
     // 사용자 검색
     @GetMapping("/list/findMember")
-    public ResponseEntity<List<AdminMemberDTO>> adminFindMember(@RequestParam String name) {
-        return ResponseEntity.ok(adminService.searchMember(name));
+    public ResponseEntity<?> adminFindMember(@RequestParam String name) {
+        try {
+            List<AdminMemberDTO> serchMem = adminService.searchMember(name);
+            return ResponseEntity.ok(serchMem);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 사용자가 없습니다.");
+        }
     }
     // 강의 검색
     @GetMapping("/list/findCourse")
-    public ResponseEntity<List<AdminCourseDetailDTO>> adminFindCourse(@RequestParam String courseName) {
-        return ResponseEntity.ok(adminService.serchCourse(courseName));
+    public ResponseEntity<?> adminFindCourse(@RequestParam String courseName) {
+        try{
+            List<AdminCourseDetailDTO> serchCourse = adminService.serchCourse(courseName);
+            return ResponseEntity.ok(serchCourse);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 강의가 없습니다.");
+        }
+
     }
 
 

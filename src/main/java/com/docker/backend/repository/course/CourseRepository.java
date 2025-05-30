@@ -19,5 +19,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findByIdForUpdate(@Param("id") Long id);
 
     List<Course> findAllByOrderByCreatedAtDesc();
-    List<Course> findByCourseName(String courseName);
+    List<Course> findByCourseNameContaining(String courseName);
+
+    Boolean existsByCourseName(String courseName);
 }

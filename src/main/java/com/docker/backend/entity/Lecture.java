@@ -1,14 +1,18 @@
 package com.docker.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
 public class Lecture {
 
     @Id
@@ -21,16 +25,17 @@ public class Lecture {
     @Column(length = 1000, nullable = false)
     private String videoUrl;
 
-    @Column(length = 255)
-    private String fileName;
-
-    @Column(length = 1000)
-    private String filePath;
-
+//    @Column(length = 255)
+//    private String fileName;
+//
+//    @Column(length = 1000)
+//    private String filePath;
+    @CreatedDate
     private LocalDateTime createdAt;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
-    private Course course;
+    private Course courseId;
 }
