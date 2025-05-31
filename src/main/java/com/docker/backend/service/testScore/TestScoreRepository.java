@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface TestScoreRepository extends JpaRepository<TestScore, Long> {
-    List<TestScore> findByCourseIdAndEducatorId(Long courseId, Long educatorId);
-}
+//@Repository
+//public interface TestScoreRepository extends JpaRepository<TestScore, Long> {
+//    List<TestScore> findByCourseIdAndEducatorId(Long courseId, Long educatorId);
+//}

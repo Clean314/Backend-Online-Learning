@@ -26,6 +26,14 @@ public class LectureService {
                 .orElseThrow(()-> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
 
         for(LectureDTO dto : lectures) {
+            boolean sameTitle = lectureRepository.existsByTitleAndCourse(dto.getTitle(), courses);
+            if(sameTitle){
+                throw new IllegalStateException("이미 등록된 강의 제목입니다." + dto.getTitle());
+            }
+            boolean sameVideoUrl = lectureRepository.existsByVideoUrlAndCourse(dto.getVideoUrl(), courses);
+            if(sameVideoUrl){
+                throw new IllegalStateException("이미 등록된 URL입니다." + dto.getVideoUrl());
+            }
             Lecture lecture = new Lecture();
                 lecture.setTitle(dto.getTitle());
                 lecture.setVideoUrl(dto.getVideoUrl());

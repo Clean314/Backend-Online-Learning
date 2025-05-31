@@ -7,6 +7,7 @@ import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Admin;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.entity.user.Student;
+import com.docker.backend.enums.MemberRole;
 import com.docker.backend.repository.MemberRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,12 +73,13 @@ public class AdminService {
                 .toList();
     }
     // 사용자 정보수정(관리자)
-    public void adminUpdateMember(Long memId, Member member){
+    public void adminUpdateMember(Long memId, AdminMemberDTO member){
 
         Member mem = memberRepository.findById(memId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
         mem.setName(member.getName());
-        mem.setRole(member.getRole());
+        MemberRole role = MemberRole.valueOf(member.getRole().toUpperCase());
+        mem.setRole(role);
         memberRepository.save(mem);
     }
 
@@ -127,11 +130,13 @@ public class AdminService {
     // 사용자 검색
     public List<AdminMemberDTO> searchMember(String name) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        List<Member> all = memberRepository.findByNameContaining(name);
+        List<Member> all = memberRepository.findByNameContaining(name.trim());
         if (all.isEmpty()) {
             throw new EntityNotFoundException("사용자가 없습니다.");
         }
-
+        if(name.trim().isEmpty()){
+            return new ArrayList<>();
+        }
         return all.stream()
                 .filter(m -> !(m instanceof Admin)) // 관리자 제외
                 .map(member -> {
@@ -145,9 +150,12 @@ public class AdminService {
                 .toList();
     }
     public List<AdminCourseDetailDTO> serchCourse(String courseName){
-        List<Course> courses = courseRepository.findByCourseNameContaining(courseName);
+        List<Course> courses = courseRepository.findByCourseNameContaining(courseName.trim());
         if(courses.isEmpty()){
             throw new EntityNotFoundException("강의가 없습니다");
+        }
+        if (courseName.trim().isEmpty()) {
+            return new ArrayList<>(); // 또는 빈 리스트 반환
         }
         return courses.stream()
                 .map(AdminCourseDetailDTO::new)

@@ -18,9 +18,19 @@ public class LectureController {
 
     private final LectureService lectureService;
 
+    // 강의(동영상)등록
     @PostMapping("/create/url/{id}")
-    public ResponseEntity<String> createVideo(@RequestBody @Valid List<LectureDTO> lecture, @PathVariable("id") Long courseId){
-        lectureService.createLecture(lecture, courseId);
-        return ResponseEntity.ok("강의등록완료");
+    public ResponseEntity<String> createVideo(@RequestBody @Valid LectureDTO lecture, @PathVariable("id") Long courseId){
+        try{
+            lectureService.createLecture(List.of(lecture), courseId);
+            return ResponseEntity.ok("강의등록완료");
+        }catch (IllegalStateException e){
+            return ResponseEntity.badRequest().body("이미 등록된 정보입니다");
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body("오류가 발생하였습니다.");
+        }
     }
+    // 강의(동영상) 수정
+
+    // 강의(동영상) 삭제
 }

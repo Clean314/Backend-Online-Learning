@@ -36,24 +36,32 @@ public class AdminController {
     }
 
     // 수정 전에 보여주는 리스트
-    @GetMapping("/list/memberUpdate")
+    @GetMapping("/list/member-update")
     public ResponseEntity<List<AdminMemberDTO>> adminMemberUpdateList() {
         return ResponseEntity.ok(adminService.getMemeberList());
     }
 
     // 관리자가 사용자 이름, 역할? 수정
-    @PatchMapping("/list/memberUpdate/{id}")
-    public ResponseEntity<Void> adminUpdateMember(@PathVariable("id") Long memId, @RequestBody Member member) {
-        adminService.adminUpdateMember(memId, member);
-        return ResponseEntity.ok().build();
+    @PatchMapping("/list/member-update/{id}")
+    public ResponseEntity<String> adminUpdateMember(
+            @PathVariable("id") Long memId,
+            @RequestBody AdminMemberDTO dto) {
+        try {
+            adminService.adminUpdateMember(memId, dto);
+            return ResponseEntity.ok("수정 완료");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("서버 오류 발생");
+        }
     }
 
     // 사용자 삭제
-    @DeleteMapping("/list/memberDelete/{id}")
+    @DeleteMapping("/list/member-delete/{id}")
     public ResponseEntity<?> adminMemberDelete(@PathVariable("id") Long memId) {
         try{
             adminService.adminDeleteMember(memId);
-            return ResponseEntity.ok("해당 학생이 성공적으로 탈퇴처리가 되었습니다.");
+            return ResponseEntity.ok("해당 사용자가 성공적으로 탈퇴처리가 되었습니다.");
         } catch (EntityNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         } catch (IllegalStateException e){
@@ -62,20 +70,20 @@ public class AdminController {
     }
 
     // 업데이트 전에 보여주는 강의 리스트
-    @GetMapping("/list/courseUpdate")
+    @GetMapping("/list/course-update")
     public ResponseEntity<List<AdminCourseDetailDTO>> adminCourseUpdateList() {
         return ResponseEntity.ok(adminService.getCourseList());
     }
 
     // 등록된 강의 수정
-    @PatchMapping("/list/courseUpdate/{id}")
+    @PatchMapping("/list/course-update/{id}")
     public ResponseEntity<Void> adminUpdateCourse(@PathVariable("id") Long couId, @RequestBody AdminCourseDetailDTO course) {
         adminService.adminUpdateCourse(couId, course);
         return ResponseEntity.ok().build();
     }
 
     // 등록된 강의 삭제
-    @DeleteMapping("/list/courseDelete/{id}")
+    @DeleteMapping("/list/course-delete/{id}")
     public ResponseEntity<?> adminDeleteCourse(@PathVariable("id") Long courseId) {
         try {
             adminService.adminDeleteCourse(courseId);
@@ -88,7 +96,7 @@ public class AdminController {
     }
 
     // 사용자 검색
-    @GetMapping("/list/findMember")
+    @GetMapping("/list/find-member")
     public ResponseEntity<?> adminFindMember(@RequestParam String name) {
         try {
             List<AdminMemberDTO> serchMem = adminService.searchMember(name);
@@ -98,7 +106,7 @@ public class AdminController {
         }
     }
     // 강의 검색
-    @GetMapping("/list/findCourse")
+    @GetMapping("/list/find-course")
     public ResponseEntity<?> adminFindCourse(@RequestParam String courseName) {
         try{
             List<AdminCourseDetailDTO> serchCourse = adminService.serchCourse(courseName);

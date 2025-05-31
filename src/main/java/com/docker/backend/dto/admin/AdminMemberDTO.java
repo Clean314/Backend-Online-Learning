@@ -15,7 +15,7 @@ public class AdminMemberDTO {
     private Long id;
     private String name;
     private String email;
-    private MemberRole role;
+    private String role;
     private String createdAt;
     private String updateAt;
 
@@ -23,6 +23,6 @@ public class AdminMemberDTO {
         this.id = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();
-        this.role = member.getRole();
+        this.role = String.valueOf(member.getRole());
     }
 }

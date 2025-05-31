@@ -10,11 +10,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class TestScoreService {
-    private final TestScoreRepository testScoreRepository;
-
-    public List<TestScore> findByCourseAndEducator(Long courseId, Educator educator) {
-        return testScoreRepository.findByCourseIdAndEducatorId(courseId, educator.getId());
-    }
+//    private final TestScoreRepository testScoreRepository;
+//
+//    public List<TestScore> findByCourseAndEducator(Long courseId, Educator educator) {
+//        return testScoreRepository.findByCourseIdAndEducatorId(courseId, educator.getId());
+//    }
 
 
 }
