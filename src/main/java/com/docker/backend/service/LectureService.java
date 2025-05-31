@@ -1,6 +1,5 @@
 package com.docker.backend.service;
 
-import com.docker.backend.dto.CourseDTO;
 import com.docker.backend.dto.LectureDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Lecture;
@@ -27,12 +26,13 @@ public class LectureService {
                 .orElseThrow(()-> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
 
         for(LectureDTO dto : lectures) {
-            Lecture lecture = Lecture.builder()
-                    .title(dto.getTitle())
-                    .videoUrl(dto.getVideoUrl())
-                    .courseId(courses)
-                    .build();
+            Lecture lecture = new Lecture();
+                lecture.setTitle(dto.getTitle());
+                lecture.setVideoUrl(dto.getVideoUrl());
+                lecture.setCourse(courses);
             lectureRepository.save(lecture);
         }
     }
+
+
 }

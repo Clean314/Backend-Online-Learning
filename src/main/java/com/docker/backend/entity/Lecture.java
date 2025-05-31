@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Builder
 public class Lecture {
 
     @Id
@@ -37,5 +36,5 @@ public class Lecture {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
-    private Course courseId;
+    private Course course;
 }
