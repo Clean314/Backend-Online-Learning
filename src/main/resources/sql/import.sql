@@ -12,6 +12,12 @@ INSERT INTO member (id, role, email, password, name, created_at, updated_at, mem
 (4, 'EDUCATOR', 'educator2@test.com', '{bcrypt}$2a$12$/w4v.BmQrHt1qCLuQbY8DuyIO/Ug/zIqUqbaAHR/pvJtst4XeDkwm', '교수2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'EDUCATOR'),
 (5, 'ADMIN', 'admin1@test.com', '{bcrypt}$2a$12$ENDBvTiJb4KAj.IhFp6XAeLuL4n7fOkcKhIgOaIfcoDumgqIpTcC6', '관리자1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN'),
 (6, 'STUDENT', 'student3@test.com', '{bcrypt})$2a$12$ZamGwkqByDXK0R4uVdqAGeNlCKoCCcAOFbi92wQnXMKwIr5On/ZOm', '학생1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'STUDENT');
+
+
+-- 시퀀스 값 수동 지정
+-- members 에 수동으로 id 값을 넣었기 때문
+ALTER TABLE member ALTER COLUMN id RESTART WITH 7;
+
 -- Insert Students
 INSERT INTO student (id, student_number) VALUES
 (1, 'S2025001'),
