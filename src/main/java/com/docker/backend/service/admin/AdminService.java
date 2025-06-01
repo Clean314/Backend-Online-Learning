@@ -105,15 +105,26 @@ public class AdminService {
                 .toList();
     }
     // 등록된 강의 수정
-    public void adminUpdateCourse(Long couId, AdminCourseDetailDTO course){
+    public AdminCourseDetailDTO adminUpdateCourse(Long couId, AdminCourseDetailDTO course){
         Course co = courseRepository.findById(couId)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));
-        co.setCourseName(course.getCourseName());
-        co.setCategory(course.getCategory());
-        co.setDifficulty(course.getDifficulty());
-        co.setPoint(course.getPoint());
-        co.setMaxEnrollment(course.getMaxEnrollment());
-        courseRepository.save(co);
+        if (course.getCourseName() != null) {
+            co.setCourseName(course.getCourseName());
+        }
+        if (course.getCategory() != null) {
+            co.setCategory(course.getCategory());
+        }
+        if (course.getDifficulty() != null) {
+            co.setDifficulty(course.getDifficulty());
+        }
+        if (course.getPoint() != null) {
+            co.setPoint(course.getPoint());
+        }
+        if (course.getMaxEnrollment() != null) {
+            co.setMaxEnrollment(course.getMaxEnrollment());
+        }
+        Course save = courseRepository.save(co);
+        return new AdminCourseDetailDTO(save);
     }
 
     // 등록된 강의 삭제

@@ -24,10 +24,10 @@ public class AdminCourseDetailDTO {
 
     private String category;
     private Difficulty difficulty;
-    private int point;
+    private Integer point;
 
     @JsonProperty("max_enrollment")
-    private int maxEnrollment;
+    private Integer maxEnrollment;
 
     public AdminCourseDetailDTO(Course course){
         this.courseId = course.getId();

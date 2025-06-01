@@ -77,9 +77,8 @@ public class AdminController {
 
     // 등록된 강의 수정
     @PatchMapping("/list/course-update/{id}")
-    public ResponseEntity<Void> adminUpdateCourse(@PathVariable("id") Long couId, @RequestBody AdminCourseDetailDTO course) {
-        adminService.adminUpdateCourse(couId, course);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AdminCourseDetailDTO> adminUpdateCourse(@PathVariable("id") Long couId, @RequestBody AdminCourseDetailDTO course) {
+        return ResponseEntity.ok(adminService.adminUpdateCourse(couId, course));
     }
 
     // 등록된 강의 삭제
