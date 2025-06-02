@@ -33,6 +33,13 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getMyCourses(educator));
     }
 
+    @GetMapping("/course-id/{courseId}")
+    public ResponseEntity<CourseDTO> getCourse(Authentication authentication,
+                                               @PathVariable("courseId") Long courseId) {
+        Educator educator = authUtil.getEducator(authentication);
+        return ResponseEntity.ok(courseService.getCourse(educator, courseId));
+    }
+
     @PatchMapping("/course-id/{courseId}")
     public ResponseEntity<Void> updateCourse(Authentication authentication,
                                              @PathVariable("courseId") Long courseId,

@@ -93,4 +93,21 @@ public class CourseService {
         course.setMaxEnrollment(req.getMaxEnrollment());
         return courseRepository.save(course).getId();
     }
+
+    public CourseDTO getCourse(Educator educator, Long courseId) {
+        Course course = courseRepository.findByEducatorAndId(educator, courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        return new CourseDTO(
+                course.getId(),
+                course.getCourseName(),
+                educator.getName(),
+                course.getCategory(),
+                course.getDifficulty(),
+                course.getPoint(),
+                course.getDescription(),
+                course.getMaxEnrollment(),
+                course.getAvailableEnrollment()
+        );
+    }
 }
