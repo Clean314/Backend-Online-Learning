@@ -29,8 +29,8 @@ public class AdminController {
         Map<String, Object> result = new HashMap<>();
         result.put("members", adminService.getTOP10Members());
         result.put("courses", adminService.getTOP10Course());
-        result.put("totalMember", adminService.getTOP10Members().stream().count());
-        result.put("totalCourses", adminService.getTOP10Course().stream().count());
+        result.put("totalMember", adminService.getTOP10Members().size());
+        result.put("totalCourses", adminService.getTOP10Course().size());
 
         return ResponseEntity.ok(result);
     }

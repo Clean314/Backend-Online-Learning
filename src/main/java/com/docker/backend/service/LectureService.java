@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -40,6 +41,24 @@ public class LectureService {
                 lecture.setCourse(courses);
             lectureRepository.save(lecture);
         }
+    }
+
+    // 강의 영상
+    public List<LectureDTO> listLecture(Long courseId){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return lectureRepository.findByCourseId(courseId).stream()
+                .map(lectures -> {
+                    LectureDTO lecture = new LectureDTO(lectures);
+                    String date =
+                            lectures.getUpdatedAt() != null
+                            ? lectures.getUpdatedAt().format(formatter)
+                            : lectures.getCreatedAt().format(formatter);
+                    lecture.setTitle(lectures.getTitle());
+                    lecture.setVideoUrl(lectures.getVideoUrl());
+                    lecture.setUpdatedAt(date);
+                    return lecture;
+                })
+                .toList();
     }
 
 

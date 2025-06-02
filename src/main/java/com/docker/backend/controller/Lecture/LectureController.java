@@ -30,6 +30,12 @@ public class LectureController {
             return ResponseEntity.internalServerError().body("오류가 발생하였습니다.");
         }
     }
+    // 강의 영상
+    @GetMapping("/list/{courseId}")
+    public ResponseEntity<List<LectureDTO>> getLecture(@PathVariable("courseId") Long courseId){
+        return ResponseEntity.ok(lectureService.listLecture(courseId));
+    }
+
     // 강의(동영상) 수정
 
     // 강의(동영상) 삭제

@@ -1,6 +1,7 @@
 package com.docker.backend.dto;
 
 import com.docker.backend.entity.Course;
+import com.docker.backend.entity.Lecture;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class LectureDTO {
 
     @JsonProperty("lecture_id")
@@ -26,9 +28,16 @@ public class LectureDTO {
 
 //    private String fileName;
 //    private String filePath;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
 
     @JsonProperty("course_id")
     private Course courseId;
+
+    public LectureDTO(Lecture lecture){
+        this.title = lecture.getTitle();
+        this.videoUrl = lecture.getVideoUrl();
+        this.createdAt = lecture.getCreatedAt().toString();
+        this.updatedAt = lecture.getUpdatedAt().toString();
+    }
 }

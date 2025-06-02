@@ -141,7 +141,7 @@ public class AdminService {
     // 사용자 검색
     public List<AdminMemberDTO> searchMember(String name) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        List<Member> all = memberRepository.findByNameContaining(name.trim());
+        List<Member> all = memberRepository.findByNameContaining(name.trim().toUpperCase());
         if (all.isEmpty()) {
             throw new EntityNotFoundException("사용자가 없습니다.");
         }
@@ -161,7 +161,7 @@ public class AdminService {
                 .toList();
     }
     public List<AdminCourseDetailDTO> serchCourse(String courseName){
-        List<Course> courses = courseRepository.findByCourseNameContaining(courseName.trim());
+        List<Course> courses = courseRepository.findByCourseNameContaining(courseName.trim().toUpperCase());
         if(courses.isEmpty()){
             throw new EntityNotFoundException("강의가 없습니다");
         }
