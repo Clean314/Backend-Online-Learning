@@ -39,8 +39,7 @@ public class CourseService {
     }
 
     public List<CourseDTO> getMyCourses(Educator educator) {
-
-        return courseRepository.findAll().stream().map(course -> {
+        return courseRepository.findByEducatorId(educator.getId()).stream().map(course -> {
             return new CourseDTO(
                     course.getId(),
                     course.getCourseName(),
@@ -52,7 +51,7 @@ public class CourseService {
                     course.getMaxEnrollment(),
                     course.getAvailableEnrollment()
             );
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     public void updateCourse(Educator educator, Long courseId, CourseDTO req) {
