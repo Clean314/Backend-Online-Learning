@@ -1,5 +1,6 @@
 package com.docker.backend.service.course;
 
+import com.docker.backend.dto.course.CourseCreateDTO;
 import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Educator;
@@ -82,15 +83,16 @@ public class CourseService {
         courseRepository.delete(course);
     }
 
-    public Long createCourse(Educator educator, CourseDTO req) {
+    public Long createCourse(Educator educator, CourseCreateDTO req) {
         Course course = new Course();
+        course.setEducator(educator);
         course.setCourseName(req.getCourseName());
         course.setCategory(req.getCategory());
         course.setDifficulty(req.getDifficulty());
         course.setPoint(req.getPoint());
-        course.setEducator(educator);
         course.setDescription(req.getDescription());
         course.setMaxEnrollment(req.getMaxEnrollment());
+        course.setAvailableEnrollment(req.getMaxEnrollment());
         return courseRepository.save(course).getId();
     }
 

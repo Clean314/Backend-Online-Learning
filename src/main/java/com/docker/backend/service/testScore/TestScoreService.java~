@@ -17,5 +17,13 @@ public class TestScoreService {
         return testScoreRepository.findByCourseId(courseId);
     }
 
+    public TestScore findByCourseAndEducatorAndId(Long courseId, Educator educator, Long testScoreId) {
+        return testScoreRepository.findByCourseIdAndEducatorIdAndTestId(courseId, educator.getId(), testScoreId);
+    }
+
+    public TestScore createTestScore(Educator educator, TestScore testScore) {
+        testScore.setEducator(educator);
+        return testScoreRepository.save(testScore);
+    }
 
 }

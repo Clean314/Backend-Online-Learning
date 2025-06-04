@@ -1,6 +1,7 @@
 package com.docker.backend.controller.course;
 
 import com.docker.backend.config.AuthUtil;
+import com.docker.backend.dto.course.CourseCreateDTO;
 import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.service.course.CourseService;
@@ -40,6 +41,14 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourse(educator, courseId));
     }
 
+    @PostMapping
+    public ResponseEntity<Long> createCourse(Authentication authentication,
+                                             @RequestBody CourseCreateDTO courseCreateDTO) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
+        Educator educator = authUtil.getEducator(authentication);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(courseService.createCourse(educator, courseCreateDTO)); // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
+    }
+
     @PatchMapping("/course-id/{courseId}")
     public ResponseEntity<Void> updateCourse(Authentication authentication,
                                              @PathVariable("courseId") Long courseId,
@@ -57,11 +66,4 @@ public class CourseController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
-    public ResponseEntity<Long> createCourse(Authentication authentication,
-                                             @RequestBody CourseDTO req) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
-        Educator educator = authUtil.getEducator(authentication);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(courseService.createCourse(educator, req)); // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
-    }
 }
