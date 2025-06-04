@@ -21,22 +21,22 @@ public class EducatorExamController {
     private final AuthUtil authUtil;
     private final ExamService examService;
 
-//    // 강의에 해당하는 내가 만든 모든 시험 조회
-//    @GetMapping("/course-id/{courseId}")
-//    public ResponseEntity<List<Exam>> getMyExamByCourse(Authentication authentication, @PathVariable("courseId") Long courseId) {
-//        Educator educator = authUtil.getEducator(authentication);
-//        return ResponseEntity.ok(examService.findByCourseAndEducator(courseId, educator));
-//    }
-//
-//    // 특정 시험 조회
-//    @GetMapping("/exam-id/{examId}")
-//    public ResponseEntity<Exam> getExamByIdAndCourse(Authentication authentication, @PathVariable("courseId") Long courseId, @PathVariable("examId") Long ExamId) {
-//        Educator educator = authUtil.getEducator(authentication);
-//        Exam exam = examService.findByCourseAndEducatorAndId(courseId, educator, ExamId);
-//        return ResponseEntity.ok(exam);
-//    }
-//
-//    // 새로운 시험 생성
+    // 강의에 해당하는 내가 만든 모든 시험 조회
+    @GetMapping("/course-id/{courseId}")
+    public ResponseEntity<List<Exam>> getMyExamByCourse(Authentication authentication, @PathVariable("courseId") Long courseId) {
+        Educator educator = authUtil.getEducator(authentication);
+        return ResponseEntity.ok(examService.getAllExamByCourse(courseId, educator.getId()));
+    }
+
+    // 특정 시험 조회
+    @GetMapping("/exam-id/{examId}/{courseId}")
+    public ResponseEntity<Exam> getExamByIdAndCourse(Authentication authentication, @PathVariable("examId") Long examId, @PathVariable("courseId") Long courseId) {
+        Educator educator = authUtil.getEducator(authentication);
+        Exam exam = examService.getExamByCourseAndId(educator.getId(), courseId, examId);
+        return ResponseEntity.ok(exam);
+    }
+
+    // 새로운 시험 생성
 //    @PostMapping
 //    public ResponseEntity<Exam> createExam(Authentication authentication, @RequestBody Exam exam) {
 //        Educator educator = authUtil.getEducator(authentication);
