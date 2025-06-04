@@ -1,5 +1,6 @@
 package com.docker.backend.entity;
 
+import com.docker.backend.entity.user.Educator;
 import com.docker.backend.enums.ExamStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,20 +18,20 @@ public class Exam {
     @GeneratedValue
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Course course;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Educator educator;
 
     private String title;
     private String description;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Integer durationMinutes;
+//    private Integer durationMinutes;
 
     @Enumerated(EnumType.STRING)
     private ExamStatus status;
-
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Question> questions = new ArrayList<>();
 
 }

@@ -19,10 +19,15 @@ public class ExamService {
     private final ExamRepository examRepository;
 
 
-//    // 시험 목록 조회 (교수자가 자신이 소유한 강의에 대해서만)
-//    public List<Exam> getExamsByCourse(Long courseId, Long instructorId) {
-//        return examRepository.findByCourseIdAndCourseInstructorId(courseId, instructorId);
-//    }
+    // 특정 강의에 해당하는 모든 내 시험 조회
+    public List<Exam> getAllExamByCourse(Long courseId, Long educatorId) {
+        return examRepository.findByCourseIdAndEducatorId(courseId, educatorId);
+    }
+
+    // 특정 강의에 해당하는 특정 내 시험 조회
+    public Exam getExamByCourseAndId(Long educatorId, Long courseId, Long examId) {
+        return examRepository.findByCourseIdAndEducatorIdAndId(courseId, educatorId, examId);
+    }
 
 //    // 시험 생성
 //    public Exam createExam(Long courseId, Educator educator, Exam exam) {
