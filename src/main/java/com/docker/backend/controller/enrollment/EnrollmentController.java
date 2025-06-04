@@ -1,7 +1,9 @@
 package com.docker.backend.controller.enrollment;
 
 import com.docker.backend.config.AuthUtil;
+import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.dto.enrollment.EnrollmentCourseDTO;
+import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import lombok.RequiredArgsConstructor;
@@ -34,15 +36,22 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getEnrolledCourses(student));
     }
 
-    @PostMapping("/{courseId}") // path 변수 url
+    @GetMapping("/course-id/{courseId}")
+    public ResponseEntity<CourseDTO> getEnrolledCourseById(Authentication authentication,
+                                                           @PathVariable("courseId") Long courseId) {
+        Student student = authUtil.getStudent(authentication);
+        return ResponseEntity.ok(enrollmentService.getEnrolledCourseById(student, courseId));
+    }
+
+    @PostMapping("/course-id/{courseId}") // path 변수 url
     public ResponseEntity<Void> enroll(Authentication authentication,
                                        @PathVariable("courseId") Long courseId) { // @PathVariable 은 url 에서 path 로 들어온 데이터를 가져옴. ex) /enrollments/1
         Student student = authUtil.getStudent(authentication);
-        enrollmentService.enroll(student, courseId); // url로 들어온 courseId 값을 이용한다
+        enrollmentService.enroll(student, courseId); // url 로 들어온 courseId 값을 이용한다
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/{courseId}")
+    @DeleteMapping("/course-id/{courseId}")
     public ResponseEntity<Void> cancel(Authentication authentication,
                                        @PathVariable("courseId") Long courseId) {
         Student student = authUtil.getStudent(authentication);

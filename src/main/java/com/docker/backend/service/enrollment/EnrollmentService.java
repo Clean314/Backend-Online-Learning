@@ -1,5 +1,6 @@
 package com.docker.backend.service.enrollment;
 
+import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.dto.enrollment.EnrollmentCourseDTO;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Enrollment;
@@ -33,12 +34,13 @@ public class EnrollmentService {
             throw new IllegalArgumentException("Already enrolled.");
         }
 
-        long enrolledCount = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
-        if (enrolledCount >= course.getMaxEnrollment()) {
+        if (course.getAvailableEnrollment() <= 0) {
             throw new IllegalStateException("Course is full.");
         }
 
         Enrollment enrollment = new Enrollment(student, course, Status.ENROLLED);
+        course.setAvailableEnrollment(course.getAvailableEnrollment() - 1);
+        courseRepository.save(course);
         enrollmentRepository.save(enrollment);
     }
 
@@ -49,6 +51,11 @@ public class EnrollmentService {
         if (enrollment.getStatus() == Status.COMPLETED) {
             return;
         }
+        courseRepository.findById(enrollment.getCourse().getId())
+                .ifPresent(course -> {
+                    course.setAvailableEnrollment(course.getAvailableEnrollment() + 1);
+                    courseRepository.save(course);
+                });
         enrollmentRepository.delete(enrollment);
     }
 
@@ -67,7 +74,6 @@ public class EnrollmentService {
                 .map(course -> {
                     Status status = statusMap.getOrDefault(course.getId(), Status.AVAILABLE);
                     long enrolled = enrollmentRepository.countByCourseAndStatus(course, (Status.ENROLLED));
-                    int available = course.getMaxEnrollment() - (int) enrolled;
 
                     return new EnrollmentCourseDTO(
                             course.getId(),
@@ -78,10 +84,31 @@ public class EnrollmentService {
                             status,
                             course.getPoint(),
                             course.getMaxEnrollment(),
-                            available
+                            course.getAvailableEnrollment()
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    public CourseDTO getEnrolledCourseById(Student student, Long courseId) {
+        Enrollment enrollment = enrollmentRepository.findByStudentAndCourseId(student, courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
+
+        Course course = enrollment.getCourse();
+        Educator educator = course.getEducator();
+        long enrolled = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
+
+        return new CourseDTO(
+                course.getId(),
+                course.getCourseName(),
+                educator.getName(),
+                course.getCategory(),
+                course.getDifficulty(),
+                course.getPoint(),
+                course.getDescription(),
+                course.getMaxEnrollment(),
+                course.getAvailableEnrollment()
+        );
     }
 
 
@@ -90,7 +117,6 @@ public class EnrollmentService {
             Course course = enrollment.getCourse();
             Educator educator = course.getEducator();
             long enrolled = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
-            int available = course.getMaxEnrollment() - (int) enrolled;
 
             return new EnrollmentCourseDTO(
                     course.getId(),
@@ -101,7 +127,7 @@ public class EnrollmentService {
                     enrollment.getStatus(),
                     course.getPoint(),
                     course.getMaxEnrollment(),
-                    available
+                    course.getAvailableEnrollment()
             );
         }).collect(Collectors.toList());
     }
