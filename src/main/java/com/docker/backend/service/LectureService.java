@@ -47,7 +47,7 @@ public class LectureService {
     }
 
     // 강의 영상
-    public List<LectureDTO> listLecture(Long courseId){
+    public List<LectureDTO> getLecture(Long courseId){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return lectureRepository.findByCourseId(courseId).stream()
                 .map(lectures -> {

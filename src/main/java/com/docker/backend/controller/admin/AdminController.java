@@ -2,7 +2,6 @@ package com.docker.backend.controller.admin;
 
 import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.dto.admin.AdminMemberDTO;
-import com.docker.backend.entity.user.Member;
 import com.docker.backend.service.admin.AdminService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +70,7 @@ public class AdminController {
 
     // 업데이트 전에 보여주는 강의 리스트
     @GetMapping("/list/course-update")
-    public ResponseEntity<List<AdminCourseDetailDTO>> adminCourseUpdateList() {
+    public ResponseEntity<List<AdminCourseDetailDTO>> getCourseList() {
         return ResponseEntity.ok(adminService.getCourseList());
     }
 
@@ -96,7 +95,7 @@ public class AdminController {
 
     // 사용자 검색
     @GetMapping("/list/find-member")
-    public ResponseEntity<?> adminFindMember(@RequestParam String name) {
+    public ResponseEntity<?> searchMember(@RequestParam String name) {
         try {
             List<AdminMemberDTO> serchMem = adminService.searchMember(name);
             return ResponseEntity.ok(serchMem);
@@ -106,10 +105,10 @@ public class AdminController {
     }
     // 강의 검색
     @GetMapping("/list/find-course")
-    public ResponseEntity<?> adminFindCourse(@RequestParam String courseName) {
+    public ResponseEntity<?> searchCourse(@RequestParam String courseName) {
         try{
-            List<AdminCourseDetailDTO> serchCourse = adminService.serchCourse(courseName);
-            return ResponseEntity.ok(serchCourse);
+            List<AdminCourseDetailDTO> searchCourse = adminService.searchCourse(courseName);
+            return ResponseEntity.ok(searchCourse);
         }catch (EntityNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 강의가 없습니다.");
         }

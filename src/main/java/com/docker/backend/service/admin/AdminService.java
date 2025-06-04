@@ -164,7 +164,7 @@ public class AdminService {
                 })
                 .toList();
     }
-    public List<AdminCourseDetailDTO> serchCourse(String courseName){
+    public List<AdminCourseDetailDTO> searchCourse(String courseName){
         List<Course> courses = courseRepository.findByCourseNameContaining(courseName.trim().toUpperCase());
         if(courses.isEmpty()){
             throw new EntityNotFoundException("강의가 없습니다");
