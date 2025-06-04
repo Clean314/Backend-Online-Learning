@@ -7,14 +7,17 @@ import com.docker.backend.repository.LectureRepository;
 import com.docker.backend.repository.MemberRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class LectureService {
 
     private final MemberRepository memberRepository;
@@ -49,16 +52,36 @@ public class LectureService {
         return lectureRepository.findByCourseId(courseId).stream()
                 .map(lectures -> {
                     LectureDTO lecture = new LectureDTO(lectures);
-                    String date =
-                            lectures.getUpdatedAt() != null
-                            ? lectures.getUpdatedAt().format(formatter)
-                            : lectures.getCreatedAt().format(formatter);
+                    LocalDateTime date = lectures.getUpdatedAt();
+                    if (date == null) {
+                        date = lectures.getCreatedAt();
+                    }
                     lecture.setTitle(lectures.getTitle());
                     lecture.setVideoUrl(lectures.getVideoUrl());
-                    lecture.setUpdatedAt(date);
+                    lecture.setUpdatedAt(date.format(formatter));
                     return lecture;
                 })
                 .toList();
+    }
+
+    public void updateLecture(Long courseId, List<LectureDTO> dto){
+        for(LectureDTO lectures : dto){
+            Lecture lecture = lectureRepository.findById(lectures.getLectureId())
+                    .orElseThrow(()-> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
+            if(!lecture.getCourse().getId().equals(courseId)){
+                throw new IllegalArgumentException("해당 강의는 강의번호와 일치하지 않습니다.");
+            }
+            lecture.setTitle(lectures.getTitle());
+            lecture.setVideoUrl(lectures.getVideoUrl());
+        }
+    }
+    public void deleteLecture(Long courseId, Long lectureId){
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(()-> new EntityNotFoundException("해당하는 강의가 없습니다."));
+        if(!lecture.getCourse().getId().equals(courseId)){
+            throw new IllegalArgumentException("강의번호가 일치하지 않습니다.");
+        }
+        lectureRepository.delete(lecture);
     }
 
 

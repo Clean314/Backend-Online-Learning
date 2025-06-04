@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class LectureDTO {
 
     @JsonProperty("lecture_id")
-    private Long LectureId;
+    private Long lectureId;
 
     @NotBlank
     @Size(min = 1, max = 100)
@@ -35,6 +35,7 @@ public class LectureDTO {
     private Course courseId;
 
     public LectureDTO(Lecture lecture){
+        this.lectureId = lecture.getId();
         this.title = lecture.getTitle();
         this.videoUrl = lecture.getVideoUrl();
         this.createdAt = lecture.getCreatedAt().toString();

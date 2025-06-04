@@ -37,6 +37,16 @@ public class LectureController {
     }
 
     // 강의(동영상) 수정
-
+    @PatchMapping("/list/{courseId}/lecture")
+    public ResponseEntity<String> patchLecture(@PathVariable("courseId") Long courseId, @RequestBody @Valid List<LectureDTO> dto){
+        lectureService.updateLecture(courseId, dto);
+        return ResponseEntity.ok().body("업데이트 성공");
+    }
     // 강의(동영상) 삭제
+    @DeleteMapping("/list/{courseId}/{lectureId}")
+    public ResponseEntity<String> lectureDelete(@PathVariable Long courseId,
+                                           @PathVariable Long lectureId) {
+        lectureService.deleteLecture(courseId, lectureId);
+        return ResponseEntity.ok("삭제 완료");
+    }
 }

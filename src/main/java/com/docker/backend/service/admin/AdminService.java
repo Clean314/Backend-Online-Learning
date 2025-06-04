@@ -12,15 +12,18 @@ import com.docker.backend.repository.MemberRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminService {
 
     private final EnrollmentRepository enrollmentRepository;
@@ -63,11 +66,11 @@ public class AdminService {
                 .filter(m -> !(m instanceof Admin)) // 관리자 제외 일반 회원 필터
                 .map(member -> {
                     AdminMemberDTO mem = new AdminMemberDTO(member);
-                    String date =
-                            member.getUpdatedAt() != null
-                                    ? member.getUpdatedAt().format(formatter)
-                                    : member.getCreatedAt().format(formatter);
-                    mem.setUpdateAt(date);
+                    LocalDateTime date = member.getUpdatedAt();
+                    if (date == null) {
+                        date = member.getCreatedAt();
+                    }
+                    mem.setUpdateAt(date.format(formatter));
                     return mem;
                 })
                 .toList();
@@ -105,8 +108,8 @@ public class AdminService {
                 .toList();
     }
     // 등록된 강의 수정
-    public AdminCourseDetailDTO adminUpdateCourse(Long couId, AdminCourseDetailDTO course){
-        Course co = courseRepository.findById(couId)
+    public AdminCourseDetailDTO adminUpdateCourse(Long courseId, AdminCourseDetailDTO course){
+        Course co = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found"));
         if (course.getCourseName() != null) {
             co.setCourseName(course.getCourseName());
@@ -128,8 +131,8 @@ public class AdminService {
     }
 
     // 등록된 강의 삭제
-    public void adminDeleteCourse(Long couId){
-        Course course = courseRepository.findById(couId)
+    public void adminDeleteCourse(Long courseId){
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 강의가 존재하지 않습니다."));
 
         boolean isEnrolled = enrollmentRepository.existsByCourse(course);
@@ -152,10 +155,11 @@ public class AdminService {
                 .filter(m -> !(m instanceof Admin)) // 관리자 제외
                 .map(member -> {
                     AdminMemberDTO dto = new AdminMemberDTO(member);
-                    String date = member.getUpdatedAt() != null
-                            ? member.getUpdatedAt().format(formatter)
-                            : member.getCreatedAt().format(formatter);
-                    dto.setUpdateAt(date);
+                    LocalDateTime date = member.getUpdatedAt();
+                    if (date == null) {
+                        date = member.getCreatedAt();
+                    }
+                    dto.setUpdateAt(date.format(formatter));
                     return dto;
                 })
                 .toList();
