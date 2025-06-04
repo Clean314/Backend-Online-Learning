@@ -23,5 +23,4 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findAllByOrderByCreatedAtDesc();
     List<Course> findByCourseNameContaining(String courseName);
 
-    Boolean existsByCourseName(String courseName);
 }

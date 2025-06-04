@@ -20,9 +20,9 @@ public class LectureController {
 
     // 강의(동영상)등록
     @PostMapping("/create/url/{id}")
-    public ResponseEntity<String> createLecture(@RequestBody @Valid LectureDTO lecture, @PathVariable("id") Long courseId){
+    public ResponseEntity<String> createLecture(@RequestBody @Valid List<LectureDTO> lecture, @PathVariable("id") Long courseId){
         try{
-            lectureService.createLecture(List.of(lecture), courseId);
+            lectureService.createLecture(lecture, courseId);
             return ResponseEntity.ok("강의등록완료");
         }catch (IllegalStateException e){
             return ResponseEntity.badRequest().body("이미 등록된 정보입니다");
@@ -30,10 +30,10 @@ public class LectureController {
             return ResponseEntity.internalServerError().body("오류가 발생하였습니다.");
         }
     }
-    // 강의 영상
+    // 강의 영상 리스트
     @GetMapping("/list/{courseId}")
-    public ResponseEntity<List<LectureDTO>> getLecture(@PathVariable("courseId") Long courseId){
-        return ResponseEntity.ok(lectureService.getLecture(courseId));
+    public ResponseEntity<List<LectureDTO>> getLectureList(@PathVariable("courseId") Long courseId){
+        return ResponseEntity.ok(lectureService.getLectureList(courseId));
     }
 
     // 강의(동영상) 수정
