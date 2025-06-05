@@ -63,10 +63,10 @@ public class LectureService {
         Course courses = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
         for (LectureDTO lecture : dto) {
-            if(lectureRepository.existsByTitleAndCourse(lecture.getTitle(), courses)){
+            if(lecture.getLectureId() != null && lectureRepository.existsByTitleAndCourseAndIdNot(lecture.getTitle(), courses, lecture.getLectureId())){
                 throw new IllegalStateException("이미 등록된 강의 제목입니다." + lecture.getTitle());
             }
-            if(lectureRepository.existsByVideoUrlAndCourse(lecture.getVideoUrl(), courses)){
+            if (lecture.getLectureId() != null && lectureRepository.existsByVideoUrlAndCourseAndIdNot(lecture.getVideoUrl(), courses, lecture.getLectureId())) {
                 throw new IllegalStateException("이미 등록된 URL입니다." + lecture.getVideoUrl());
             }
             // ID가 없는 건 새로 등록

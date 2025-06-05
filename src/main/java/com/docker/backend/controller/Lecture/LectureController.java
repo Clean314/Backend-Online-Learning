@@ -39,8 +39,15 @@ public class LectureController {
     // 강의(동영상) 수정
     @PatchMapping("/list/{courseId}/lecture")
     public ResponseEntity<String> updateLecture(@PathVariable("courseId") Long courseId, @RequestBody @Valid List<LectureDTO> dto){
-        lectureService.updateLecture(courseId, dto);
-        return ResponseEntity.ok().body("업데이트 성공");
+        try {
+            lectureService.updateLecture(courseId, dto);
+            return ResponseEntity.ok().body("업데이트 완료"); // 정상 처리
+        // 400 Bad Request로 에러 메시지 반환
+        } catch (IllegalStateException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
     // 강의(동영상) 삭제
     @DeleteMapping("/list/{courseId}/{lectureId}")
