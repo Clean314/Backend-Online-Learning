@@ -4,5 +4,4 @@ public enum ExamStatus {
     PREPARING,
     IN_PROGRESS,
     COMPLETED,
-    CANCELLED
 }

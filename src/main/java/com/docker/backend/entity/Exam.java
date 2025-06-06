@@ -1,6 +1,7 @@
 package com.docker.backend.entity;
 
 import com.docker.backend.entity.user.Educator;
+import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.ExamStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,9 +30,12 @@ public class Exam {
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-//    private Integer durationMinutes;
 
     @Enumerated(EnumType.STRING)
     private ExamStatus status;
+
+    // 학생 채점 정보
+    @OneToOne
+    private StudentScore studentScore;
 
 }
