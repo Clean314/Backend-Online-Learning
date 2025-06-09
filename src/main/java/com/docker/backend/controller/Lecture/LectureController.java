@@ -25,7 +25,7 @@ public class LectureController {
             lectureService.createLecture(lecture, courseId);
             return ResponseEntity.ok("강의등록완료");
         }catch (IllegalStateException e){
-            return ResponseEntity.badRequest().body("이미 등록된 정보입니다");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }catch (Exception e){
             return ResponseEntity.internalServerError().body("오류가 발생하였습니다.");
         }
