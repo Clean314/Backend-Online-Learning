@@ -8,7 +8,14 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "exam_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Exam exam;
+
+    private String content; // 문제 내용
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Answer answer;
+
+    private Integer score;
+
 }

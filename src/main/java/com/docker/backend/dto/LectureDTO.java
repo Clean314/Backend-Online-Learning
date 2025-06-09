@@ -23,6 +23,7 @@ public class LectureDTO {
     private String title;
 
     @Size(max = 1000)
+    @JsonProperty("video_url")
     private String videoUrl;
 
 
