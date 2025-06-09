@@ -48,6 +48,16 @@ INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, v
 ('ENROLLED', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
 ('COMPLETED', 2, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
+INSERT INTO exam (id, course_id, title, description, start_time, end_time) VALUES
+(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-15 10:00:00', '2025-06-15 12:00:00'),
+(2, 1, 'Java 기말고사', '멀티스레딩, 스트림, 람다식 등 고급 주제 평가', '2025-07-10 13:00:00', '2025-07-10 15:00:00'),
+(3, 2, '네트워크 1차 평가', 'OSI 7계층 및 기본 프로토콜 시험', '2025-06-18 09:00:00', '2025-06-18 11:00:00'),
+(4, 3, 'AI 기초 테스트', '기계학습 개요 및 분류/회귀 개념 확인', '2025-06-20 14:00:00', '2025-06-20 15:30:00'),
+(5, 4, 'SQL 튜닝 중간고사', '인덱스, 실행계획, 조인 최적화 등 실습형 시험', '2025-06-22 10:00:00', '2025-06-22 12:00:00'),
+(6, 5, '웹 보안 기초 시험', 'XSS, CSRF, SQL Injection 등 주요 보안 개념 테스트', '2025-06-25 15:00:00', '2025-06-25 16:30:00');
+
+ALTER TABLE exam ALTER COLUMN id RESTART WITH 7;
+
 --Insert Lecture
 INSERT INTO lecture (title, video_url, course_id, created_at, updated_at) VALUES
 ('1주차', 'https://www.youtube.com/watch?v=6KguK-Tm2uE&list=PLrNWr7uHHlkX8pAcaKmK6tHjqx87qtUfg&index=1', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

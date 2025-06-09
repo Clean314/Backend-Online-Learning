@@ -6,18 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 public class Exam {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Course course;
 
     private String title;
@@ -25,12 +23,8 @@ public class Exam {
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Integer durationMinutes;
 
     @Enumerated(EnumType.STRING)
     private ExamStatus status;
-
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Question> questions = new ArrayList<>();
 
 }
