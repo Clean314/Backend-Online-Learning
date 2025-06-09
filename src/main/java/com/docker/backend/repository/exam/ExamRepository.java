@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Long> {
@@ -13,5 +14,7 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
     List<Exam> findByCourseIdAndCourse_Educator_Id(Long courseId, Long educatorId);
 
     // 강의 ID와 시험 ID로 특정 시험 조회
-    Exam findByCourseIdAndId(Long courseId, Long examId);
+    Optional<Exam> findByCourseIdAndId(Long courseId, Long examId);
+
+    Optional<Exam> findByCourseIdAndIdAndCourse_Educator_Id(Long courseId, Long examId, Long educatorId);
 }

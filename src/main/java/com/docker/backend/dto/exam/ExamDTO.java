@@ -15,24 +15,31 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExamDTO {
+
     private Long id;
     private String title;
     private String description;
+
     @JsonProperty("start_time")
     private LocalDateTime startTime;
+
     @JsonProperty("end_time")
     private LocalDateTime endTime;
+
     private ExamStatus status;
+
     @JsonProperty("course_id")
     private Long courseId;
 
-    public ExamDTO(Exam exam) {
-        this.id = exam.getId();
-        this.title = exam.getTitle();
-        this.description = exam.getDescription();
-        this.startTime = exam.getStartTime();
-        this.endTime = exam.getEndTime();
-        this.status = exam.getStatus();
-        this.courseId = exam.getCourse().getId();
+    public static ExamDTO of(Exam exam) {
+        return new ExamDTO(
+                exam.getId(),
+                exam.getTitle(),
+                exam.getDescription(),
+                exam.getStartTime(),
+                exam.getEndTime(),
+                exam.getStatus(),
+                exam.getCourse().getId()
+        );
     }
 }
