@@ -61,37 +61,92 @@ public class LectureService {
 
     public void updateLecture(Long courseId, List<LectureDTO> dto){
         Course courses = courseRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
-        for (LectureDTO lecture : dto) {
-            if(lecture.getLectureId() != null && lectureRepository.existsByTitleAndCourseAndIdNot(lecture.getTitle(), courses, lecture.getLectureId())){
-                throw new IllegalStateException("이미 등록된 강의 제목입니다." + lecture.getTitle());
+              .orElseThrow(() -> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
+        for(LectureDTO lecture : dto){
+            boolean isTitleDuplicate = (lecture.getLectureId() != null)
+                    ? lectureRepository.existsByTitleAndCourseAndIdNot(lecture.getTitle(), courses, lecture.getLectureId())
+                    : lectureRepository.existsByTitleAndCourse(lecture.getTitle(), courses);
+
+            boolean isUrlDuplicate = (lecture.getLectureId() != null)
+                    ? lectureRepository.existsByVideoUrlAndCourseAndIdNot(lecture.getVideoUrl(), courses, lecture.getLectureId())
+                    : lectureRepository.existsByVideoUrlAndCourse(lecture.getVideoUrl(), courses);
+
+            System.out.println("중복 검사 중 - title: " + lecture.getTitle());
+            System.out.println("lectureId: " + lecture.getLectureId());
+            System.out.println("isTitleDuplicate: " + isTitleDuplicate);
+            System.out.println("isUrlDuplicate: " + isUrlDuplicate);
+            String error = "";
+            if (isTitleDuplicate && isUrlDuplicate) error = "둘다";
+            else if (isTitleDuplicate) error = "제목";
+            else if (isUrlDuplicate) error = "주소";
+
+            switch (error){
+                case "둘다" -> throw new IllegalStateException("중복된 내용입니다. 제목: " + lecture.getTitle() + ", 주소: " + lecture.getVideoUrl());
+                case "제목" -> throw new IllegalStateException("이미 등록된 강의 제목입니다.");
+                case "주소" -> throw new IllegalStateException("이미 등록된 강의 주소입니다.");
             }
-            if (lecture.getLectureId() != null && lectureRepository.existsByVideoUrlAndCourseAndIdNot(lecture.getVideoUrl(), courses, lecture.getLectureId())) {
-                throw new IllegalStateException("이미 등록된 URL입니다." + lecture.getVideoUrl());
-            }
-            // ID가 없는 건 새로 등록
+             //ID가 없는 건 새로 등록
             if (lecture.getLectureId() == null) {
                 Lecture newLecture = new Lecture();
-                newLecture.setTitle(lecture.getTitle());
-                newLecture.setVideoUrl(lecture.getVideoUrl());
+                newLecture.setTitle(lecture.getTitle().trim());
+                newLecture.setVideoUrl(lecture.getVideoUrl().trim());
                 newLecture.setCourse(courses);
                 lectureRepository.save(newLecture);
             // 기존 강의 수정
             } else {
                 Lecture existingLecture = lectureRepository.findById(lecture.getLectureId())
                         .orElseThrow(() -> new EntityNotFoundException("해당 강의가 존재하지 않습니다."));
+                System.out.println("요청 courseId = " + courseId);
+                System.out.println("lecture " + lecture.getLectureId() + " 의 실제 courseId = " + existingLecture.getCourse().getId());
                 if (!existingLecture.getCourse().getId().equals(courseId)) {
                     throw new IllegalStateException("강의 ID와 강의 번호가 일치하지 않습니다.");
                 }
                 if (lecture.getTitle() != null) {
-                    existingLecture.setTitle(lecture.getTitle());
+                    existingLecture.setTitle(lecture.getTitle().trim());
                 }
                 if (lecture.getVideoUrl() != null) {
-                    existingLecture.setVideoUrl(lecture.getVideoUrl());
+                    existingLecture.setVideoUrl(lecture.getVideoUrl().trim());
                 }
                 lectureRepository.save(existingLecture);
             }
         }
+
+
+
+
+
+        //        Course courses = courseRepository.findById(courseId)
+//                .orElseThrow(() -> new EntityNotFoundException("해당 강의를 찾을 수 없습니다."));
+//        for (LectureDTO lecture : dto) {
+//            if(lecture.getLectureId() != null && lectureRepository.existsByTitleAndCourseAndIdNot(lecture.getTitle(), courses, lecture.getLectureId())){
+//                throw new IllegalStateException("이미 등록된 강의 제목입니다." + lecture.getTitle());
+//            }
+//            if (lecture.getLectureId() != null && lectureRepository.existsByVideoUrlAndCourseAndIdNot(lecture.getVideoUrl(), courses, lecture.getLectureId())) {
+//                throw new IllegalStateException("이미 등록된 URL입니다." + lecture.getVideoUrl());
+//            }
+//            // ID가 없는 건 새로 등록
+//            if (lecture.getLectureId() == null) {
+//                Lecture newLecture = new Lecture();
+//                newLecture.setTitle(lecture.getTitle());
+//                newLecture.setVideoUrl(lecture.getVideoUrl());
+//                newLecture.setCourse(courses);
+//                lectureRepository.save(newLecture);
+//            // 기존 강의 수정
+//            } else {
+//                Lecture existingLecture = lectureRepository.findById(lecture.getLectureId())
+//                        .orElseThrow(() -> new EntityNotFoundException("해당 강의가 존재하지 않습니다."));
+//                if (!existingLecture.getCourse().getId().equals(courseId)) {
+//                    throw new IllegalStateException("강의 ID와 강의 번호가 일치하지 않습니다.");
+//                }
+//                if (lecture.getTitle() != null) {
+//                    existingLecture.setTitle(lecture.getTitle());
+//                }
+//                if (lecture.getVideoUrl() != null) {
+//                    existingLecture.setVideoUrl(lecture.getVideoUrl());
+//                }
+//                lectureRepository.save(existingLecture);
+//            }
+//        }
     }
     public void deleteLecture(Long courseId, Long lectureId){
         Lecture lecture = lectureRepository.findById(lectureId)
