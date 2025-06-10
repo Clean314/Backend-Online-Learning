@@ -17,5 +17,4 @@ public class Question {
     private Answer answer;
 
     private Integer score;
-
 }

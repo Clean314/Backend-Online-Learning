@@ -3,21 +3,19 @@ package com.docker.backend.service.exam;
 import com.docker.backend.dto.exam.*;
 import com.docker.backend.entity.Course;
 import com.docker.backend.entity.Exam;
-import com.docker.backend.entity.user.Educator;
+import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.ExamStatus;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.repository.course.CourseRepository;
+import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.exam.ExamRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -25,10 +23,19 @@ public class ExamService {
 
     private final CourseRepository courseRepository;
     private final ExamRepository examRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
-    public List<ExamDTO> getExamsByCourse(Long courseId, Long educatorId) {
+    public List<ExamDTO> getEducatorExamsByCourse(Long courseId, Long educatorId) {
         verifyCourseOwnership(courseId, educatorId);
         return examRepository.findByCourseIdAndCourse_Educator_Id(courseId, educatorId)
+                .stream().map(ExamDTO::of).toList();
+    }
+
+    public List<ExamDTO> getStudentExamsByCourse(Long courseId, Long studentId) {
+        enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 강의에 대한 수강 등록이 없습니다."));
+
+        return examRepository.findByCourseId(studentId)
                 .stream().map(ExamDTO::of).toList();
     }
 
@@ -60,7 +67,7 @@ public class ExamService {
         }
 
         if (dto.getStatus() != ExamStatus.CANCELLED) {
-            throw new IllegalArgumentException("시험 상태는 'CANCELLED'로만 변경할 수 있습니다.");
+            throw new IllegalArgumentException("시험 상태는 'CANCELLED' 로만 변경할 수 있습니다.");
         }
 
         ExamValidator.validateSchedule(dto.getStartTime(), dto.getEndTime());

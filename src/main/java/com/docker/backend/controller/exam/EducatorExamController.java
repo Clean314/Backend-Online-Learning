@@ -1,4 +1,4 @@
-package com.docker.backend.controller.testScore;
+package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.ExamCreateDTO;
@@ -26,7 +26,7 @@ public class EducatorExamController {
     @GetMapping
     public ResponseEntity<List<ExamDTO>> getExams(@PathVariable("courseId") Long courseId,
                                                   Authentication authentication) {
-        return ResponseEntity.ok(examService.getExamsByCourse(courseId, getEducatorId(authentication)));
+        return ResponseEntity.ok(examService.getEducatorExamsByCourse(courseId, getEducatorId(authentication)));
     }
 
     @PostMapping

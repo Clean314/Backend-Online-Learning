@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,4 +29,7 @@ public class Exam {
     @Enumerated(EnumType.STRING)
     private ExamStatus status;
 
+    @OneToMany
+    @JoinColumn(name = "exam_id")
+    private List<Question> questions = new ArrayList<>();
 }
