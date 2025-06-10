@@ -29,7 +29,7 @@ public class Exam {
     @Enumerated(EnumType.STRING)
     private ExamStatus status;
 
-    @OneToMany
-    @JoinColumn(name = "exam_id")
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Question> questions = new ArrayList<>();
+
 }

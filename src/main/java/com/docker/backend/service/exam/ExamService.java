@@ -40,10 +40,13 @@ public class ExamService {
     }
 
     public ExamDTO getExamByIdAndCourse(Long courseId, Long educatorId, Long examId) {
-        Exam exam = examRepository.findById(examId)
+        courseRepository.findByIdAndEducator_Id(courseId, educatorId)
+                .orElseThrow(() -> new AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
+
+        examRepository.findById(examId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
 
-        return ExamDTO.of(exam);
+        return ExamDTO.of(examRepository.findByCourseIdAndId(courseId, examId));
     }
 
     public ExamDTO createExam(Long courseId, Long educatorId, ExamCreateDTO dto) {

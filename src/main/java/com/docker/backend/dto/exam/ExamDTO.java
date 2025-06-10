@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -34,18 +35,18 @@ public class ExamDTO {
     @JsonProperty("course_id")
     private Long courseId;
 
-    private List<Question> question;
+    private List<Question> questions;
 
     public static ExamDTO of(Exam exam) {
-        ExamDTO examDTO = new ExamDTO();
-        examDTO.setId(exam.getId());
-        examDTO.setTitle(exam.getTitle());
-        examDTO.setDescription(exam.getDescription());
-        examDTO.setStartTime(exam.getStartTime());
-        examDTO.setEndTime(exam.getEndTime());
-        examDTO.setStatus(exam.getStatus());
-        examDTO.setCourseId(exam.getCourse().getId());
-        examDTO.setQuestion(exam.getQuestions());
-        return examDTO;
+        ExamDTO dto = new ExamDTO();
+        dto.setId(exam.getId());
+        dto.setTitle(exam.getTitle());
+        dto.setDescription(exam.getDescription());
+        dto.setStartTime(exam.getStartTime());
+        dto.setEndTime(exam.getEndTime());
+        dto.setStatus(exam.getStatus());
+        dto.setCourseId(exam.getCourse().getId());
+        dto.setQuestions(exam.getQuestions());
+        return dto;
     }
 }

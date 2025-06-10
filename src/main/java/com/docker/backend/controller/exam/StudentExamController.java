@@ -26,12 +26,12 @@ public class StudentExamController {
         return ResponseEntity.ok(examService.getStudentExamsByCourse(courseId, getStudentId(authentication)));
     }
 
-    @GetMapping("/{examId}")
-    public ResponseEntity<ExamDTO> getExam(@PathVariable("courseId") Long courseId,
-                                           @PathVariable("examId") Long examId,
-                                           Authentication authentication) {
-        return ResponseEntity.ok(examService.getExamByIdAndCourse(courseId, getStudentId(authentication), examId));
-    }
+//    @GetMapping("/{examId}")
+//    public ResponseEntity<ExamDTO> getExam(@PathVariable("courseId") Long courseId,
+//                                           @PathVariable("examId") Long examId,
+//                                           Authentication authentication) {
+//        return ResponseEntity.ok(examService.getExamByIdAndCourse(courseId, getStudentId(authentication), examId));
+//    }
 
 //    @PostMapping("/{examId}/submit")
 //    public ResponseEntity<Void> submitExam(@PathVariable("courseId") Long courseId,

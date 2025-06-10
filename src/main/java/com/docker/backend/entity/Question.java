@@ -1,20 +1,25 @@
 package com.docker.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String number;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Exam exam;
 
-    private String content; // 문제 내용
+    private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Answer answer;
+    private String answer;
 
-    private Integer score;
+    private int score;
 }

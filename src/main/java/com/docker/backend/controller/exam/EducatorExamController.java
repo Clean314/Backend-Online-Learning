@@ -4,6 +4,7 @@ import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.ExamCreateDTO;
 import com.docker.backend.dto.exam.ExamDTO;
 import com.docker.backend.dto.exam.ExamUpdateDTO;
+import com.docker.backend.entity.Exam;
 import com.docker.backend.service.exam.ExamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,8 @@ public class EducatorExamController {
 
     @GetMapping("/{examId}")
     public ResponseEntity<ExamDTO> getExam(@PathVariable("courseId") Long courseId,
-                                           @PathVariable("examId") Long examId,
-                                           Authentication authentication) {
+                                        @PathVariable("examId") Long examId,
+                                        Authentication authentication) {
         return ResponseEntity.ok(examService.getExamByIdAndCourse(courseId, getEducatorId(authentication), examId));
     }
 

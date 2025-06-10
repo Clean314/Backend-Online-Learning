@@ -69,34 +69,19 @@ INSERT INTO exam (id, course_id, title, description, start_time, end_time) VALUE
 ALTER TABLE exam ALTER COLUMN id RESTART WITH 7;
 
 -- Insert Exam Questions
-INSERT INTO question (exam_id, content, answer) VALUES
-(1, 'Java의 기본 데이터 타입이 아닌 것은?', 'String'),
-(1, '다음 중 Java에서 객체지향 프로그래밍의 4대 원칙이 아닌 것은?', '병렬성'),
-(2, 'Java에서 멀티스레딩을 구현하기 위한 방법이 아닌 것은?', '인터페이스 상속'),
-(2, 'Java Stream API의 특징이 아닌 것은?', '동기적 처리'),
-(3, 'OSI 7계층에서 전송 계층에 해당하는 프로토콜은?', 'TCP'),
-(3, '다음 중 네트워크 주소 변환(NAT)의 목적이 아닌 것은?', '데이터 암호화'),
-(4, '기계학습에서 분류 문제의 예시가 아닌 것은?', '주식 가격 예측'),
-(4, '다음 중 회귀 분석의 목적이 아닌 것은?', '클러스터링'),
-(5, 'SQL에서 인덱스의 주된 목적은 무엇인가요?', '검색 성능 향상'),
-(5, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인'),
-(6, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증'),
-(6, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증');
-
--- Insert Exam Answers
-INSERT INTO answer (exam_id, question_id, answer) VALUES
-(1, 1, 'String'),
-(1, 2, '상속'),
-(2, 3, '추상'),
-(2, 4, '동기적 처리'),
-(3, 5, 'UDP'),
-(3, 6, '텐플레이스'),
-(4, 7, '회귀 분석'),
-(4, 8, '분류'),
-(5, 9, '검색 성능 향상'),
-(5, 10, '조인'),
-(6, 11, '입력값 검증'),
-(6, 12, '토큰 기반 인증');
+INSERT INTO question (exam_id, number, content, answer, score) VALUES
+(1, 1, 'Java의 기본 데이터 타입이 아닌 것은?', 'String', 2),
+(1, 2, '다음 중 Java에서 객체지향 프로그래밍의 4대 원칙이 아닌 것은?', '병렬성', 3),
+(2, 1, 'Java에서 멀티스레딩을 구현하기 위한 방법이 아닌 것은?', '인터페이스 상속', 5),
+(2, 2, 'Java Stream API의 특징이 아닌 것은?', '동기적 처리', 3),
+(3, 1, 'OSI 7계층에서 전송 계층에 해당하는 프로토콜은?', 'TCP', 2),
+(3, 2, '다음 중 네트워크 주소 변환(NAT)의 목적이 아닌 것은?', '데이터 암호화', 3),
+(4, 1, '기계학습에서 분류 문제의 예시가 아닌 것은?', '주식 가격 예측', 2),
+(4, 2, '다음 중 회귀 분석의 목적이 아닌 것은?', '클러스터링', 3),
+(5, 1, 'SQL에서 인덱스의 주된 목적은 무엇인가요?', '검색 성능 향상', 4),
+(5, 2, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인', 5),
+(6, 1, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증', 5),
+(6, 2, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증', 5);
 
 --Insert Lecture
 INSERT INTO lecture (title, video_url, course_id, created_at, updated_at) VALUES
