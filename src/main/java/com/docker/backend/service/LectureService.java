@@ -71,10 +71,10 @@ public class LectureService {
                     ? lectureRepository.existsByVideoUrlAndCourseAndIdNot(lecture.getVideoUrl(), courses, lecture.getLectureId())
                     : lectureRepository.existsByVideoUrlAndCourse(lecture.getVideoUrl(), courses);
 
-            System.out.println("중복 검사 중 - title: " + lecture.getTitle());
-            System.out.println("lectureId: " + lecture.getLectureId());
-            System.out.println("isTitleDuplicate: " + isTitleDuplicate);
-            System.out.println("isUrlDuplicate: " + isUrlDuplicate);
+//            System.out.println("중복 검사 중 - title: " + lecture.getTitle());
+//            System.out.println("lectureId: " + lecture.getLectureId());
+//            System.out.println("isTitleDuplicate: " + isTitleDuplicate);
+//            System.out.println("isUrlDuplicate: " + isUrlDuplicate);
             String error = "";
             if (isTitleDuplicate && isUrlDuplicate) error = "둘다";
             else if (isTitleDuplicate) error = "제목";
