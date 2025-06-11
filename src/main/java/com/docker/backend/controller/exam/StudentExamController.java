@@ -1,7 +1,7 @@
 package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
-import com.docker.backend.dto.exam.ExamDTO;
+import com.docker.backend.dto.exam.EducatorExamDTO;
 import com.docker.backend.service.exam.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class StudentExamController {
     private final ExamService examService;
 
     @GetMapping
-    public ResponseEntity<List<ExamDTO>> getExams(@PathVariable("courseId") Long courseId,
-                                                  Authentication authentication) {
+    public ResponseEntity<List<EducatorExamDTO>> getExams(@PathVariable("courseId") Long courseId,
+                                                          Authentication authentication) {
         return ResponseEntity.ok(examService.getStudentExamsByCourse(courseId, getStudentId(authentication)));
     }
 

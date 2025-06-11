@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,4 +18,6 @@ public class ExamCreateDTO {
 
     @JsonProperty("end_time")
     private LocalDateTime endTime;
+
+    private List<EducatorQuestionDTO> questions;
 }

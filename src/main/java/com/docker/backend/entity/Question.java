@@ -12,7 +12,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String number;
+    private int number;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Exam exam;
