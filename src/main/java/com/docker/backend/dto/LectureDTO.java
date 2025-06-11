@@ -1,13 +1,11 @@
 package com.docker.backend.dto;
 
-import com.docker.backend.entity.Course;
-import com.docker.backend.entity.Lecture;
+import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.lecture.Lecture;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

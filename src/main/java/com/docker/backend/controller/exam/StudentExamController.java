@@ -2,6 +2,7 @@ package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.EducatorExamDTO;
+import com.docker.backend.dto.exam.StudentExamDTO;
 import com.docker.backend.service.exam.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,26 +22,17 @@ public class StudentExamController {
     private final ExamService examService;
 
     @GetMapping
-    public ResponseEntity<List<EducatorExamDTO>> getExams(@PathVariable("courseId") Long courseId,
-                                                          Authentication authentication) {
+    public ResponseEntity<List<StudentExamDTO>> getExams(@PathVariable("courseId") Long courseId,
+                                                         Authentication authentication) {
         return ResponseEntity.ok(examService.getStudentExamsByCourse(courseId, getStudentId(authentication)));
     }
 
-//    @GetMapping("/{examId}")
-//    public ResponseEntity<ExamDTO> getExam(@PathVariable("courseId") Long courseId,
-//                                           @PathVariable("examId") Long examId,
-//                                           Authentication authentication) {
-//        return ResponseEntity.ok(examService.getExamByIdAndCourse(courseId, getStudentId(authentication), examId));
-//    }
-
-//    @PostMapping("/{examId}/submit")
-//    public ResponseEntity<Void> submitExam(@PathVariable("courseId") Long courseId,
-//                                           @PathVariable("examId") Long examId,
-//                                           Authentication authentication) {
-//        Long studentId = getStudentId(authentication);
-//        examService.submitExam(courseId, studentId, examId);
-//        return ResponseEntity.noContent().build();
-//    }
+    @GetMapping("/{examId}")
+    public ResponseEntity<StudentExamDTO> getExam(@PathVariable("courseId") Long courseId,
+                                           @PathVariable("examId") Long examId,
+                                           Authentication authentication) {
+        return ResponseEntity.ok(examService.getStudentExamByIdAndCourse(courseId, getStudentId(authentication), examId));
+    }
 
 
     private Long getStudentId(Authentication authentication) {

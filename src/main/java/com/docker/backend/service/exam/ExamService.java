@@ -1,15 +1,13 @@
 package com.docker.backend.service.exam;
 
 import com.docker.backend.dto.exam.*;
-import com.docker.backend.entity.Course;
-import com.docker.backend.entity.Exam;
-import com.docker.backend.entity.Question;
+import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.exam.Exam;
 import com.docker.backend.enums.ExamStatus;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.exam.ExamRepository;
-import com.docker.backend.repository.exam.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,7 @@ public class ExamService {
     private final CourseRepository courseRepository;
     private final ExamRepository examRepository;
     private final EnrollmentRepository enrollmentRepository;
-    private final QuestionRepository questionRepository;
+//    private final QuestionRepository questionRepository;
 
     public List<EducatorExamDTO> getEducatorExamsByCourse(Long courseId, Long educatorId) {
         verifyCourseOwnership(courseId, educatorId);
@@ -33,12 +31,12 @@ public class ExamService {
                 .stream().map(EducatorExamDTO::of).toList();
     }
 
-    public List<EducatorExamDTO> getStudentExamsByCourse(Long courseId, Long studentId) {
+    public List<StudentExamDTO> getStudentExamsByCourse(Long courseId, Long studentId) {
         enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 강의에 대한 수강 등록이 없습니다."));
 
         return examRepository.findByCourseId(studentId)
-                .stream().map(EducatorExamDTO::of).toList();
+                .stream().map(StudentExamDTO::of).toList();
     }
 
     public EducatorExamDTO getExamByIdAndCourse(Long courseId, Long educatorId, Long examId) {
@@ -51,6 +49,16 @@ public class ExamService {
         return EducatorExamDTO.of(examRepository.findByCourseIdAndId(courseId, examId));
     }
 
+    public StudentExamDTO getStudentExamByIdAndCourse(Long courseId, Long educatorId, Long examId) {
+        courseRepository.findByIdAndEducator_Id(courseId, educatorId)
+                .orElseThrow(() -> new AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
+
+        examRepository.findById(examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
+
+        return StudentExamDTO.of(examRepository.findByCourseIdAndId(courseId, examId));
+    }
+
     public EducatorExamDTO createExam(Long courseId, Long educatorId, ExamCreateDTO dto) {
         Course course = courseRepository.findByIdAndEducator_Id(courseId, educatorId)
                 .orElseThrow(() -> new AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
@@ -60,7 +68,6 @@ public class ExamService {
         Exam saved = examRepository.save(exam);
         return EducatorExamDTO.of(saved);
     }
-
 
     public EducatorExamDTO updateExam(Long examId, Long educatorId, ExamUpdateDTO dto) {
         Exam exam = examRepository.findById(examId)

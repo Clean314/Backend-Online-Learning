@@ -1,8 +1,8 @@
-package com.docker.backend.service;
+package com.docker.backend.service.member;
 
-import com.docker.backend.dto.member.MemberDTO;
+import com.docker.backend.dto.user.MemberDTO;
 import com.docker.backend.entity.user.Member;
-import com.docker.backend.repository.MemberRepository;
+import com.docker.backend.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;

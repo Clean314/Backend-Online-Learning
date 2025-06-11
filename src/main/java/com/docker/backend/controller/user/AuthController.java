@@ -1,15 +1,15 @@
 package com.docker.backend.controller.user;
 
 import com.docker.backend.constant.ApplicationConstants;
-import com.docker.backend.dto.member.LoginRequestDTO;
-import com.docker.backend.dto.member.LoginResponseDTO;
-import com.docker.backend.dto.member.RegisterRequestDTO;
+import com.docker.backend.dto.user.LoginRequestDTO;
+import com.docker.backend.dto.user.LoginResponseDTO;
+import com.docker.backend.dto.user.RegisterRequestDTO;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.MemberRole;
 import com.docker.backend.filter.JwtService;
 import com.docker.backend.entity.user.Member;
-import com.docker.backend.service.MemberService;
+import com.docker.backend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

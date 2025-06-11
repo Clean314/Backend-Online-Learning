@@ -1,14 +1,14 @@
-package com.docker.backend.service.admin;
+package com.docker.backend.service.member;
 
 import com.docker.backend.dto.admin.AdminCourseDTO;
 import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.dto.admin.AdminMemberDTO;
-import com.docker.backend.entity.Course;
+import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.user.Admin;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.MemberRole;
-import com.docker.backend.repository.MemberRepository;
+import com.docker.backend.repository.member.MemberRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import jakarta.persistence.EntityNotFoundException;

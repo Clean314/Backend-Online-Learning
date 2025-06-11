@@ -2,8 +2,8 @@ package com.docker.backend.service.enrollment;
 
 import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.dto.enrollment.EnrollmentCourseDTO;
-import com.docker.backend.entity.Course;
-import com.docker.backend.entity.Enrollment;
+import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.enrollment.Enrollment;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.Status;

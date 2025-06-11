@@ -1,6 +1,6 @@
 package com.docker.backend.repository.exam;
 
-import com.docker.backend.entity.Exam;
+import com.docker.backend.entity.exam.Exam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

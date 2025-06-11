@@ -1,5 +1,6 @@
 package com.docker.backend.entity;
 
+import com.docker.backend.entity.lecture.Lecture;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

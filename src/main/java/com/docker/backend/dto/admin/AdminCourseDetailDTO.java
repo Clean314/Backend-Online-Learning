@@ -1,9 +1,8 @@
 package com.docker.backend.dto.admin;
 
-import com.docker.backend.entity.Course;
+import com.docker.backend.entity.course.Course;
 import com.docker.backend.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.docker.backend.repository.enrollment;
 
-import com.docker.backend.entity.Course;
-import com.docker.backend.entity.Enrollment;
+import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.enrollment.Enrollment;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;

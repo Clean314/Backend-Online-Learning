@@ -1,5 +1,6 @@
-package com.docker.backend.entity;
+package com.docker.backend.entity.enrollment;
 
+import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.Status;
 import jakarta.persistence.*;

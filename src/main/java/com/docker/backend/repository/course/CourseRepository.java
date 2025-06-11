@@ -1,6 +1,6 @@
 package com.docker.backend.repository.course;
 
-import com.docker.backend.entity.Course;
+import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.user.Educator;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;

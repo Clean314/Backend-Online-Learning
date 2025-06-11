@@ -1,7 +1,7 @@
 package com.docker.backend;
 
 import com.docker.backend.entity.user.Member;
-import com.docker.backend.repository.MemberRepository;
+import com.docker.backend.repository.member.MemberRepository;
 import com.docker.backend.repository.user.AdminMemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

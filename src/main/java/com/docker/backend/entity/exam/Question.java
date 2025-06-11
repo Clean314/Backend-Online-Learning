@@ -1,4 +1,4 @@
-package com.docker.backend.entity;
+package com.docker.backend.entity.exam;
 
 import jakarta.persistence.*;
 import lombok.Getter;

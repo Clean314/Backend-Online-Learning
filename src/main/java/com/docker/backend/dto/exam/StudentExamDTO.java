@@ -16,8 +16,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EducatorExamDTO {
-
+public class StudentExamDTO {
     private Long id;
     private String title;
     private String description;
@@ -33,10 +32,10 @@ public class EducatorExamDTO {
     @JsonProperty("course_id")
     private Long courseId;
 
-    private List<EducatorQuestionDTO> questions;
+    private List<StudentQuestionDTO> questions;
 
-    public static EducatorExamDTO of(Exam exam) {
-        EducatorExamDTO dto = new EducatorExamDTO();
+    public static StudentExamDTO of(Exam exam) {
+        StudentExamDTO dto = new StudentExamDTO();
         dto.setId(exam.getId());
         dto.setTitle(exam.getTitle());
         dto.setDescription(exam.getDescription());
@@ -45,14 +44,13 @@ public class EducatorExamDTO {
         dto.setStatus(exam.getStatus());
         dto.setCourseId(exam.getCourse().getId());
 
-        List<EducatorQuestionDTO> questionDTOs =
+        List<StudentQuestionDTO> questionDTOs =
                 exam.getQuestions()
                         .stream()
-                        .map(EducatorQuestionDTO::of)
+                        .map(StudentQuestionDTO::of)
                         .collect(Collectors.toList());
         dto.setQuestions(questionDTOs);
 
         return dto;
     }
-
 }

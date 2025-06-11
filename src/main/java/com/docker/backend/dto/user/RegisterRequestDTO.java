@@ -1,4 +1,4 @@
-package com.docker.backend.dto.member;
+package com.docker.backend.dto.user;
 
 import com.docker.backend.enums.MemberRole;
 import lombok.Getter;

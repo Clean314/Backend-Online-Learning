@@ -2,7 +2,7 @@ package com.docker.backend.controller.admin;
 
 import com.docker.backend.dto.admin.AdminCourseDetailDTO;
 import com.docker.backend.dto.admin.AdminMemberDTO;
-import com.docker.backend.service.admin.AdminService;
+import com.docker.backend.service.member.AdminService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

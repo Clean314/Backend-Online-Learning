@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/educator/exam/{courseId}")
@@ -39,8 +40,8 @@ public class EducatorExamController {
 
     @GetMapping("/{examId}")
     public ResponseEntity<EducatorExamDTO> getExam(@PathVariable("courseId") Long courseId,
-                                                   @PathVariable("examId") Long examId,
-                                                   Authentication authentication) {
+                                                  @PathVariable("examId") Long examId,
+                                                  Authentication authentication) {
         return ResponseEntity.ok(examService.getExamByIdAndCourse(courseId, getEducatorId(authentication), examId));
     }
 

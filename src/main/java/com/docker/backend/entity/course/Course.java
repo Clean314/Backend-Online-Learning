@@ -1,9 +1,9 @@
-package com.docker.backend.entity;
+package com.docker.backend.entity.course;
 
+import com.docker.backend.entity.lecture.Lecture;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.enums.Difficulty;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;

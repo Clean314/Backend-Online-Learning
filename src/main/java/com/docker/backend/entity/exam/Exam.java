@@ -1,5 +1,6 @@
-package com.docker.backend.entity;
+package com.docker.backend.entity.exam;
 
+import com.docker.backend.entity.course.Course;
 import com.docker.backend.enums.ExamStatus;
 import jakarta.persistence.*;
 import lombok.Getter;

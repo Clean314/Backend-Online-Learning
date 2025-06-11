@@ -3,7 +3,6 @@ package com.docker.backend.controller.enrollment;
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.dto.enrollment.EnrollmentCourseDTO;
-import com.docker.backend.entity.Course;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import lombok.RequiredArgsConstructor;

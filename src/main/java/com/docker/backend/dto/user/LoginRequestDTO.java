@@ -1,4 +1,4 @@
-package com.docker.backend.dto.member;
+package com.docker.backend.dto.user;
 
 public record LoginRequestDTO(String username, String password) {
 }

@@ -1,7 +1,7 @@
 package com.docker.backend.controller.Lecture;
 
 import com.docker.backend.dto.LectureDTO;
-import com.docker.backend.service.LectureService;
+import com.docker.backend.service.lecture.LectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

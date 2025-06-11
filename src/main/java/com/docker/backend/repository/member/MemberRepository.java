@@ -1,4 +1,4 @@
-package com.docker.backend.repository;
+package com.docker.backend.repository.member;
 
 import com.docker.backend.entity.user.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

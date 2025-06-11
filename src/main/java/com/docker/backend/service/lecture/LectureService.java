@@ -1,9 +1,9 @@
-package com.docker.backend.service;
+package com.docker.backend.service.lecture;
 
 import com.docker.backend.dto.LectureDTO;
-import com.docker.backend.entity.Course;
-import com.docker.backend.entity.Lecture;
-import com.docker.backend.repository.LectureRepository;
+import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.lecture.Lecture;
+import com.docker.backend.repository.lecture.LectureRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

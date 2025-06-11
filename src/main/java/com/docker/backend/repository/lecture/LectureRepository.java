@@ -1,8 +1,7 @@
-package com.docker.backend.repository;
+package com.docker.backend.repository.lecture;
 
-import com.docker.backend.dto.LectureDTO;
-import com.docker.backend.entity.Course;
-import com.docker.backend.entity.Lecture;
+import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.lecture.Lecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
