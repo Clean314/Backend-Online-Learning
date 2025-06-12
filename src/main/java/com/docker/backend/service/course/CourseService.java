@@ -68,6 +68,7 @@ public class CourseService {
         course.setPoint(req.getPoint());
         course.setDescription(req.getDescription());
         course.setMaxEnrollment(req.getMaxEnrollment());
+        course.setAvailableEnrollment(req.getMaxEnrollment());
         return courseRepository.save(course).getId();
     }
 
