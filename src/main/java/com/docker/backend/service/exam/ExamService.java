@@ -23,7 +23,6 @@ public class ExamService {
     private final CourseRepository courseRepository;
     private final ExamRepository examRepository;
     private final EnrollmentRepository enrollmentRepository;
-//    private final QuestionRepository questionRepository;
 
     public List<EducatorExamDTO> getEducatorExamsByCourse(Long courseId, Long educatorId) {
         verifyCourseOwnership(courseId, educatorId);
@@ -41,7 +40,7 @@ public class ExamService {
 
     public EducatorExamDTO getExamByIdAndCourse(Long courseId, Long educatorId, Long examId) {
         courseRepository.findByIdAndEducator_Id(courseId, educatorId)
-                .orElseThrow(() -> new AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
+                .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
 
         examRepository.findById(examId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
@@ -51,7 +50,7 @@ public class ExamService {
 
     public StudentExamDTO getStudentExamByIdAndCourse(Long courseId, Long educatorId, Long examId) {
         courseRepository.findByIdAndEducator_Id(courseId, educatorId)
-                .orElseThrow(() -> new AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
+                .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
 
         examRepository.findById(examId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
@@ -61,10 +60,11 @@ public class ExamService {
 
     public EducatorExamDTO createExam(Long courseId, Long educatorId, ExamCreateDTO dto) {
         Course course = courseRepository.findByIdAndEducator_Id(courseId, educatorId)
-                .orElseThrow(() -> new AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
+                .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
         ExamValidator.validateSchedule(dto.getStartTime(), dto.getEndTime());
 
         Exam exam = ExamMapper.toEntity(dto, course);
+        exam.setStatus(ExamStatus.PREPARING);
         Exam saved = examRepository.save(exam);
         return EducatorExamDTO.of(saved);
     }
@@ -74,15 +74,15 @@ public class ExamService {
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
 
         if (!exam.getCourse().getEducator().getId().equals(educatorId)) {
-            throw new AccessDeniedException("수정 권한이 없습니다.");
+            throw new GlobalExceptionHandler.AccessDeniedException("수정 권한이 없습니다.");
         }
 
         if (Duration.between(LocalDateTime.now(), exam.getStartTime()).toHours() < 24) {
-            throw new IllegalStateException("시험 시작 24시간 전까지만 수정할 수 있습니다.");
+            throw new GlobalExceptionHandler.UpdateLimitExamException("시험 시작 24시간 전까지만 수정할 수 있습니다.");
         }
 
         if (dto.getStatus() != ExamStatus.CANCELLED) {
-            throw new IllegalArgumentException("시험 상태는 'CANCELLED' 로만 변경할 수 있습니다.");
+            throw new GlobalExceptionHandler.InvalidExamStateException(exam.getStatus().name(), dto.getStatus().name());
         }
 
         ExamValidator.validateSchedule(dto.getStartTime(), dto.getEndTime());
@@ -93,9 +93,24 @@ public class ExamService {
         return EducatorExamDTO.of(examRepository.save(exam));
     }
 
+    public void deleteExam(Long examId, Long educatorId) {
+        Exam exam = examRepository.findById(examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
+
+        if (!exam.getCourse().getEducator().getId().equals(educatorId)) {
+            throw new GlobalExceptionHandler.AccessDeniedException("삭제 권한이 없습니다.");
+        }
+
+        if (Duration.between(LocalDateTime.now(), exam.getStartTime()).toHours() < 24) {
+            throw new GlobalExceptionHandler.UpdateLimitExamException("시험 시작 24시간 전까지만 삭제할 수 있습니다.");
+        }
+
+        examRepository.delete(exam);
+    }
+
     private void verifyCourseOwnership(Long courseId, Long educatorId) {
         if (!courseRepository.existsByIdAndEducator_Id(courseId, educatorId)) {
-            throw new AccessDeniedException("강의 접근 권한 없음");
+            throw new GlobalExceptionHandler.AccessDeniedException("강의 접근 권한이 없습니다.");
         }
     }
 }

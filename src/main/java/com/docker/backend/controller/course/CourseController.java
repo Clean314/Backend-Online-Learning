@@ -50,12 +50,12 @@ public class CourseController {
     }
 
     @PatchMapping("/course-id/{courseId}")
-    public ResponseEntity<Void> updateCourse(Authentication authentication,
+    public ResponseEntity<Long> updateCourse(Authentication authentication,
                                              @PathVariable("courseId") Long courseId,
                                              @RequestBody CourseDTO req) {
         Educator educator = authUtil.getEducator(authentication);
-        courseService.updateCourse(educator, courseId, req);
-        return ResponseEntity.noContent().build();
+        ;
+        return ResponseEntity.ok(courseService.updateCourse(educator, courseId, req));
     }
 
     @DeleteMapping("/course-id/{courseId}")

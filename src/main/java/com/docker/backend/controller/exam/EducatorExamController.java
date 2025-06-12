@@ -54,6 +54,14 @@ public class EducatorExamController {
         return ResponseEntity.ok(updated);
     }
 
+    @DeleteMapping("/{examId}")
+    public ResponseEntity<Void> deleteExam(@PathVariable("courseId") Long courseId,
+                                           @PathVariable("examId") Long examId,
+                                           Authentication authentication) {
+        examService.deleteExam(examId, getEducatorId(authentication));
+        return ResponseEntity.noContent().build();
+    }
+
     private Long getEducatorId(Authentication authentication) {
         return authUtil.getEducator(authentication).getId();
     }
