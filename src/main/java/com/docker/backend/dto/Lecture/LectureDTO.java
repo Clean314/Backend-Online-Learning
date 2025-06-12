@@ -1,4 +1,4 @@
-package com.docker.backend.dto;
+package com.docker.backend.dto.Lecture;
 
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.lecture.Lecture;

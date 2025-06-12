@@ -1,6 +1,6 @@
 package com.docker.backend.service.lecture;
 
-import com.docker.backend.dto.LectureDTO;
+import com.docker.backend.dto.Lecture.LectureDTO;
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.lecture.Lecture;
 import com.docker.backend.repository.lecture.LectureRepository;

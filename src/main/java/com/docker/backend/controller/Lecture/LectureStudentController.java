@@ -1,6 +1,6 @@
 package com.docker.backend.controller.Lecture;
 
-import com.docker.backend.dto.LectureDTO;
+import com.docker.backend.dto.Lecture.LectureDTO;
 import com.docker.backend.service.lecture.LectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
