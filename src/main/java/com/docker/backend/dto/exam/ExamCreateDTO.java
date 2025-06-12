@@ -8,8 +8,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@Setter
+//@Setter
 public class ExamCreateDTO {
+
+    @JsonProperty("course_id")
+    private Long courseId;
+
     private String title;
     private String description;
 

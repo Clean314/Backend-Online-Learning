@@ -1,10 +1,10 @@
-package com.docker.backend.dto.exam;
+package com.docker.backend.dto.exam.question;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class ExamRequestDTO {
+public class QuestionRequestDTO {
     @JsonProperty("course_id")
     private Long courseId;
 

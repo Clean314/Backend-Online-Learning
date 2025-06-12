@@ -2,6 +2,8 @@ package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.*;
+import com.docker.backend.dto.exam.question.QuestionCreateUpdateForm;
+import com.docker.backend.dto.exam.question.QuestionRequestDTO;
 import com.docker.backend.service.exam.ExamService;
 import com.docker.backend.service.exam.question.QuestionService;
 import jakarta.validation.Valid;
@@ -16,7 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/educator/exam/{courseId}")
+@RequestMapping("/educator/exam")
 @PreAuthorize("hasRole('EDUCATOR')")
 public class EducatorExamController {
 
@@ -25,40 +27,35 @@ public class EducatorExamController {
     private final QuestionService questionService;
 
     @GetMapping
-    public ResponseEntity<List<EducatorExamDTO>> getExams(@PathVariable("courseId") Long courseId,
-                                                          Authentication authentication) {
-        return ResponseEntity.ok(examService.getEducatorExamsByCourse(courseId, getEducatorId(authentication)));
+    public ResponseEntity<List<EducatorExamDTO>> getExams(Authentication authentication,
+                                                          @RequestBody ExamRequestDTO examRequestDTO) {
+        return ResponseEntity.ok(examService.getEducatorExamsByCourse(examRequestDTO.getCourseId(), getEducatorId(authentication)));
     }
 
     @PostMapping
-    public ResponseEntity<EducatorExamDTO> createExam(@PathVariable("courseId") Long courseId,
-                                                      @RequestBody @Valid ExamCreateDTO dto,
+    public ResponseEntity<EducatorExamDTO> createExam(@RequestBody @Valid ExamCreateDTO dto,
                                                       Authentication authentication) {
-        EducatorExamDTO created = examService.createExam(courseId, getEducatorId(authentication), dto);
+        EducatorExamDTO created = examService.createExam(dto.getCourseId(), getEducatorId(authentication), dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping("/{examId}")
-    public ResponseEntity<EducatorExamDTO> getExam(@PathVariable("courseId") Long courseId,
-                                                  @PathVariable("examId") Long examId,
+    public ResponseEntity<EducatorExamDTO> getExam(@RequestBody ExamRequestDTO examRequestDTO,
                                                   Authentication authentication) {
-        return ResponseEntity.ok(examService.getExamByIdAndCourse(courseId, getEducatorId(authentication), examId));
+        return ResponseEntity.ok(examService.getExamByIdAndCourse(examRequestDTO.getCourseId(), getEducatorId(authentication), examRequestDTO.getExamId());
     }
 
     @PutMapping("/{examId}")
-    public ResponseEntity<EducatorExamDTO> updateExam(@PathVariable("courseId") Long courseId,
-                                                      @PathVariable("examId") Long examId,
-                                                      @RequestBody @Valid ExamUpdateDTO dto,
+    public ResponseEntity<EducatorExamDTO> updateExam(@RequestBody @Valid ExamUpdateDTO dto,
                                                       Authentication authentication) {
-        EducatorExamDTO updated = examService.updateExam(examId, getEducatorId(authentication), dto);
+        EducatorExamDTO updated = examService.updateExam(dto.getCourseId(), getEducatorId(authentication), dto);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{examId}")
-    public ResponseEntity<Void> deleteExam(@PathVariable("courseId") Long courseId,
-                                           @PathVariable("examId") Long examId,
+    public ResponseEntity<Void> deleteExam(
                                            Authentication authentication) {
-        examService.deleteExam(examId, getEducatorId(authentication));
+//        examService.deleteExam(examId, getEducatorId(authentication));
         return ResponseEntity.noContent().build();
     }
 
@@ -66,9 +63,23 @@ public class EducatorExamController {
         return authUtil.getEducator(authentication).getId();
     }
 
-    @GetMapping("/{examId}")
+    @GetMapping("/questions")
     public ResponseEntity<List<EducatorQuestionDTO>> getQuestions(Authentication authentication,
-                                                                  @RequestBody ExamRequestDTO request) {
-        return ResponseEntity.ok(questionService);
+                                                                  @RequestBody QuestionRequestDTO request) {
+        return ResponseEntity.ok(questionService.EducatorGetAllQuestionByExamId(getEducatorId(authentication), request));
+    }
+
+    @PostMapping("/questions")
+    public ResponseEntity<EducatorQuestionDTO> createQuestion(Authentication authentication,
+                                                              @RequestBody QuestionCreateUpdateForm questionCreateUpdateForm){
+        EducatorQuestionDTO created = questionService.EducatorCreateQuestion(getEducatorId(authentication), questionCreateUpdateForm);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PatchMapping("/questions")
+    public ResponseEntity<EducatorQuestionDTO> updateQuestion(Authentication authentication,
+                                              @RequestBody QuestionCreateUpdateForm questionCreateUpdateForm){
+        EducatorQuestionDTO updated = questionService.EducatorUpdateQuestionById(getEducatorId(authentication), questionCreateUpdateForm);
+        return ResponseEntity.ok(updated);
     }
 }
