@@ -22,7 +22,7 @@ public class CourseService {
     private final EnrollmentService enrollmentService;
 
     public List<CourseDTO> getAllCourses() {
-        return courseRepository.findAllByOrderByCreatedAtDesc().stream().map(course -> {  // .findAll() -> 강의 등록일순으로 정렬로 바꿈
+        return courseRepository.findAllByOrderByCreatedAtDesc().stream().map(course -> {
             Educator educator = course.getEducator();
             return new CourseDTO(
                     course.getId(),
@@ -54,12 +54,12 @@ public class CourseService {
         }).toList();
     }
 
-    public void updateCourse(Educator educator, Long courseId, CourseDTO req) {
+    public Long updateCourse(Educator educator, Long courseId, CourseDTO req) {
         Course course = courseRepository.findByEducatorAndId(educator, courseId)
-                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+                .orElseThrow(() -> new IllegalArgumentException("강의를 찾을 수 없습니다."));
 
         if (enrollmentService.getCountByCourseId(courseId) > 0) {
-            throw new IllegalArgumentException("Cannot update course with existing enrollments");
+            throw new IllegalArgumentException("이미 수강 등록된 강의는 수정할 수 없습니다.");
         }
 
         course.setCourseName(req.getCourseName());
@@ -68,15 +68,15 @@ public class CourseService {
         course.setPoint(req.getPoint());
         course.setDescription(req.getDescription());
         course.setMaxEnrollment(req.getMaxEnrollment());
-        courseRepository.save(course);
+        return courseRepository.save(course).getId();
     }
 
     public void deleteCourse(Educator educator, Long courseId) {
         Course course = courseRepository.findByEducatorAndId(educator, courseId)
-                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+                .orElseThrow(() -> new IllegalArgumentException("강의를 찾을 수 없습니다."));
 
         if (enrollmentService.getCountByCourseId(courseId) > 0) {
-            throw new IllegalArgumentException("Cannot delete course with existing enrollments");
+            throw new IllegalArgumentException("이미 수강 등록된 강의는 삭제할 수 없습니다.");
         }
 
         courseRepository.delete(course);
@@ -97,7 +97,7 @@ public class CourseService {
 
     public CourseDTO getCourse(Educator educator, Long courseId) {
         Course course = courseRepository.findByEducatorAndId(educator, courseId)
-                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+                .orElseThrow(() -> new IllegalArgumentException("강의를 찾을 수 없습니다."));
 
         return new CourseDTO(
                 course.getId(),
