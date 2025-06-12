@@ -1,6 +1,7 @@
 package com.docker.backend.entity.exam;
 
 import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.exam.question.Question;
 import com.docker.backend.enums.ExamStatus;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,5 +1,6 @@
-package com.docker.backend.entity.exam;
+package com.docker.backend.entity.exam.question;
 
+import com.docker.backend.entity.exam.Exam;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

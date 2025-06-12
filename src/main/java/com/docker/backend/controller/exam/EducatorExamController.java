@@ -1,10 +1,9 @@
 package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
-import com.docker.backend.dto.exam.ExamCreateDTO;
-import com.docker.backend.dto.exam.EducatorExamDTO;
-import com.docker.backend.dto.exam.ExamUpdateDTO;
+import com.docker.backend.dto.exam.*;
 import com.docker.backend.service.exam.ExamService;
+import com.docker.backend.service.exam.question.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,7 @@ public class EducatorExamController {
 
     private final AuthUtil authUtil;
     private final ExamService examService;
+    private final QuestionService questionService;
 
     @GetMapping
     public ResponseEntity<List<EducatorExamDTO>> getExams(@PathVariable("courseId") Long courseId,
@@ -64,5 +64,11 @@ public class EducatorExamController {
 
     private Long getEducatorId(Authentication authentication) {
         return authUtil.getEducator(authentication).getId();
+    }
+
+    @GetMapping("/{examId}")
+    public ResponseEntity<List<EducatorQuestionDTO>> getQuestions(Authentication authentication,
+                                                                  @RequestBody ExamRequestDTO request) {
+        return ResponseEntity.ok(questionService);
     }
 }

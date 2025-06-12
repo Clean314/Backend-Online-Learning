@@ -1,6 +1,6 @@
 package com.docker.backend.dto.exam;
 
-import com.docker.backend.entity.exam.Question;
+import com.docker.backend.entity.exam.question.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

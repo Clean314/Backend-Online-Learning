@@ -2,7 +2,7 @@ package com.docker.backend.dto.exam;
 
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.exam.Exam;
-import com.docker.backend.entity.exam.Question;
+import com.docker.backend.entity.exam.question.Question;
 import com.docker.backend.enums.ExamStatus;
 
 import java.util.List;
