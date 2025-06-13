@@ -1,11 +1,23 @@
-# backend
-member가 security의 기본 user 구현체이고 admin, student, educator가 이를 상속함<br>
-student는 enrollment(수강) 기능을 사용할 수 있음<br>
-educator는 course(강의) 기능을 사용할 수 있음<br>
-student와 educator는 서로 구분되어 보안 제한이 있음<br>
-admin은 권한 계층의 최상위로 설정해서 student, educator의 기능을 가지도록 했음
+교육자와 학습자를 위한 온라인 평생학습 웹 백엔드 서버
 
-URI, 요청 형식, 예외처리 리팩토링<br>
-문제 유형 추가<br>
-채점 처리 추가<br>
-DTO, Entity 일관성 수정<br>
+# 온라인 교육 웹서비스 소개
+교육자 및 학습자 사용자가 효과적으로 사용할 수 있도록 설계된 온라인 교육 플랫폼입니다. 사용자 중심의 인터페이스와 콘텐츠 관리 기능을 바탕으로, 각 사용자에게 최적화된 환경을 제공합니다.
+
+## 주요 기능
+<ul>
+  <li>[회원 관리 및 인증] 역할 기반 권한 부여, JWT 보안</li>
+  <li>[교수자 컨텐츠] 강의와 시험 관리, 시험 자동/수동 채점</li>
+  <li>[학습자 컨텐츠] 강의 수강, 출결, 시험 제출</li>
+</ul>
+
+## 웹 서버 실행
+### 1. 설치
+<ul>
+  <li><b>Java 21</b></li>
+</ul>
+
+### 2. IDE에서 Spring Boot 프로젝트 실행
+
+## Test API
+
+## 기여자
