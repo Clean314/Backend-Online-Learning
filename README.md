@@ -16,7 +16,10 @@
   <li><b>Java 21</b></li>
 </ul>
 
-### 2. IDE에서 Spring Boot 프로젝트 실행
+### 2. git clone
+<code>$ git clone https://github.com/Clean314/Backend-Online-Learning.git</code>
+
+### 3. IDE에서 Boot 프로젝트 실행
 
 ## Test API
 
