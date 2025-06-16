@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EducatorQuestionDTO {
+    private Long id;
     private int number;
     private String content;
     private String answer;
@@ -17,6 +18,7 @@ public class EducatorQuestionDTO {
 
     public static EducatorQuestionDTO of(Question q) {
         return new EducatorQuestionDTO(
+                q.getId(),
                 q.getNumber(),
                 q.getContent(),
                 q.getAnswer(),

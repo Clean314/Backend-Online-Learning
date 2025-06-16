@@ -8,8 +8,8 @@ public class ExamRequestDTO {
     @JsonProperty("course_id")
     private Long courseId;
 
-    @JsonProperty("exam_id")
-    private Long examId;
+//    @JsonProperty("exam_id")
+//    private Long examId;
 
     @JsonProperty("question_id")
     private Long questionId;

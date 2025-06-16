@@ -69,9 +69,11 @@ public class ExamService {
         return EducatorExamDTO.of(saved);
     }
 
-    public EducatorExamDTO updateExam(Long examId, Long educatorId, ExamUpdateDTO dto) {
-        Exam exam = examRepository.findById(examId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
+    public EducatorExamDTO updateExam(Long courseId, Long examId, Long educatorId, ExamUpdateDTO dto) {
+        Exam exam = examRepository.findByCourseIdAndId(courseId, examId);
+        if (exam == null) {
+            throw new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다.");
+        }
 
         if (!exam.getCourse().getEducator().getId().equals(educatorId)) {
             throw new GlobalExceptionHandler.AccessDeniedException("수정 권한이 없습니다.");
@@ -93,9 +95,11 @@ public class ExamService {
         return EducatorExamDTO.of(examRepository.save(exam));
     }
 
-    public void deleteExam(Long examId, Long educatorId) {
-        Exam exam = examRepository.findById(examId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
+    public void deleteExam(Long courseId, Long examId, Long educatorId) {
+        Exam exam = examRepository.findByCourseIdAndId(courseId, examId);
+        if (exam == null) {
+            throw new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다.");
+        }
 
         if (!exam.getCourse().getEducator().getId().equals(educatorId)) {
             throw new GlobalExceptionHandler.AccessDeniedException("삭제 권한이 없습니다.");
