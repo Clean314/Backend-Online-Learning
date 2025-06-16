@@ -42,7 +42,7 @@ public class EducatorExamController {
     @GetMapping("/{examId}")
     public ResponseEntity<EducatorExamDTO> getExam(@RequestBody ExamRequestDTO examRequestDTO,
                                                   Authentication authentication) {
-        return ResponseEntity.ok(examService.getExamByIdAndCourse(examRequestDTO.getCourseId(), getEducatorId(authentication), examRequestDTO.getExamId());
+        return ResponseEntity.ok(examService.getExamByIdAndCourse(examRequestDTO.getCourseId(), getEducatorId(authentication), examRequestDTO.getExamId()));
     }
 
     @PutMapping("/{examId}")

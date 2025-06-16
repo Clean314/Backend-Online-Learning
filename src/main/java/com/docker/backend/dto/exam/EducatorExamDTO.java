@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -44,14 +43,6 @@ public class EducatorExamDTO {
         dto.setEndTime(exam.getEndTime());
         dto.setStatus(exam.getStatus());
         dto.setCourseId(exam.getCourse().getId());
-
-        List<EducatorQuestionDTO> questionDTOs =
-                exam.getQuestions()
-                        .stream()
-                        .map(EducatorQuestionDTO::of)
-                        .collect(Collectors.toList());
-        dto.setQuestions(questionDTOs);
-
         return dto;
     }
 

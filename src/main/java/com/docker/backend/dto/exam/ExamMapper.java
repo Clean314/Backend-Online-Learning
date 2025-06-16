@@ -19,20 +19,6 @@ public class ExamMapper {
         exam.setStartTime(dto.getStartTime());
         exam.setEndTime(dto.getEndTime());
         exam.setStatus(ExamStatus.PREPARING);
-
-        List<Question> questionEntities = dto.getQuestions().stream()
-                .map(qDto -> {
-                    Question q = new Question();
-                    q.setNumber(qDto.getNumber());
-                    q.setContent(qDto.getContent());
-                    q.setAnswer(qDto.getAnswer());
-                    q.setScore(qDto.getScore());
-                    q.setExam(exam);
-                    return q;
-                })
-                .collect(Collectors.toList());
-
-        exam.setQuestions(questionEntities);
         return exam;
     }
 }

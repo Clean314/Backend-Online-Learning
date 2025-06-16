@@ -15,8 +15,8 @@ public class Question {
 
     private int number;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Exam exam;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Exam exam;
 
     private String content;
 
