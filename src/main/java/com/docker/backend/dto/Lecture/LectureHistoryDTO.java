@@ -14,10 +14,10 @@ public class LectureHistoryDTO {
     private Long lectureHistoryId;
 
     @JsonProperty("student_id")
-    private Student studentId;
+    private Long studentId;
 
     @JsonProperty("lecture_id")
-    private Lecture lectureId;
+    private Long lectureId;
 
     @JsonProperty("watch_time")
     private Double watchedTime;
