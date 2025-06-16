@@ -45,6 +45,8 @@ public class ExamService {
         examRepository.findById(examId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다."));
 
+        examRepository.findByCourseIdAndId(courseId, examId);
+
         return EducatorExamDTO.of(examRepository.findByCourseIdAndId(courseId, examId));
     }
 
@@ -116,6 +118,10 @@ public class ExamService {
         if (!courseRepository.existsByIdAndEducator_Id(courseId, educatorId)) {
             throw new GlobalExceptionHandler.AccessDeniedException("강의 접근 권한이 없습니다.");
         }
+    }
+
+    private void scoreUpdate(){
+
     }
 }
 

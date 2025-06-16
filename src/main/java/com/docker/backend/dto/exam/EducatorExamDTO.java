@@ -34,6 +34,8 @@ public class EducatorExamDTO {
 
     private List<EducatorQuestionDTO> questions;
 
+    private int scoreSum;
+
     public static EducatorExamDTO of(Exam exam) {
         EducatorExamDTO dto = new EducatorExamDTO();
         dto.setId(exam.getId());
