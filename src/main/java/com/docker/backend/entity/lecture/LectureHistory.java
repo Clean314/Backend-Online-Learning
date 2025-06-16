@@ -17,12 +17,12 @@ public class LectureHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Long studentId;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Long lectureId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Lecture lecture;
 
     @Column(nullable = false)
     private Double watchedTime = 0.0;

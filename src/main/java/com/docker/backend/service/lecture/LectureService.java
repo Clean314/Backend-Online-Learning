@@ -119,10 +119,11 @@ public class LectureService {
         }
         lectureRepository.delete(lecture);
     }
+    // 06-16 수정
     public LectureDTO viewVideo(Long courseId, Long lectureId){
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(()-> new EntityNotFoundException("해당하는 강의가 없습니다."));
-        Lecture lecture = lectureRepository.findByIdCourseAndLecture(course, lectureId)
+        Lecture lecture = lectureRepository.findByCourseAndId(course, lectureId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 영상(" + lectureId + ")이 존재하지 않습니다."));
         return new LectureDTO(lecture);
     }

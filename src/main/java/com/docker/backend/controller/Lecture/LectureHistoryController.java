@@ -23,14 +23,14 @@ public class LectureHistoryController {
     private final LectureHistoryService lectureHistoryService;
     private final AuthUtil authUtil;
 
-//    @PostMapping("/time-line")
-//    public ResponseEntity<String> saveTimeLine(Authentication authentication, @RequestBody LectureHistory dto){
-//        Student student = authUtil.getStudent(authentication);
-//        try{
-//            lectureHistoryService.saveTimeLine(student, dto);
-//            return ResponseEntity.ok().body("TimeLine Update Success");
-//        }catch (IllegalArgumentException e){
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
+    @PostMapping("/time-line")
+    public ResponseEntity<String> saveTimeLine(Authentication authentication, @RequestBody LectureHistory dto){
+        Student student = authUtil.getStudent(authentication);
+        try{
+            lectureHistoryService.saveTimeLine(student, dto);
+            return ResponseEntity.ok().body("TimeLine Update Success");
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
