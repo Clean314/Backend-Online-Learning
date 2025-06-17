@@ -31,7 +31,7 @@ public class EducatorDashboardService {
      */
     public List<RecentCourseDTO> getRecentCreatedCourses(Educator educator) {
         log.info("최근 개설 강의 목록 조회 - 강사 ID: {}", educator.getId());
-        return courseRepository.findTop4ByEducatorOrderByCreatedAtDesc(educator)
+        return courseRepository.findTop4ByEducatorIdOrderByCreatedAtDesc(educator.getId())
                 .stream()
                 .map(this::convertToRecentCourseDTO)
                 .collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class EducatorDashboardService {
      */
     public List<RecentCourseDTO> getRecentUpdatedCourses(Educator educator) {
         log.info("최근 수정 강의 목록 조회 - 강사 ID: {}", educator.getId());
-        return courseRepository.findTop4ByEducatorOrderByUpdatedAtDesc(educator)
+        return courseRepository.findTop4ByEducatorIdOrderByUpdatedAtDesc(educator.getId())
                 .stream()
                 .map(this::convertToRecentCourseDTO)
                 .collect(Collectors.toList());

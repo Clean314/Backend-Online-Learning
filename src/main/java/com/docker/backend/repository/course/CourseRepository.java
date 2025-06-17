@@ -33,6 +33,12 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findTop4ByEducatorOrderByCreatedAtDesc(Educator educator);
     List<Course> findTop4ByEducatorOrderByUpdatedAtDesc(Educator educator);
 
+    @Query("SELECT c FROM Course c WHERE c.educator.id = :educatorId ORDER BY c.createdAt DESC, c.id DESC LIMIT 4")
+    List<Course> findTop4ByEducatorIdOrderByCreatedAtDesc(@Param("educatorId") Long educatorId);
+
+    @Query("SELECT c FROM Course c WHERE c.educator.id = :educatorId AND c.createdAt != c.updatedAt ORDER BY c.updatedAt DESC, c.id DESC LIMIT 4")
+    List<Course> findTop4ByEducatorIdOrderByUpdatedAtDesc(@Param("educatorId") Long educatorId);
+
     @Query("SELECT c FROM Course c JOIN c.enrollments e WHERE e.student = :student AND e.status = 'ENROLLED' ORDER BY e.createdAt DESC")
     List<Course> findRecentEnrolledCoursesByStudent(@Param("student") Student student);
 
