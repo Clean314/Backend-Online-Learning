@@ -47,7 +47,7 @@ public class EducatorExamController {
     public ResponseEntity<EducatorExamDTO> getExam(@PathVariable Long examId,
                                                    @RequestParam("courseId") Long courseId,
                                                    Authentication authentication) {
-        return ResponseEntity.ok(examService.getExamByIdAndCourse(courseId, getEducatorId(authentication), examId));
+        return ResponseEntity.ok(examService.getEducatorExamByIdAndCourse(getEducatorId(authentication), courseId, examId));
     }
 
     // 시험 수정

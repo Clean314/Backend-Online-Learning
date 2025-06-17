@@ -1,6 +1,6 @@
 package com.docker.backend.service.exam.question;
 
-import com.docker.backend.dto.exam.EducatorQuestionDTO;
+import com.docker.backend.dto.exam.question.EducatorQuestionDTO;
 import com.docker.backend.dto.exam.question.QuestionForm;
 import com.docker.backend.dto.exam.question.QuestionMapper;
 import com.docker.backend.entity.exam.question.Question;

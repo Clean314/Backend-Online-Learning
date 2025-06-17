@@ -1,5 +1,6 @@
 package com.docker.backend.dto.exam;
 
+import com.docker.backend.dto.exam.question.EducatorQuestionDTO;
 import com.docker.backend.entity.exam.Exam;
 import com.docker.backend.enums.ExamStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;

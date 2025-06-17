@@ -1,4 +1,4 @@
-package com.docker.backend.dto.exam;
+package com.docker.backend.dto.exam.question;
 
 import com.docker.backend.entity.exam.question.Question;
 import lombok.AllArgsConstructor;
@@ -6,22 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EducatorQuestionDTO {
+public class StudentQuestionDTO {
     private Long id;
     private int number;
     private String content;
-    private String answer;
     private int score;
 
-    public static EducatorQuestionDTO of(Question q) {
-        return new EducatorQuestionDTO(
+    public static StudentQuestionDTO of(Question q) {
+        return new StudentQuestionDTO(
                 q.getId(),
                 q.getNumber(),
                 q.getContent(),
-                q.getAnswer(),
                 q.getScore()
         );
     }

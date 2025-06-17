@@ -1,7 +1,7 @@
 package com.docker.backend.controller.exam.question;
 
 import com.docker.backend.config.AuthUtil;
-import com.docker.backend.dto.exam.EducatorQuestionDTO;
+import com.docker.backend.dto.exam.question.EducatorQuestionDTO;
 import com.docker.backend.dto.exam.question.QuestionForm;
 import com.docker.backend.service.exam.question.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/educator/question")
 @PreAuthorize("hasRole('EDUCATOR')")
-public class QuestionController {
+public class EducatorQuestionController {
 
     private final QuestionService questionService;
     private final AuthUtil authUtil;
