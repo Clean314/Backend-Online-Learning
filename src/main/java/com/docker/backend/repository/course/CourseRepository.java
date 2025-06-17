@@ -2,6 +2,7 @@ package com.docker.backend.repository.course;
 
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.user.Educator;
+import com.docker.backend.entity.user.Student;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -25,7 +26,16 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     Boolean existsByCourseName(String courseName);
 
-    boolean existsByIdAndEducator_Id(Long courseId, Long educatorId);
+    boolean existsByIdAndEducator_Id(Long id, Long educatorId);
 
     Optional<Course> findByIdAndEducator_Id(Long courseId, Long educatorId);
+
+    List<Course> findTop4ByEducatorOrderByCreatedAtDesc(Educator educator);
+    List<Course> findTop4ByEducatorOrderByUpdatedAtDesc(Educator educator);
+
+    @Query("SELECT c FROM Course c JOIN c.enrollments e WHERE e.student = :student AND e.status = 'ENROLLED' ORDER BY e.createdAt DESC")
+    List<Course> findRecentEnrolledCoursesByStudent(@Param("student") Student student);
+
+    @Query("SELECT c FROM Course c JOIN c.enrollments e WHERE e.student = :student AND e.status = 'COMPLETED' ORDER BY e.updatedAt DESC")
+    List<Course> findRecentCompletedCoursesByStudent(@Param("student") Student student);
 }

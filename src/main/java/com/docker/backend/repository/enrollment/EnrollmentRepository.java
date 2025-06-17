@@ -5,6 +5,8 @@ import com.docker.backend.entity.enrollment.Enrollment;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +29,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     boolean existsByStudent(Student student);
 
     Integer countByCourseId(Long courseId);
+
+    List<Enrollment> findTop4ByStudentAndStatusOrderByCreatedAtDesc(Student student, Status status);
 }

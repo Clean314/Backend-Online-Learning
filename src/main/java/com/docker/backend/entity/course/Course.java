@@ -1,10 +1,13 @@
 package com.docker.backend.entity.course;
 
+import com.docker.backend.entity.enrollment.Enrollment;
 import com.docker.backend.entity.lecture.Lecture;
 import com.docker.backend.entity.user.Educator;
 import com.docker.backend.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,6 +19,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
+@Table(name = "course")
 public class Course {
 
     @Id
@@ -25,15 +31,18 @@ public class Course {
     @Column(nullable = false)
     private String courseName;
 
+    private String description;
+
     @Column(nullable = false)
     private String category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "educator_id", nullable = false)
+    private Educator educator;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Educator educator;
 
     @Column(nullable = false)
     private int point;
@@ -44,8 +53,6 @@ public class Course {
     @Column(nullable = false)
     private int availableEnrollment;
 
-    private String description;
-
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -55,5 +62,17 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lecture> lectures = new ArrayList<>();
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments = new ArrayList<>();
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

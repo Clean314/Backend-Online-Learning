@@ -43,13 +43,13 @@ INSERT INTO course (course_name, category, difficulty, max_enrollment, available
 ('웹 개발 입문', '프로그래밍', 'EASY', 100, 100, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('리액트 프로페셔널', '프로그래밍', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('노드.js 서버 개발', '프로그래밍', 'MEDIUM', 75, 75, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('데이터베이스 튜닝', '데이터베이스', 'HARD', 60, 60, 4, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('데이터베이스 튜닝', '데이터베이스', 'HARD', 60, 60, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ( '머신러닝 기초', 'AI', 'EASY', 50, 50, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-( '딥러닝 실전', 'AI', 'MEDIUM', 45, 45, 3, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+( '딥러닝 실전', 'AI', 'MEDIUM', 45, 45, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('클라우드 아키텍처', '클라우드', 'MEDIUM', 70, 70, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('DevOps 도구', 'DevOps', 'MEDIUM', 65, 65, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ( '모바일 앱 개발', '모바일', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('웹 보안 심화', '보안', 'HARD', 40, 40, 4, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('웹 보안 심화', '보안', 'HARD', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
 INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, version) VALUES
@@ -59,7 +59,7 @@ INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, v
 ('COMPLETED', 2, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO exam (id, course_id, title, description, start_time, end_time, status) VALUES
-(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-15 10:00:00', '2025-06-15 12:00:00', 'PREPARING'),
+(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-17 8:00:00', '2025-06-17 12:00:00', 'IN_PROGRESS'),
 (2, 1, 'Java 기말고사', '멀티스레딩, 스트림, 람다식 등 고급 주제 평가', '2025-07-10 13:00:00', '2025-07-10 15:00:00', 'PREPARING'),
 (3, 2, '네트워크 1차 평가', 'OSI 7계층 및 기본 프로토콜 시험', '2025-06-18 09:00:00', '2025-06-18 11:00:00', 'PREPARING'),
 (4, 3, 'AI 기초 테스트', '기계학습 개요 및 분류/회귀 개념 확인', '2025-06-20 14:00:00', '2025-06-20 15:30:00', 'PREPARING'),

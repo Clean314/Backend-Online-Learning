@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/member/**").authenticated()
                         .requestMatchers("/learn/**").authenticated()
-//                        .requestMatchers("/learn/**").authenticated()
+                        .requestMatchers("/main_dashboard/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .authenticationProvider(memberAuthenticationProvider)
