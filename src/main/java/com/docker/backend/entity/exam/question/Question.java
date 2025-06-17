@@ -1,9 +1,13 @@
 package com.docker.backend.entity.exam.question;
 
 import com.docker.backend.entity.exam.Exam;
+import com.docker.backend.enums.QuestionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +26,9 @@ public class Question {
 
     private String answer;
 
+    private List<Integer> choices = new ArrayList<>();
+
     private int score;
 
+    private QuestionType type;
 }

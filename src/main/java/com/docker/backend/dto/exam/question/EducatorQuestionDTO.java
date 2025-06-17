@@ -1,6 +1,7 @@
 package com.docker.backend.dto.exam.question;
 
 import com.docker.backend.entity.exam.question.Question;
+import com.docker.backend.enums.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class EducatorQuestionDTO {
     private String content;
     private String answer;
     private int score;
+    private QuestionType questionType;
 
     public static EducatorQuestionDTO of(Question q) {
         return new EducatorQuestionDTO(
@@ -22,7 +24,8 @@ public class EducatorQuestionDTO {
                 q.getNumber(),
                 q.getContent(),
                 q.getAnswer(),
-                q.getScore()
+                q.getScore(),
+                q.getType()
         );
     }
 }
