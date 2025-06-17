@@ -84,7 +84,8 @@ public class EnrollmentService {
                             status,
                             course.getPoint(),
                             course.getMaxEnrollment(),
-                            course.getAvailableEnrollment()
+                            course.getAvailableEnrollment(),
+                            course.getDescription()
                     );
                 })
                 .collect(Collectors.toList());
@@ -127,7 +128,8 @@ public class EnrollmentService {
                     enrollment.getStatus(),
                     course.getPoint(),
                     course.getMaxEnrollment(),
-                    course.getAvailableEnrollment()
+                    course.getAvailableEnrollment(),
+                    course.getDescription()
             );
         }).collect(Collectors.toList());
     }

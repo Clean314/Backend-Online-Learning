@@ -34,22 +34,22 @@ INSERT INTO admin (id, admin_number) VALUES
 (5, 'A2025001');
 
 -- Insert Courses
-INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
-('Advanced Java', '프로그래밍', 'MEDIUM', 50, 49, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Network Fundamentals', '네트워크', 'EASY',   40, 39, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('AI Basics', 'AI', 'EASY', 30, 29, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('SQL 고급 튜닝', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('웹 보안 기초', '보안', 'MEDIUM', 20, 19, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('웹 개발 입문', '프로그래밍', 'EASY', 100, 100, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('리액트 프로페셔널', '프로그래밍', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('노드.js 서버 개발', '프로그래밍', 'MEDIUM', 75, 75, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('데이터베이스 튜닝', '데이터베이스', 'HARD', 60, 60, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-( '머신러닝 기초', 'AI', 'EASY', 50, 50, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-( '딥러닝 실전', 'AI', 'MEDIUM', 45, 45, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('클라우드 아키텍처', '클라우드', 'MEDIUM', 70, 70, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('DevOps 도구', 'DevOps', 'MEDIUM', 65, 65, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-( '모바일 앱 개발', '모바일', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('웹 보안 심화', '보안', 'HARD', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO course (course_name, description, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
+('Advanced Java', '자바 프로그래밍의 고급 주제를 다루는 강의입니다.', '프로그래밍', 'MEDIUM', 50, 49, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Network Fundamentals', '네트워크의 기본 개념과 프로토콜을 학습합니다.', '네트워크', 'EASY', 40, 39, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('AI Basics', '인공지능의 기초 개념과 머신러닝을 소개합니다.', 'AI', 'EASY', 30, 29, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('SQL 고급 튜닝', '데이터베이스 성능 최적화를 위한 SQL 튜닝 기법을 학습합니다.', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 보안 기초', '웹 애플리케이션의 기본적인 보안 개념과 방어 기법을 다룹니다.', '보안', 'MEDIUM', 20, 19, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 개발 입문', 'HTML, CSS, JavaScript를 활용한 웹 개발의 기초를 배웁니다.', '프로그래밍', 'EASY', 100, 100, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('리액트 프로페셔널', 'React의 고급 기능과 상태 관리, 성능 최적화를 학습합니다.', '프로그래밍', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('노드.js 서버 개발', 'Node.js를 활용한 서버 개발과 API 설계를 배웁니다.', '프로그래밍', 'MEDIUM', 75, 75, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('데이터베이스 튜닝', '대규모 데이터베이스의 성능 최적화와 관리 기법을 학습합니다.', '데이터베이스', 'HARD', 60, 60, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('머신러닝 기초', '머신러닝의 기본 알고리즘과 구현 방법을 배웁니다.', 'AI', 'EASY', 50, 50, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('딥러닝 실전', '딥러닝 모델 설계와 학습, 최적화 기법을 실습합니다.', 'AI', 'MEDIUM', 45, 45, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('클라우드 아키텍처', 'AWS, Azure, GCP 등 클라우드 서비스의 아키텍처 설계를 학습합니다.', '클라우드', 'MEDIUM', 70, 70, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('DevOps 도구', 'CI/CD, 컨테이너화, 모니터링 등 DevOps 도구의 활용을 배웁니다.', 'DevOps', 'MEDIUM', 65, 65, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('모바일 앱 개발', 'iOS와 Android 앱 개발의 기초와 실전 프로젝트를 진행합니다.', '모바일', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 보안 심화', '고급 웹 보안 기법과 취약점 분석, 대응 방안을 학습합니다.', '보안', 'HARD', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
 INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, version) VALUES
