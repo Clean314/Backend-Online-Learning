@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class StudentQuestionDTO {
     private String content;
     private int score;
     private QuestionType questionType;
+    private List<String> choices;
 
     public static StudentQuestionDTO of(Question q) {
         return new StudentQuestionDTO(
@@ -24,7 +27,8 @@ public class StudentQuestionDTO {
                 q.getNumber(),
                 q.getContent(),
                 q.getScore(),
-                q.getType()
+                q.getQuestionType(),
+                q.getChoices()
         );
     }
 }

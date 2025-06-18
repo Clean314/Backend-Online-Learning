@@ -44,14 +44,6 @@ public class StudentExamDTO {
         dto.setEndTime(exam.getEndTime());
         dto.setStatus(exam.getStatus());
         dto.setCourseId(exam.getCourse().getId());
-
-        List<StudentQuestionDTO> questionDTOs =
-                exam.getQuestions()
-                        .stream()
-                        .map(StudentQuestionDTO::of)
-                        .collect(Collectors.toList());
-        dto.setQuestions(questionDTOs);
-
         return dto;
     }
 }

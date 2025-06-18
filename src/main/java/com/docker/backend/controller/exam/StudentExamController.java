@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,6 +33,33 @@ public class StudentExamController {
                                            @PathVariable("examId") Long examId,
                                            Authentication authentication) {
         return ResponseEntity.ok(examService.getStudentExamByIdAndCourse(courseId, getStudentId(authentication), examId));
+    }
+
+    @PostMapping("/{examId}/submit")
+    public ResponseEntity<String> submitExam(@PathVariable Long courseId,
+                                             @PathVariable Long examId,
+                                             @RequestBody Map<Long, String> answers,
+                                             Authentication authentication) {
+        int score = examService.submitExam(courseId, examId, getStudentId(authentication), answers);
+        return ResponseEntity.ok("제출 완료, 점수: " + score);
+    }
+
+    @PostMapping("/{examId}/save")
+    public ResponseEntity<Void> saveExamProgress(@PathVariable Long courseId,
+                                                 @PathVariable Long examId,
+                                                 @RequestBody Map<Long, String> answers,
+                                                 Authentication authentication) {
+        examService.saveStudentAnswers(courseId, examId, getStudentId(authentication), answers);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{examId}/score")
+    public ResponseEntity<Integer> getExamScore(@PathVariable Long courseId,
+                                                @PathVariable Long examId,
+                                                Authentication authentication) {
+        Long studentId = getStudentId(authentication);
+        int score = examService.getStudentExamScore(courseId, examId, studentId);
+        return ResponseEntity.ok(score);
     }
 
 

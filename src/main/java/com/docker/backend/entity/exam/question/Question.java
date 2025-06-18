@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Question {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,9 +27,13 @@ public class Question {
 
     private String answer;
 
-    private List<Integer> choices = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "question_choices", joinColumns = @JoinColumn(name = "question_id"))
+    @Column(name = "choice")
+    private List<String> choices;
 
     private int score;
 
-    private QuestionType type;
+    @Enumerated(EnumType.STRING)
+    private QuestionType questionType;
 }
