@@ -27,7 +27,7 @@ public class StudentQuestionController {
     public ResponseEntity<List<StudentQuestionDTO>> getQuestions(@RequestParam(name = "courseId") Long courseId,
                                                                  @RequestParam(name = "examId") Long examId,
                                                                  Authentication authentication) {
-        return ResponseEntity.ok(questionService.EducatorGetAllQuestionByExamId(getStudentId(authentication), courseId, examId));
+        return ResponseEntity.ok(questionService.StudentGetAllQuestionsByExamId(getStudentId(authentication), courseId, examId));
     }
 
 }
