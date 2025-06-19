@@ -94,7 +94,7 @@ public class ExamService {
 
     public List<StudentExamDTO> getStudentExamsByCourse(Long courseId, Long studentId) {
         verifyEnrollCourse(courseId, studentId);
-        return examRepository.findByCourseId(studentId)
+        return examRepository.findByCourseId(courseId)
                 .stream().map(StudentExamDTO::of).toList();
     }
 
@@ -116,11 +116,25 @@ public class ExamService {
         return StudentExamDTO.of(exam);
     }
 
+    public void initializeExamStatus(Long courseId, Long examId, Long studentId) {
+        verifyEnrollCourse(courseId, studentId);
+        Exam exam = isExistExam(courseId, examId);
+        Student student = isExistStudent(studentId);
+
+        studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseGet(() -> {
+                    StudentExamStatus status = new StudentExamStatus();
+                    status.setStudent(student);
+                    status.setExam(exam);
+                    status.setSubmitted(false);
+                    status.setTotalScore(0);
+                    return studentExamStatusRepository.save(status);
+                });
+    }
 
     @Transactional
     public void saveStudentAnswers(Long courseId, Long examId, Long studentId, Map<Long, String> answers) {
         validateExamPeriod(courseId, examId);
-
         StudentExamStatus status = getOrCreateStudentExamStatus(studentId, examId, false);
 
         for (Map.Entry<Long, String> entry : answers.entrySet()) {
@@ -136,7 +150,6 @@ public class ExamService {
     @Transactional
     public int submitExam(Long courseId, Long examId, Long studentId, Map<Long, String> answers) {
         validateExamPeriod(courseId, examId);
-
         StudentExamStatus status = getOrCreateStudentExamStatus(studentId, examId, true);
         int totalScore = 0;
 
@@ -166,7 +179,7 @@ public class ExamService {
                     answer.setScore(0);
                 }
             } else if (question.getQuestionType() == QuestionType.SENTENCE) {
-                answer.setCorrect(false);  // 자동 채점 불가
+                answer.setCorrect(false);
                 answer.setScore(0);
             }
         }
@@ -178,10 +191,9 @@ public class ExamService {
         return totalScore;
     }
 
-
     public int getStudentExamScore(Long courseId, Long examId, Long studentId) {
         verifyEnrollCourse(courseId, studentId);
-        Exam exam = isExistExam(courseId, examId);
+        isExistExam(courseId, examId);
 
         StudentExamStatus status = studentExamStatusRepository
                 .findByStudentIdAndExamId(studentId, examId)
@@ -194,16 +206,9 @@ public class ExamService {
         return status.getTotalScore();
     }
 
-
-
     private void verifyEnrollCourse(Long courseId, Long studentId) {
         enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 강의에 대한 수강 등록이 없습니다."));
-    }
-
-    private Course verifyCourseOwnership(Long courseId, Long educatorId) {
-        return courseRepository.findByIdAndEducator_Id(courseId, educatorId)
-                .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
     }
 
     private Exam isExistExam(Long courseId, Long examId) {
@@ -248,6 +253,11 @@ public class ExamService {
                     answer.setQuestion(question);
                     return studentAnswerRepository.save(answer);
                 });
+    }
+
+    private Course verifyCourseOwnership(Long courseId, Long educatorId) {
+        return courseRepository.findByIdAndEducator_Id(courseId, educatorId)
+                .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
     }
 
 }

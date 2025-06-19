@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/student/exam/{courseId}")
@@ -30,9 +29,17 @@ public class StudentExamController {
 
     @GetMapping("/{examId}")
     public ResponseEntity<StudentExamDTO> getExam(@PathVariable("courseId") Long courseId,
-                                           @PathVariable("examId") Long examId,
-                                           Authentication authentication) {
+                                                  @PathVariable("examId") Long examId,
+                                                  Authentication authentication) {
         return ResponseEntity.ok(examService.getStudentExamByIdAndCourse(courseId, getStudentId(authentication), examId));
+    }
+
+    @PostMapping("/{examId}/start")
+    public ResponseEntity<Void> startExam(@PathVariable("courseId") Long courseId,
+                                          @PathVariable("examId") Long examId,
+                                          Authentication authentication) {
+        examService.initializeExamStatus(courseId, examId, getStudentId(authentication));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{examId}/submit")
@@ -61,7 +68,6 @@ public class StudentExamController {
         int score = examService.getStudentExamScore(courseId, examId, studentId);
         return ResponseEntity.ok(score);
     }
-
 
     private Long getStudentId(Authentication authentication) {
         return authUtil.getStudent(authentication).getId();
