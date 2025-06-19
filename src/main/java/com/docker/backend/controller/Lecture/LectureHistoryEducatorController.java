@@ -27,7 +27,7 @@ public class LectureHistoryEducatorController {
     }
 
     @GetMapping("/attendance/{courseId}/list")
-    public ResponseEntity<List<AttendanceDTO>> attendanceList(@PathVariable Long courseId){
-        return ResponseEntity.ok(lectureHistoryService.attendanceList(courseId));
+    public ResponseEntity<List<CourseAttendanceDTO>> attendanceList(@PathVariable Long courseId){
+        return ResponseEntity.ok(lectureHistoryService.getStudentAttendance(courseId));
     }
 }

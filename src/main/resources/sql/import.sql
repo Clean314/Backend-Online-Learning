@@ -61,7 +61,7 @@ INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, v
 ('ENROLLED', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO exam (id, course_id, title, description, start_time, end_time, status) VALUES
-(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-19 17:00:00', '2025-06-19 23:00:00', 'PREPARING'),
+(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-10 10:00:00', '2025-06-10 15:00:00', 'PREPARING'),
 (2, 1, '쪽지시험', '수업 이해도 확인을 위한 중간 평가', '2025-06-20 9:00:00', '2025-06-20 15:00:00', 'PREPARING'),
 (3, 1, 'Java 기말고사', '멀티스레딩, 스트림, 람다식 등 고급 주제 평가', '2025-07-10 13:00:00', '2025-07-10 15:00:00', 'PREPARING'),
 (4, 2, '네트워크 1차 평가', 'OSI 7계층 및 기본 프로토콜 시험', '2025-06-18 09:00:00', '2025-06-18 11:00:00', 'PREPARING'),
@@ -85,15 +85,6 @@ INSERT INTO question (exam_id, number, content, answer, score, question_type) VA
 (5, 2, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인', 5, 'CHOICE'),
 (6, 1, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증', 5, 'CHOICE'),
 (6, 2, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증', 5, 'CHOICE');
-
--- 진위형 문제
-INSERT INTO question (exam_id, number, content, answer, score, question_type) VALUES
-(1, 3, 'Java는 플랫폼에 독립적인 언어이다.', '0', 2, 'TRUE_FALSE'),
-(2, 3, '멀티스레딩은 Java에서 지원되지 않는다.', '1', 2, 'TRUE_FALSE'),
-(3, 3, 'IP는 전송 계층 프로토콜이다.', '1', 2, 'TRUE_FALSE'),
-(4, 3, '클러스터링은 지도 학습 기법이다.', '1', 2, 'TRUE_FALSE'),
-(5, 3, 'SQL에서는 SELECT 문으로 데이터를 삭제할 수 있다.', '1', 2, 'TRUE_FALSE'),
-(6, 3, 'XSS는 서버 측에서 발생하는 공격이다.', '1', 2, 'TRUE_FALSE');
 
 INSERT INTO question_choices (question_id, choice) VALUES
 (1, 'int'),
@@ -166,30 +157,6 @@ INSERT INTO question_choices (question_id, choice) VALUES
 (12, 'IP 필터링'),
 (12, 'Referer 검증'),
 (12, 'GET 요청 허용');
-
-INSERT INTO question_choices (question_id, choice) VALUES
-(13, '0'),
-(13, '1');
-
-INSERT INTO question_choices (question_id, choice) VALUES
-(14, '0'),
-(14, '1');
-
-INSERT INTO question_choices (question_id, choice) VALUES
-(15, '0'),
-(15, '1');
-
-INSERT INTO question_choices (question_id, choice) VALUES
-(16, '0'),
-(16, '1');
-
-INSERT INTO question_choices (question_id, choice) VALUES
-(17, '0'),
-(17, '1');
-
-INSERT INTO question_choices (question_id, choice) VALUES
-(18, '0'),
-(18, '1');
 
 --Insert Lecture
 INSERT INTO lecture (title, video_url, course_id, created_at, updated_at) VALUES

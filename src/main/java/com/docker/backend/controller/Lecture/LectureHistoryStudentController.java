@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import com.docker.backend.dto.Lecture.LectureHistoryRequestDTO;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/history")
@@ -24,7 +26,7 @@ public class LectureHistoryStudentController {
     private final AuthUtil authUtil;
 
     @PostMapping("/time-line")
-    public ResponseEntity<String> saveTimeLine(Authentication authentication, @RequestBody LectureHistory dto){
+    public ResponseEntity<String> saveTimeLine(Authentication authentication, @RequestBody LectureHistoryRequestDTO dto){
         Student student = authUtil.getStudent(authentication);
         try{
             lectureHistoryService.saveTimeLine(student, dto);
@@ -46,5 +48,12 @@ public class LectureHistoryStudentController {
     @GetMapping("/attendance/student/{lectureId}")
     public ResponseEntity<AttendanceDTO> attendance(@PathVariable Long lectureId){
         return ResponseEntity.ok(lectureHistoryService.attendance(lectureId));
+    }
+
+    @GetMapping("/watched-time/{lectureId}")
+    public ResponseEntity<Double> getWatchedTime(Authentication authentication, @PathVariable Long lectureId) {
+        Student student = authUtil.getStudent(authentication);
+        double watchedTime = lectureHistoryService.getWatchedTime(student, lectureId);
+        return ResponseEntity.ok(watchedTime);
     }
 }

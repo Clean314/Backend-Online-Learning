@@ -4,6 +4,7 @@ import com.docker.backend.dto.Lecture.LectureDTO;
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.lecture.Lecture;
 import com.docker.backend.entity.lecture.LectureHistory;
+import com.docker.backend.entity.user.Student;
 import com.docker.backend.repository.lecture.LectureHistoryRepository;
 import com.docker.backend.repository.lecture.LectureRepository;
 import com.docker.backend.repository.course.CourseRepository;
@@ -23,6 +24,7 @@ public class LectureService {
 
     private final CourseRepository courseRepository;
     private final LectureRepository lectureRepository;
+    private final LectureHistoryRepository lectureHistoryRepository;
 
     // 동영상 저장
     public void createLecture(List<LectureDTO> lectures, Long couId) {
@@ -44,19 +46,24 @@ public class LectureService {
     }
 
     // 강의 영상 리스트
-    public List<LectureDTO> getLectureList(Long courseId){
+    public List<LectureDTO> getLectureList(Long courseId, Student student){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return lectureRepository.findByCourseId(courseId).stream()
-                .map(lectures -> {
-                    LectureDTO lecture = new LectureDTO(lectures);
-                    LocalDateTime date = lectures.getUpdatedAt();
+                .map(lecture -> {
+                    LectureDTO dto = new LectureDTO(lecture);
+                    LocalDateTime date = lecture.getUpdatedAt();
                     if (date == null) {
-                        date = lectures.getCreatedAt();
+                        date = lecture.getCreatedAt();
                     }
-                    lecture.setTitle(lectures.getTitle());
-                    lecture.setVideoUrl(lectures.getVideoUrl());
-                    lecture.setUpdatedAt(date.format(formatter));
-                    return lecture;
+                    dto.setTitle(lecture.getTitle());
+                    dto.setVideoUrl(lecture.getVideoUrl());
+                    dto.setUpdatedAt(date.format(formatter));
+                    // 학생의 출석 정보 세팅
+                    Boolean attendance = lectureHistoryRepository.findByStudentAndLecture(student, lecture)
+                            .map(LectureHistory::getAttendance)
+                            .orElse(false);
+                    dto.setAttendance(attendance);
+                    return dto;
                 })
                 .toList();
     }

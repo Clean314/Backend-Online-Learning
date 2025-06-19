@@ -27,8 +27,9 @@ public class LectureStudentController {
 
     // 강의 영상 리스트
     @GetMapping("/list/{courseId}")
-    public ResponseEntity<List<LectureDTO>> getLectureList(@PathVariable("courseId") Long courseId){
-        return ResponseEntity.ok(lectureService.getLectureList(courseId));
+    public ResponseEntity<List<LectureDTO>> getLectureList(Authentication authentication, @PathVariable("courseId") Long courseId){
+        Student student = authUtil.getStudent(authentication);
+        return ResponseEntity.ok(lectureService.getLectureList(courseId, student));
     }
 
     // 강의실행
