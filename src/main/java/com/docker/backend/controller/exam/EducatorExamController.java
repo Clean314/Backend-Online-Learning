@@ -2,6 +2,7 @@ package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.*;
+import com.docker.backend.service.enrollment.EnrollmentService;
 import com.docker.backend.service.exam.ExamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @PreAuthorize("hasRole('EDUCATOR')")
 public class EducatorExamController {
 
+    private final EnrollmentService enrollmentService;
     private final ExamService examService;
     private final AuthUtil authUtil;
 
@@ -26,14 +28,12 @@ public class EducatorExamController {
         return authUtil.getEducator(authentication).getId();
     }
 
-    // 시험 목록 조회
     @GetMapping
     public ResponseEntity<List<EducatorExamDTO>> getExams(@RequestParam("courseId") Long courseId,
                                                           Authentication authentication) {
         return ResponseEntity.ok(examService.getEducatorExamsByCourse(courseId, getEducatorId(authentication)));
     }
 
-    // 시험 생성
     @PostMapping
     public ResponseEntity<EducatorExamDTO> createExam(@RequestParam("courseId") Long courseId,
                                                       @RequestBody @Valid ExamCreateDTO dto,
@@ -42,7 +42,6 @@ public class EducatorExamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // 특정 시험 조회
     @GetMapping("/{examId}")
     public ResponseEntity<EducatorExamDTO> getExam(@PathVariable Long examId,
                                                    @RequestParam("courseId") Long courseId,
@@ -50,7 +49,6 @@ public class EducatorExamController {
         return ResponseEntity.ok(examService.getEducatorExamByIdAndCourse(getEducatorId(authentication), courseId, examId));
     }
 
-    // 시험 수정
     @PutMapping("/{examId}")
     public ResponseEntity<EducatorExamDTO> updateExam(@PathVariable Long examId,
                                                       @RequestParam("courseId") Long courseId,
@@ -60,7 +58,6 @@ public class EducatorExamController {
         return ResponseEntity.ok(updated);
     }
 
-    // 시험 삭제
     @DeleteMapping("/{examId}")
     public ResponseEntity<Void> deleteExam(@PathVariable Long examId,
                                            @RequestParam("courseId") Long courseId,
@@ -68,4 +65,27 @@ public class EducatorExamController {
         examService.deleteExam(courseId, examId, getEducatorId(authentication));
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{examId}/student-submits")
+    public ResponseEntity<List<StudentExamSubmissionDTO>> getStudentSubmissions(@PathVariable("examId") Long examId,
+                                                                                @RequestParam("courseId") Long courseId,
+                                                                                Authentication authentication) {
+        Long educatorId = getEducatorId(authentication);
+        List<StudentExamSubmissionDTO> submissions = examService.getStudentSubmissions(courseId, examId, educatorId);
+        return ResponseEntity.ok(submissions);
+    }
+
+
+    @PatchMapping("/{examId}/student-submits/{studentId}/answers/{questionId}")
+    public ResponseEntity<Void> updateAnswerEvaluation(@PathVariable("examId") Long examId,
+                                                       @PathVariable("studentId") Long studentId,
+                                                       @PathVariable("questionId") Long questionId,
+                                                       @RequestParam("courseId") Long courseId,
+                                                       @RequestBody @Valid AnswerEvaluationUpdateDTO dto,
+                                                       Authentication authentication) {
+        Long educatorId = getEducatorId(authentication);
+        examService.updateAnswerEvaluation(courseId, examId, studentId, questionId, educatorId, dto);
+        return ResponseEntity.ok().build();
+    }
+
 }
