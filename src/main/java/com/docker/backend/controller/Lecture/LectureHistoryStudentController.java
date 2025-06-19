@@ -1,24 +1,23 @@
 package com.docker.backend.controller.Lecture;
 
 import com.docker.backend.config.AuthUtil;
+import com.docker.backend.dto.course.CourseAttendanceDTO;
 import com.docker.backend.entity.lecture.LectureHistory;
 import com.docker.backend.entity.user.Student;
 import com.docker.backend.service.lecture.LectureHistoryService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/history")
 @PreAuthorize("hasRole('STUDENT')")
-public class LectureHistoryController {
+public class LectureHistoryStudentController {
 
     private final LectureHistoryService lectureHistoryService;
     private final AuthUtil authUtil;
@@ -30,6 +29,18 @@ public class LectureHistoryController {
             lectureHistoryService.saveTimeLine(student, dto);
             return ResponseEntity.ok().body("TimeLine Update Success");
         }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/attendance-avg/{courseId}")
+    public ResponseEntity<String> avgAttendance(@PathVariable Long courseId){
+
+        try {
+            lectureHistoryService.avgAttendance(courseId);
+            System.out.println(lectureHistoryService.avgAttendance(courseId));
+            return ResponseEntity.ok().body("평균 산출완료");
+        }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
