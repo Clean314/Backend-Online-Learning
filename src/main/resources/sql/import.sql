@@ -59,7 +59,7 @@ INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, v
 ('COMPLETED', 2, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO exam (id, course_id, title, description, start_time, end_time, status) VALUES
-(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-17 8:00:00', '2025-06-17 12:00:00', 'PREPARING'),
+(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-01 8:00:00', '2025-06-30 12:00:00', 'PREPARING'),
 (2, 1, '쪽지시험', '수업 이해도 확인을 위한 중간 평가', '2025-06-18 12:00:00', '2025-06-18 18:00:00', 'PREPARING'),
 (3, 1, 'Java 기말고사', '멀티스레딩, 스트림, 람다식 등 고급 주제 평가', '2025-07-10 13:00:00', '2025-07-10 15:00:00', 'PREPARING'),
 (4, 2, '네트워크 1차 평가', 'OSI 7계층 및 기본 프로토콜 시험', '2025-06-18 09:00:00', '2025-06-18 11:00:00', 'PREPARING'),
@@ -69,20 +69,40 @@ INSERT INTO exam (id, course_id, title, description, start_time, end_time, statu
 
 ALTER TABLE exam ALTER COLUMN id RESTART WITH 7;
 
--- Insert Exam Questions
-INSERT INTO question (exam_id, number, content, answer, score) VALUES
-(1, 1, 'Java의 기본 데이터 타입이 아닌 것은?', 'String', 2),
-(1, 2, '다음 중 Java에서 객체지향 프로그래밍의 4대 원칙이 아닌 것은?', '병렬성', 3),
-(2, 1, 'Java에서 멀티스레딩을 구현하기 위한 방법이 아닌 것은?', '인터페이스 상속', 5),
-(2, 2, 'Java Stream API의 특징이 아닌 것은?', '동기적 처리', 3),
-(3, 1, 'OSI 7계층에서 전송 계층에 해당하는 프로토콜은?', 'TCP', 2),
-(3, 2, '다음 중 네트워크 주소 변환(NAT)의 목적이 아닌 것은?', '데이터 암호화', 3),
-(4, 1, '기계학습에서 분류 문제의 예시가 아닌 것은?', '주식 가격 예측', 2),
-(4, 2, '다음 중 회귀 분석의 목적이 아닌 것은?', '클러스터링', 3),
-(5, 1, 'SQL에서 인덱스의 주된 목적은 무엇인가요?', '검색 성능 향상', 4),
-(5, 2, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인', 5),
-(6, 1, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증', 5),
-(6, 2, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증', 5);
+INSERT INTO question (exam_id, number, content, answer, score, question_type) VALUES
+(1, 1, 'Java의 기본 데이터 타입이 아닌 것은?', 'String', 2, 'SENTENCE'),
+(1, 2, '다음 중 Java에서 객체지향 프로그래밍의 4대 원칙이 아닌 것은?', '병렬성', 3, 'CHOICE'),
+(2, 1, 'Java에서 멀티스레딩을 구현하기 위한 방법이 아닌 것은?', '인터페이스 상속', 5, 'SENTENCE'),
+(2, 2, 'Java Stream API의 특징이 아닌 것은?', '동기적 처리', 3, 'CHOICE'),
+(3, 1, 'OSI 7계층에서 전송 계층에 해당하는 프로토콜은?', 'TCP', 2, 'CHOICE'),
+(3, 2, '다음 중 네트워크 주소 변환(NAT)의 목적이 아닌 것은?', '데이터 암호화', 3, 'CHOICE'),
+(4, 1, '기계학습에서 분류 문제의 예시가 아닌 것은?', '주식 가격 예측', 2, 'CHOICE'),
+(4, 2, '다음 중 회귀 분석의 목적이 아닌 것은?', '클러스터링', 3, 'CHOICE'),
+(5, 1, 'SQL에서 인덱스의 주된 목적은 무엇인가요?', '검색 성능 향상', 4, 'SENTENCE'),
+(5, 2, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인', 5, 'CHOICE'),
+(6, 1, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증', 5, 'SENTENCE'),
+(6, 2, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증', 5, 'SENTENCE');
+
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(2, '상속'),
+(2, '캡슐화'),
+(2, '다형성'),
+(2, '병렬성');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(4, '지연된 계산'),
+(4, '함수형 스타일'),
+(4, '동시성 보장'),
+(4, '컬렉션 변환');
+
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(5, 'TCP'),
+(5, 'UDP'),
+(5, 'IP'),
+(5, 'HTTP');
+
 
 --Insert Lecture
 INSERT INTO lecture (title, video_url, course_id, created_at, updated_at) VALUES

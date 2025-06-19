@@ -36,8 +36,8 @@ public class StudentExamController {
     }
 
     @PostMapping("/{examId}/submit")
-    public ResponseEntity<String> submitExam(@PathVariable Long courseId,
-                                             @PathVariable Long examId,
+    public ResponseEntity<String> submitExam(@PathVariable("courseId") Long courseId,
+                                             @PathVariable("examId") Long examId,
                                              @RequestBody Map<Long, String> answers,
                                              Authentication authentication) {
         int score = examService.submitExam(courseId, examId, getStudentId(authentication), answers);
@@ -45,8 +45,8 @@ public class StudentExamController {
     }
 
     @PostMapping("/{examId}/save")
-    public ResponseEntity<Void> saveExamProgress(@PathVariable Long courseId,
-                                                 @PathVariable Long examId,
+    public ResponseEntity<Void> saveExamProgress(@PathVariable("courseId") Long courseId,
+                                                 @PathVariable("examId") Long examId,
                                                  @RequestBody Map<Long, String> answers,
                                                  Authentication authentication) {
         examService.saveStudentAnswers(courseId, examId, getStudentId(authentication), answers);
@@ -54,8 +54,8 @@ public class StudentExamController {
     }
 
     @GetMapping("/{examId}/score")
-    public ResponseEntity<Integer> getExamScore(@PathVariable Long courseId,
-                                                @PathVariable Long examId,
+    public ResponseEntity<Integer> getExamScore(@PathVariable("courseId") Long courseId,
+                                                @PathVariable("examId") Long examId,
                                                 Authentication authentication) {
         Long studentId = getStudentId(authentication);
         int score = examService.getStudentExamScore(courseId, examId, studentId);

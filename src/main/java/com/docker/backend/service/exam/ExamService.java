@@ -101,8 +101,21 @@ public class ExamService {
     public StudentExamDTO getStudentExamByIdAndCourse(Long courseId, Long studentId, Long examId) {
         verifyEnrollCourse(courseId, studentId);
         Exam exam = isExistExam(courseId, examId);
+        Student student = isExistStudent(studentId);
+
+        studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseGet(() -> {
+                    StudentExamStatus status = new StudentExamStatus();
+                    status.setStudent(student);
+                    status.setExam(exam);
+                    status.setSubmitted(false);
+                    status.setTotalScore(0);
+                    return studentExamStatusRepository.save(status);
+                });
+
         return StudentExamDTO.of(exam);
     }
+
 
     @Transactional
     public void saveStudentAnswers(Long courseId, Long examId, Long studentId, Map<Long, String> answers) {
@@ -199,6 +212,11 @@ public class ExamService {
             throw new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다.");
         }
         return exam;
+    }
+
+    private Student isExistStudent(Long studentId) {
+        return (Student) memberRepository.findById(studentId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생을 찾을 수 없습니다."));
     }
 
     private void validateExamPeriod(Long courseId, Long examId) {
