@@ -118,7 +118,7 @@ INSERT INTO question_choices (question_id, choice) VALUES
 INSERT INTO question_choices (question_id, choice) VALUES
 (4, '지연된 계산'),
 (4, '함수형 스타일'),
-(4, '동시성 보장'),
+(4, '동기적 처리'),
 (4, '컬렉션 변환');
 
 INSERT INTO question_choices (question_id, choice) VALUES
