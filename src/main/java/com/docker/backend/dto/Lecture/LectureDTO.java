@@ -3,6 +3,8 @@ package com.docker.backend.dto.Lecture;
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.lecture.Lecture;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -24,6 +26,7 @@ public class LectureDTO {
     @JsonProperty("video_url")
     private String videoUrl;
 
+    private Double watchedTime = 0.0;
 
 //    private String fileName;
 //    private String filePath;
