@@ -2,5 +2,6 @@ package com.docker.backend.enums;
 
 public enum QuestionType {
     CHOICE,
-    SENTENCE
+    SENTENCE,
+    TRUE_FALSE,
 }
