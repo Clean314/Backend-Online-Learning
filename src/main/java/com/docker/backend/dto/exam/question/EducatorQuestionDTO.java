@@ -19,7 +19,7 @@ public class EducatorQuestionDTO {
     private String content;
     private String answer;
     private int score;
-    @JsonProperty("value = question_type")
+    @JsonProperty("question_type")
     private QuestionType questionType;
     private List<String> choices;
 
