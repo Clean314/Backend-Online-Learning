@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -205,6 +206,22 @@ public class ExamService {
 
         return status.getTotalScore();
     }
+
+    public Map<Long, String> getSavedAnswers(Long courseId, Long examId, Long studentId) {
+        verifyEnrollCourse(courseId, studentId);
+        isExistExam(courseId, examId);
+
+        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("임시 저장된 시험 정보가 없습니다."));
+
+        List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
+        return answers.stream()
+                .collect(Collectors.toMap(
+                        a -> a.getQuestion().getId(),
+                        StudentAnswer::getAnswer
+                ));
+    }
+
 
     private void verifyEnrollCourse(Long courseId, Long studentId) {
         enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
