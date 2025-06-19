@@ -35,10 +35,10 @@ public class LectureHistoryStudentController {
     }
 
     @GetMapping("/attendance-avg/{courseId}")
-    public ResponseEntity<?> avgAttendance(@PathVariable Long courseId){
+    public ResponseEntity<?> getStudentAttendance(@PathVariable Long courseId){
 
         try {
-            return ResponseEntity.ok().body(lectureHistoryService.avgAttendance(courseId));
+            return ResponseEntity.ok().body(lectureHistoryService.getStudentAttendance(courseId));
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
