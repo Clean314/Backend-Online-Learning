@@ -124,8 +124,8 @@ public class LectureService {
                 .orElseThrow(()-> new EntityNotFoundException("해당하는 강의가 없습니다."));
         Lecture lecture = lectureRepository.findByCourseAndId(course, lectureId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 영상(" + lectureId + ")이 존재하지 않습니다."));
-        double history = lectureHistoryRepository.findByLectureId(lectureId)
-                .getWatchedTime();
+        List<LectureHistory> historyList = lectureHistoryRepository.findAllByLectureId(lectureId);
+        double history = historyList.stream().mapToDouble(LectureHistory::getWatchedTime).sum();
 
         LectureDTO dto = new LectureDTO(lecture);
         dto.setWatchedTime(history);
