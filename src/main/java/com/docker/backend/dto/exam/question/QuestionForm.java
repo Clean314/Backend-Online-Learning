@@ -1,6 +1,10 @@
 package com.docker.backend.dto.exam.question;
 
+import com.docker.backend.enums.QuestionType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 public class QuestionForm {
@@ -8,4 +12,9 @@ public class QuestionForm {
     private String content;
     private String answer;
     private int score;
+
+    @JsonProperty("question_type")
+    private QuestionType questionType;
+
+    private List<String> choices;
 }
