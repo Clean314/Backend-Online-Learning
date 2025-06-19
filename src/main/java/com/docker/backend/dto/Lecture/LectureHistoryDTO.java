@@ -19,6 +19,9 @@ public class LectureHistoryDTO {
     @JsonProperty("lecture_id")
     private Long lectureId;
 
+    @JsonProperty("count_true")
+    private Integer countTrue;
+
     @JsonProperty("watch_time")
     private Double watchedTime;
     private Boolean attendance;
