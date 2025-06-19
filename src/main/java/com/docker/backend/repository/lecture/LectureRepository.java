@@ -16,5 +16,4 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
     Boolean existsByTitleAndCourseAndIdNot(String title, Course course, Long lectureId);
     Boolean existsByVideoUrlAndCourseAndIdNot(String videoUrl, Course course, Long lectureId);
     List<Lecture> findAllByCourseId(Long courseId);
-
 }

@@ -4,6 +4,7 @@ import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.*;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import com.docker.backend.service.exam.ExamService;
+import com.docker.backend.service.exam.question.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,40 @@ public class EducatorExamController {
 
     private final EnrollmentService enrollmentService;
     private final ExamService examService;
-    private final AuthUtil authUtil;
+    private final QuestionService questionService;
+
+//     @GetMapping
+//     public ResponseEntity<List<EducatorExamDTO>> getExams(Authentication authentication,
+//                                                           @RequestBody ExamRequestDTO examRequestDTO) {
+//         return ResponseEntity.ok(examService.getEducatorExamsByCourse(examRequestDTO.getCourseId(), getEducatorId(authentication)));
+//     }
+
+//     @PostMapping
+//     public ResponseEntity<EducatorExamDTO> createExam(@RequestBody @Valid ExamCreateDTO dto,
+//                                                       Authentication authentication) {
+//         EducatorExamDTO created = examService.createExam(dto.getCourseId(), getEducatorId(authentication), dto);
+//         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+//     }
+
+//     @GetMapping("/{examId}")
+//     public ResponseEntity<EducatorExamDTO> getExam(@RequestBody ExamRequestDTO examRequestDTO,
+//                                                   Authentication authentication) {
+//         return ResponseEntity.ok(examService.getExamByIdAndCourse(examRequestDTO.getCourseId(), getEducatorId(authentication), examRequestDTO.getExamId()));
+//     }
+
+//     @PutMapping("/{examId}")
+//     public ResponseEntity<EducatorExamDTO> updateExam(@RequestBody @Valid ExamUpdateDTO dto,
+//                                                       Authentication authentication) {
+//         EducatorExamDTO updated = examService.updateExam(dto.getCourseId(), getEducatorId(authentication), dto);
+//         return ResponseEntity.ok(updated);
+//     }
+
+//     @DeleteMapping("/{examId}")
+//     public ResponseEntity<Void> deleteExam(
+//                                            Authentication authentication) {
+// //        examService.deleteExam(examId, getEducatorId(authentication));
+//         return ResponseEntity.noContent().build();
+//     }
 
     private Long getEducatorId(Authentication authentication) {
         return authUtil.getEducator(authentication).getId();
