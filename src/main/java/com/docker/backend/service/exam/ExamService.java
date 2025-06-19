@@ -77,6 +77,8 @@ public class ExamService {
 
         exam.setTitle(dto.getTitle());
         exam.setDescription(dto.getDescription());
+        exam.setStartTime(dto.getStartTime());
+        exam.setEndTime(dto.getEndTime());
 
         return EducatorExamDTO.of(examRepository.save(exam));
     }
