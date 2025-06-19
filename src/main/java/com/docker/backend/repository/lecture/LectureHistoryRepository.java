@@ -14,7 +14,7 @@ import java.util.Set;
 
 public interface LectureHistoryRepository extends JpaRepository<LectureHistory, Long> {
     Optional<LectureHistory> findByStudentAndLecture(Student student, Lecture Lecture);
-    List<LectureHistory> findAllByLectureIn(List<Lecture> lectureIds);
+    List<LectureHistory> findAllByLectureId(List<Lecture> lectureIds);
     int countByStudentAndLectureInAndAttendanceTrue(Student student, List<Lecture> lectureList);
-    LectureHistory findByLectureId(Long lectureId);
+    List<LectureHistory> findAllByLecture(Lecture lecture);
 }
