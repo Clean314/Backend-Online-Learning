@@ -1,5 +1,6 @@
 package com.docker.backend.dto.exam;
 
+import com.docker.backend.dto.exam.question.StudentQuestionDTO;
 import com.docker.backend.entity.exam.Exam;
 import com.docker.backend.enums.ExamStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -43,14 +44,6 @@ public class StudentExamDTO {
         dto.setEndTime(exam.getEndTime());
         dto.setStatus(exam.getStatus());
         dto.setCourseId(exam.getCourse().getId());
-
-        List<StudentQuestionDTO> questionDTOs =
-                exam.getQuestions()
-                        .stream()
-                        .map(StudentQuestionDTO::of)
-                        .collect(Collectors.toList());
-        dto.setQuestions(questionDTOs);
-
         return dto;
     }
 }

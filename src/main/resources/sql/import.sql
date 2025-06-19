@@ -34,22 +34,22 @@ INSERT INTO admin (id, admin_number) VALUES
 (5, 'A2025001');
 
 -- Insert Courses
-INSERT INTO course (course_name, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
-('Advanced Java', '프로그래밍', 'MEDIUM', 50, 49, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Network Fundamentals', '네트워크', 'EASY',   40, 39, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('AI Basics', 'AI', 'EASY', 30, 29, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('SQL 고급 튜닝', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('웹 보안 기초', '보안', 'MEDIUM', 20, 19, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('웹 개발 입문', '프로그래밍', 'EASY', 100, 100, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('리액트 프로페셔널', '프로그래밍', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('노드.js 서버 개발', '프로그래밍', 'MEDIUM', 75, 75, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('데이터베이스 튜닝', '데이터베이스', 'HARD', 60, 60, 4, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-( '머신러닝 기초', 'AI', 'EASY', 50, 50, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-( '딥러닝 실전', 'AI', 'MEDIUM', 45, 45, 3, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('클라우드 아키텍처', '클라우드', 'MEDIUM', 70, 70, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('DevOps 도구', 'DevOps', 'MEDIUM', 65, 65, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-( '모바일 앱 개발', '모바일', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('웹 보안 심화', '보안', 'HARD', 40, 40, 4, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO course (course_name, description, category, difficulty, max_enrollment, available_enrollment, educator_id, point, created_at, updated_at) VALUES
+('Advanced Java', '자바 프로그래밍의 고급 주제를 다루는 강의입니다.', '프로그래밍', 'MEDIUM', 50, 49, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Network Fundamentals', '네트워크의 기본 개념과 프로토콜을 학습합니다.', '네트워크', 'EASY', 40, 39, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('AI Basics', '인공지능의 기초 개념과 머신러닝을 소개합니다.', 'AI', 'EASY', 30, 29, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('SQL 고급 튜닝', '데이터베이스 성능 최적화를 위한 SQL 튜닝 기법을 학습합니다.', '데이터베이스', 'HARD', 35, 35, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 보안 기초', '웹 애플리케이션의 기본적인 보안 개념과 방어 기법을 다룹니다.', '보안', 'MEDIUM', 20, 19, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 개발 입문', 'HTML, CSS, JavaScript를 활용한 웹 개발의 기초를 배웁니다.', '프로그래밍', 'EASY', 100, 100, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('리액트 프로페셔널', 'React의 고급 기능과 상태 관리, 성능 최적화를 학습합니다.', '프로그래밍', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('노드.js 서버 개발', 'Node.js를 활용한 서버 개발과 API 설계를 배웁니다.', '프로그래밍', 'MEDIUM', 75, 75, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('데이터베이스 튜닝', '대규모 데이터베이스의 성능 최적화와 관리 기법을 학습합니다.', '데이터베이스', 'HARD', 60, 60, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('머신러닝 기초', '머신러닝의 기본 알고리즘과 구현 방법을 배웁니다.', 'AI', 'EASY', 50, 50, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('딥러닝 실전', '딥러닝 모델 설계와 학습, 최적화 기법을 실습합니다.', 'AI', 'MEDIUM', 45, 45, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('클라우드 아키텍처', 'AWS, Azure, GCP 등 클라우드 서비스의 아키텍처 설계를 학습합니다.', '클라우드', 'MEDIUM', 70, 70, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('DevOps 도구', 'CI/CD, 컨테이너화, 모니터링 등 DevOps 도구의 활용을 배웁니다.', 'DevOps', 'MEDIUM', 65, 65, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('모바일 앱 개발', 'iOS와 Android 앱 개발의 기초와 실전 프로젝트를 진행합니다.', '모바일', 'MEDIUM', 80, 80, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('웹 보안 심화', '고급 웹 보안 기법과 취약점 분석, 대응 방안을 학습합니다.', '보안', 'HARD', 40, 40, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Enrollments
 INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, version) VALUES
@@ -61,29 +61,113 @@ INSERT INTO enrollment (status, student_id, course_id, created_at, updated_at, v
 ('ENROLLED', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO exam (id, course_id, title, description, start_time, end_time, status) VALUES
-(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-15 10:00:00', '2025-06-15 12:00:00', 'PREPARING'),
-(2, 1, 'Java 기말고사', '멀티스레딩, 스트림, 람다식 등 고급 주제 평가', '2025-07-10 13:00:00', '2025-07-10 15:00:00', 'PREPARING'),
-(3, 2, '네트워크 1차 평가', 'OSI 7계층 및 기본 프로토콜 시험', '2025-06-18 09:00:00', '2025-06-18 11:00:00', 'PREPARING'),
-(4, 3, 'AI 기초 테스트', '기계학습 개요 및 분류/회귀 개념 확인', '2025-06-20 14:00:00', '2025-06-20 15:30:00', 'PREPARING'),
-(5, 4, 'SQL 튜닝 중간고사', '인덱스, 실행계획, 조인 최적화 등 실습형 시험', '2025-06-22 10:00:00', '2025-06-22 12:00:00', 'PREPARING'),
-(6, 5, '웹 보안 기초 시험', 'XSS, CSRF, SQL Injection 등 주요 보안 개념 테스트', '2025-06-25 15:00:00', '2025-06-25 16:30:00', 'PREPARING');
+(1, 1, 'Java 중간고사', 'Java 기초 및 객체지향 개념 평가', '2025-06-19 11:07:00', '2025-06-19 17:00:00', 'PREPARING'),
+(2, 1, '쪽지시험', '수업 이해도 확인을 위한 중간 평가', '2025-06-20 10:00:00', '2025-06-20 16:00:00', 'PREPARING'),
+(3, 1, 'Java 기말고사', '멀티스레딩, 스트림, 람다식 등 고급 주제 평가', '2025-07-10 13:00:00', '2025-07-10 15:00:00', 'PREPARING'),
+(4, 2, '네트워크 1차 평가', 'OSI 7계층 및 기본 프로토콜 시험', '2025-06-18 09:00:00', '2025-06-18 11:00:00', 'PREPARING'),
+(5, 3, 'AI 기초 테스트', '기계학습 개요 및 분류/회귀 개념 확인', '2025-06-20 14:00:00', '2025-06-20 15:30:00', 'PREPARING'),
+(6, 4, 'SQL 튜닝 중간고사', '인덱스, 실행계획, 조인 최적화 등 실습형 시험', '2025-06-22 10:00:00', '2025-06-22 12:00:00', 'PREPARING'),
+(7, 5, '웹 보안 기초 시험', 'XSS, CSRF, SQL Injection 등 주요 보안 개념 테스트', '2025-06-25 15:00:00', '2025-06-25 16:30:00', 'PREPARING');
 
 ALTER TABLE exam ALTER COLUMN id RESTART WITH 7;
 
--- Insert Exam Questions
-INSERT INTO question (exam_id, number, content, answer, score) VALUES
-(1, 1, 'Java의 기본 데이터 타입이 아닌 것은?', 'String', 2),
-(1, 2, '다음 중 Java에서 객체지향 프로그래밍의 4대 원칙이 아닌 것은?', '병렬성', 3),
-(2, 1, 'Java에서 멀티스레딩을 구현하기 위한 방법이 아닌 것은?', '인터페이스 상속', 5),
-(2, 2, 'Java Stream API의 특징이 아닌 것은?', '동기적 처리', 3),
-(3, 1, 'OSI 7계층에서 전송 계층에 해당하는 프로토콜은?', 'TCP', 2),
-(3, 2, '다음 중 네트워크 주소 변환(NAT)의 목적이 아닌 것은?', '데이터 암호화', 3),
-(4, 1, '기계학습에서 분류 문제의 예시가 아닌 것은?', '주식 가격 예측', 2),
-(4, 2, '다음 중 회귀 분석의 목적이 아닌 것은?', '클러스터링', 3),
-(5, 1, 'SQL에서 인덱스의 주된 목적은 무엇인가요?', '검색 성능 향상', 4),
-(5, 2, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인', 5),
-(6, 1, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증', 5),
-(6, 2, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증', 5);
+-- INSERT INTO question (exam_id, number, content, answer, score, question_type) VALUES
+-- (1, 1, 'Java의 기본 데이터 타입이 아닌 것은?', 'String', 5, 'SENTENCE'),
+-- (1, 2, '다음 중 Java에서 객체지향 프로그래밍의 4대 원칙이 아닌 것은?', '병렬성', 5, 'CHOICE'),
+-- (2, 1, 'Java에서 멀티스레딩을 구현하기 위한 방법이 아닌 것은?', '인터페이스 상속', 5, 'SENTENCE'),
+-- (2, 2, 'Java Stream API의 특징이 아닌 것은?', '동기적 처리', 3, 'CHOICE'),
+-- (3, 1, 'OSI 7계층에서 전송 계층에 해당하는 프로토콜은?', 'TCP', 2, 'CHOICE'),
+-- (3, 2, '다음 중 네트워크 주소 변환(NAT)의 목적이 아닌 것은?', '데이터 암호화', 3, 'CHOICE'),
+-- (4, 1, '기계학습에서 분류 문제의 예시가 아닌 것은?', '주식 가격 예측', 2, 'CHOICE'),
+-- (4, 2, '다음 중 회귀 분석의 목적이 아닌 것은?', '클러스터링', 3, 'CHOICE'),
+-- (5, 1, 'SQL에서 인덱스의 주된 목적은 무엇인가요?', '검색 성능 향상', 4, 'SENTENCE'),
+-- (5, 2, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인', 5, 'CHOICE'),
+-- (6, 1, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증', 5, 'SENTENCE'),
+-- (6, 2, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증', 5, 'SENTENCE');
+INSERT INTO question (exam_id, number, content, answer, score, question_type) VALUES (1, 1, 'Java의 기본 데이터 타입이 아닌 것은?', 'String', 5, 'CHOICE'),
+ (1, 2, '다음 중 Java에서 객체지향 프로그래밍의 4대 원칙이 아닌 것은?', '병렬성', 5, 'CHOICE'),
+ (2, 1, 'Java에서 멀티스레딩을 구현하기 위한 방법이 아닌 것은?', '인터페이스 상속', 5, 'CHOICE'),
+ (2, 2, 'Java Stream API의 특징이 아닌 것은?', '동기적 처리', 3, 'CHOICE'),
+ (3, 1, 'OSI 7계층에서 전송 계층에 해당하는 프로토콜은?', 'TCP', 2, 'CHOICE'),
+ (3, 2, '다음 중 네트워크 주소 변환(NAT)의 목적이 아닌 것은?', '데이터 암호화', 3, 'CHOICE'),
+ (4, 1, '기계학습에서 분류 문제의 예시가 아닌 것은?', '주식 가격 예측', 2, 'CHOICE'),
+ (4, 2, '다음 중 회귀 분석의 목적이 아닌 것은?', '클러스터링', 3, 'CHOICE'),
+ (5, 1, 'SQL에서 인덱스의 주된 목적은 무엇인가요?', '검색 성능 향상', 4, 'CHOICE'),
+ (5, 2, '다음 중 SQL 조인 방식이 아닌 것은?', '병렬 조인', 5, 'CHOICE'),
+ (6, 1, 'XSS 공격을 방어하기 위한 방법은 무엇인가요?', '입력값 검증', 5, 'CHOICE'),
+ (6, 2, 'CSRF 공격을 방어하기 위한 방법은 무엇인가요?', '토큰 기반 인증', 5, 'CHOICE');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(1, 'int'),
+(1, 'double'),
+(1, 'boolean'),
+(1, 'String');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(2, '상속'),
+(2, '캡슐화'),
+(2, '다형성'),
+(2, '병렬성');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(3, 'Thread 클래스 상속'),
+(3, 'Runnable 구현'),
+(3, 'Executors 사용'),
+(3, '인터페이스 상속');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(4, '지연된 계산'),
+(4, '함수형 스타일'),
+(4, '동시성 보장'),
+(4, '컬렉션 변환');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(5, 'TCP'),
+(5, 'UDP'),
+(5, 'IP'),
+(5, 'HTTP');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(6, '사설 IP 사용'),
+(6, 'IP 주소 절약'),
+(6, '보안 강화'),
+(6, '데이터 암호화');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(7, '이메일 스팸 분류'),
+(7, '고객 이탈 예측'),
+(7, '종양 악성 여부 판별'),
+(7, '주식 가격 예측');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(8, '숫자 예측'),
+(8, '연속형 변수 모델링'),
+(8, '미래 값 추정'),
+(8, '클러스터링');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(9, '데이터 정렬'),
+(9, '검색 성능 향상'),
+(9, '데이터 압축'),
+(9, '트랜잭션 보장');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(10, 'INNER JOIN'),
+(10, 'LEFT JOIN'),
+(10, 'RIGHT JOIN'),
+(10, '병렬 조인');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(11, '입력값 검증'),
+(11, '출력 인코딩'),
+(11, '쿠키 설정'),
+(11, 'SQL 인젝션 방어');
+
+INSERT INTO question_choices (question_id, choice) VALUES
+(12, '토큰 기반 인증'),
+(12, 'IP 필터링'),
+(12, 'Referer 검증'),
+(12, 'GET 요청 허용');
 
 --Insert Lecture
 INSERT INTO lecture (title, video_url, course_id, created_at, updated_at) VALUES

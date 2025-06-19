@@ -1,5 +1,6 @@
 package com.docker.backend.dto.exam;
 
+import com.docker.backend.dto.exam.question.EducatorQuestionDTO;
 import com.docker.backend.entity.exam.Exam;
 import com.docker.backend.enums.ExamStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,6 +34,8 @@ public class EducatorExamDTO {
     private Long courseId;
 
     private List<EducatorQuestionDTO> questions;
+
+    private int scoreSum;
 
     public static EducatorExamDTO of(Exam exam) {
         EducatorExamDTO dto = new EducatorExamDTO();

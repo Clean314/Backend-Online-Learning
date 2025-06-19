@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 @Getter
 public class ExamCreateDTO {
 
-    @JsonProperty("course_id")
-    private Long courseId;
-
     private String title;
     private String description;
 

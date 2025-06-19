@@ -30,4 +30,6 @@ public class EnrollmentCourseDTO {
 
     @JsonProperty("available_enrollment")
     private int availableEnrollment;
+
+    private String description;
 }

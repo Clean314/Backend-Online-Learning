@@ -1,14 +1,18 @@
 package com.docker.backend.service.member;
 
 import com.docker.backend.dto.user.MemberDTO;
+import com.docker.backend.dto.user.MemberUpdateDTO;
 import com.docker.backend.entity.user.Member;
 import com.docker.backend.repository.member.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -30,6 +34,15 @@ public class MemberService {
 
     public boolean existsByEmail(String email) {
         return memberRepository.findByEmail(email).isPresent();
+    }
+
+    public void updateMember(Long memberId, MemberUpdateDTO dto) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+        
+        member.setName(dto.getName());
+        member.setDescription(dto.getDescription());
+        memberRepository.save(member);
     }
 
 }

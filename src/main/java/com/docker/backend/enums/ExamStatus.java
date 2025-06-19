@@ -18,6 +18,9 @@ public enum ExamStatus {
     }
 
     public void validateTransition(ExamStatus to) {
+        if (this == to) {
+            return;
+        }
         if (!allowedNext.contains(to)) {
             throw new GlobalExceptionHandler.InvalidExamStateException(this.name(), to.name());
         }

@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/student/exam/{courseId}")
@@ -29,11 +29,45 @@ public class StudentExamController {
 
     @GetMapping("/{examId}")
     public ResponseEntity<StudentExamDTO> getExam(@PathVariable("courseId") Long courseId,
-                                           @PathVariable("examId") Long examId,
-                                           Authentication authentication) {
+                                                  @PathVariable("examId") Long examId,
+                                                  Authentication authentication) {
         return ResponseEntity.ok(examService.getStudentExamByIdAndCourse(courseId, getStudentId(authentication), examId));
     }
 
+    @PostMapping("/{examId}/start")
+    public ResponseEntity<Void> startExam(@PathVariable("courseId") Long courseId,
+                                          @PathVariable("examId") Long examId,
+                                          Authentication authentication) {
+        examService.initializeExamStatus(courseId, examId, getStudentId(authentication));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{examId}/submit")
+    public ResponseEntity<String> submitExam(@PathVariable("courseId") Long courseId,
+                                             @PathVariable("examId") Long examId,
+                                             @RequestBody Map<Long, String> answers,
+                                             Authentication authentication) {
+        int score = examService.submitExam(courseId, examId, getStudentId(authentication), answers);
+        return ResponseEntity.ok("제출 완료, 점수: " + score);
+    }
+
+    @PostMapping("/{examId}/save")
+    public ResponseEntity<Void> saveExamProgress(@PathVariable("courseId") Long courseId,
+                                                 @PathVariable("examId") Long examId,
+                                                 @RequestBody Map<Long, String> answers,
+                                                 Authentication authentication) {
+        examService.saveStudentAnswers(courseId, examId, getStudentId(authentication), answers);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{examId}/score")
+    public ResponseEntity<Integer> getExamScore(@PathVariable("courseId") Long courseId,
+                                                @PathVariable("examId") Long examId,
+                                                Authentication authentication) {
+        Long studentId = getStudentId(authentication);
+        int score = examService.getStudentExamScore(courseId, examId, studentId);
+        return ResponseEntity.ok(score);
+    }
 
     private Long getStudentId(Authentication authentication) {
         return authUtil.getStudent(authentication).getId();
