@@ -69,6 +69,15 @@ public class StudentExamController {
         return ResponseEntity.ok(score);
     }
 
+    @GetMapping("/{examId}/answers")
+    public ResponseEntity<Map<Long, String>> getSavedAnswers(@PathVariable("courseId") Long courseId,
+                                                             @PathVariable("examId") Long examId,
+                                                             Authentication authentication) {
+        Long studentId = getStudentId(authentication);
+        Map<Long, String> savedAnswers = examService.getSavedAnswers(courseId, examId, studentId);
+        return ResponseEntity.ok(savedAnswers);
+    }
+
     private Long getStudentId(Authentication authentication) {
         return authUtil.getStudent(authentication).getId();
     }

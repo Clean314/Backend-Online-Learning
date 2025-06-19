@@ -3,10 +3,13 @@ package com.docker.backend.entity.lecture;
 import com.docker.backend.entity.course.Course;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.apache.catalina.LifecycleState;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -35,4 +38,7 @@ public class Lecture {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @OneToMany(mappedBy = "lecture", cascade = CascadeType.REMOVE)
+    private List<LectureHistory> lectureHistories = new ArrayList<>();
 }

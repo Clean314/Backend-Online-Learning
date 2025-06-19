@@ -3,6 +3,8 @@ package com.docker.backend.service.lecture;
 import com.docker.backend.dto.Lecture.LectureDTO;
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.lecture.Lecture;
+import com.docker.backend.entity.lecture.LectureHistory;
+import com.docker.backend.repository.lecture.LectureHistoryRepository;
 import com.docker.backend.repository.lecture.LectureRepository;
 import com.docker.backend.repository.course.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +23,7 @@ public class LectureService {
 
     private final CourseRepository courseRepository;
     private final LectureRepository lectureRepository;
+   private final LectureHistoryRepository lectureHistoryRepository;
 
     // 동영상 저장
     public void createLecture(List<LectureDTO> lectures, Long couId) {
@@ -71,10 +74,6 @@ public class LectureService {
                     ? lectureRepository.existsByVideoUrlAndCourseAndIdNot(lecture.getVideoUrl(), courses, lecture.getLectureId())
                     : lectureRepository.existsByVideoUrlAndCourse(lecture.getVideoUrl(), courses);
 
-//            System.out.println("중복 검사 중 - title: " + lecture.getTitle());
-//            System.out.println("lectureId: " + lecture.getLectureId());
-//            System.out.println("isTitleDuplicate: " + isTitleDuplicate);
-//            System.out.println("isUrlDuplicate: " + isUrlDuplicate);
             String error = "";
             if (isTitleDuplicate && isUrlDuplicate) error = "둘다";
             else if (isTitleDuplicate) error = "제목";
@@ -119,12 +118,17 @@ public class LectureService {
         }
         lectureRepository.delete(lecture);
     }
-    // 06-16 수정
+
     public LectureDTO viewVideo(Long courseId, Long lectureId){
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(()-> new EntityNotFoundException("해당하는 강의가 없습니다."));
         Lecture lecture = lectureRepository.findByCourseAndId(course, lectureId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 영상(" + lectureId + ")이 존재하지 않습니다."));
-        return new LectureDTO(lecture);
+        double history = lectureHistoryRepository.findByLectureId(lectureId)
+                .getWatchedTime();
+
+        LectureDTO dto = new LectureDTO(lecture);
+        dto.setWatchedTime(history);
+        return dto;
     }
 }

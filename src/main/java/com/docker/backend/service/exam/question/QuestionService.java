@@ -46,17 +46,24 @@ public class QuestionService {
         Question question = questionRepository.findByExamIdAndId(examId, questionId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
 
-        Question newQuestion = QuestionMapper.toEntity(questionForm);
-        question.setExam(examRepository.findById(examId).get());
-        question.setId(questionId);
+        question.setNumber(questionForm.getNumber());
+        question.setContent(questionForm.getContent());
+        question.setAnswer(questionForm.getAnswer());
+        question.setScore(questionForm.getScore());
+        question.setQuestionType(questionForm.getQuestionType());
+        question.setChoices(questionForm.getChoices());
+
         return EducatorQuestionDTO.of(questionRepository.save(question));
     }
 
-    @Transactional
+
     public void deleteQuestion(Long educatorId, Long courseId, Long examId, Long questionId) {
         verify(educatorId, courseId, examId);
-        questionRepository.deleteByExamIdAndId(examId, questionId);
+        Question question = questionRepository.findByExamIdAndId(examId, questionId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
+        questionRepository.delete(question);
     }
+
 
     public List<StudentQuestionDTO> StudentGetAllQuestionsByExamId(Long studentId, Long courseId, Long examId) {
         studentVerify(studentId, courseId, examId);

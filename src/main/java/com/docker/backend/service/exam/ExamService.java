@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -76,6 +77,8 @@ public class ExamService {
 
         exam.setTitle(dto.getTitle());
         exam.setDescription(dto.getDescription());
+        exam.setStartTime(dto.getStartTime());
+        exam.setEndTime(dto.getEndTime());
 
         return EducatorExamDTO.of(examRepository.save(exam));
     }
@@ -204,6 +207,57 @@ public class ExamService {
         }
 
         return status.getTotalScore();
+    }
+
+    public Map<Long, String> getSavedAnswers(Long courseId, Long examId, Long studentId) {
+        verifyEnrollCourse(courseId, studentId);
+        isExistExam(courseId, examId);
+
+        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("임시 저장된 시험 정보가 없습니다."));
+
+        List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
+        return answers.stream()
+                .collect(Collectors.toMap(
+                        a -> a.getQuestion().getId(),
+                        StudentAnswer::getAnswer
+                ));
+    }
+
+    public List<StudentExamSubmissionDTO> getStudentSubmissions(Long courseId, Long examId, Long educatorId) {
+        verifyCourseOwnership(courseId, educatorId);
+        Exam exam = isExistExam(courseId, examId);
+
+        List<StudentExamStatus> statuses = studentExamStatusRepository.findByExamId(examId);
+
+        return statuses.stream().map(status -> {
+            List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
+            return StudentExamSubmissionDTO.of(status, answers);
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateAnswerEvaluation(Long courseId, Long examId, Long studentId, Long questionId,
+                                       Long educatorId, AnswerEvaluationUpdateDTO dto) {
+        verifyCourseOwnership(courseId, educatorId);
+        Exam exam = isExistExam(courseId, examId);
+        Student student = isExistStudent(studentId);
+
+        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생의 시험 상태를 찾을 수 없습니다."));
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
+
+        StudentAnswer answer = studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 답변이 존재하지 않습니다."));
+
+        answer.setCorrect(dto.isCorrect());
+        answer.setScore(dto.getScore());
+
+        List<StudentAnswer> allAnswers = studentAnswerRepository.findByStudentExamStatus(status);
+        int newTotalScore = allAnswers.stream().mapToInt(StudentAnswer::getScore).sum();
+        status.setTotalScore(newTotalScore);
     }
 
     private void verifyEnrollCourse(Long courseId, Long studentId) {
