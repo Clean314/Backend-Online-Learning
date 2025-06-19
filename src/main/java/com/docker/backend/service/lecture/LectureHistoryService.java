@@ -1,5 +1,6 @@
 package com.docker.backend.service.lecture;
 
+import com.docker.backend.dto.Lecture.AttendanceDTO;
 import com.docker.backend.dto.course.CourseAttendanceDTO;
 import com.docker.backend.entity.course.Course;
 import com.docker.backend.entity.enrollment.Enrollment;
@@ -17,10 +18,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -100,14 +98,29 @@ public class LectureHistoryService {
             dto.setAttendanceAvg((double) attendanceCount / lectureCount * 100);
 
             result.add(dto);
-
-            System.out.println("%%%%"+enrollment.getStudent().getName());
-            System.out.println("%%%%%%%%%%"+lectureCount);
-            System.out.println("4$$$$$$"+attendanceCount);
-            System.out.println("1111111111"+result+"1111111111");
-
             }
         return result;
+    }
+
+    public AttendanceDTO attendance(Long lectureId){
+        Optional<LectureHistory> time = lectureHistoryRepository.findById(lectureId); // 해당하는 lectureId를 LectureHistory 를 조회
+        AttendanceDTO dto = new AttendanceDTO();
+        dto.setWatchedTime(time.orElseThrow().getWatchedTime());
+        return dto;
+    }
+
+    public List<AttendanceDTO> attendanceList(Long courseId){
+        List<Lecture> lectures = lectureRepository.findAllByCourseId(courseId);
+        List<AttendanceDTO> list = new ArrayList<>();
+        for(Lecture lecture : lectures){
+            List<LectureHistory> histories = lectureHistoryRepository.findAllByLecture(lecture);
+            for (LectureHistory h : histories) {
+                AttendanceDTO dto = new AttendanceDTO();
+                dto.setWatchedTime(h.getWatchedTime());
+                list.add(dto);
+            }
+        }
+        return list;
     }
 }
 

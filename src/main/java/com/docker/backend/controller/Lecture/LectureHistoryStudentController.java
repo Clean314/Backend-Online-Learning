@@ -1,6 +1,7 @@
 package com.docker.backend.controller.Lecture;
 
 import com.docker.backend.config.AuthUtil;
+import com.docker.backend.dto.Lecture.AttendanceDTO;
 import com.docker.backend.dto.course.CourseAttendanceDTO;
 import com.docker.backend.entity.lecture.LectureHistory;
 import com.docker.backend.entity.user.Student;
@@ -43,5 +44,9 @@ public class LectureHistoryStudentController {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+    @GetMapping("/attendance/student/{lectureId}")
+    public ResponseEntity<AttendanceDTO> attendance(@PathVariable Long lectureId){
+        return ResponseEntity.ok(lectureHistoryService.attendance(lectureId));
     }
 }

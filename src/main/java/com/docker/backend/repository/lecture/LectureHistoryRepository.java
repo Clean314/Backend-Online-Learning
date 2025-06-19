@@ -16,4 +16,5 @@ public interface LectureHistoryRepository extends JpaRepository<LectureHistory, 
     Optional<LectureHistory> findByStudentAndLecture(Student student, Lecture Lecture);
     List<LectureHistory> findAllByLectureIn(List<Lecture> lectureIds);
     int countByStudentAndLectureInAndAttendanceTrue(Student student, List<Lecture> lectureList);
+    List<LectureHistory> findAllByLecture(Lecture lecture);
 }
