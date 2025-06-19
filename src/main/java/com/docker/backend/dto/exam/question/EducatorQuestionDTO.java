@@ -2,7 +2,6 @@ package com.docker.backend.dto.exam.question;
 
 import com.docker.backend.entity.exam.question.Question;
 import com.docker.backend.enums.QuestionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ public class EducatorQuestionDTO {
     private String content;
     private String answer;
     private int score;
-    @JsonProperty("question_type")
     private QuestionType questionType;
     private List<String> choices;
 

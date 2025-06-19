@@ -9,8 +9,6 @@ public class QuestionMapper {
         question.setNumber(form.getNumber());
         question.setScore(form.getScore());
         question.setContent(form.getContent());
-        question.setQuestionType(form.getQuestionType());
-        question.setChoices(form.getChoices());
         return question;
     }
 }
