@@ -23,7 +23,6 @@ public class LectureService {
 
     private final CourseRepository courseRepository;
     private final LectureRepository lectureRepository;
-   private final LectureHistoryRepository lectureHistoryRepository;
 
     // 동영상 저장
     public void createLecture(List<LectureDTO> lectures, Long couId) {
@@ -124,11 +123,7 @@ public class LectureService {
                 .orElseThrow(()-> new EntityNotFoundException("해당하는 강의가 없습니다."));
         Lecture lecture = lectureRepository.findByCourseAndId(course, lectureId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 영상(" + lectureId + ")이 존재하지 않습니다."));
-        double history = lectureHistoryRepository.findByLectureId(lectureId)
-                .getWatchedTime();
+        return new LectureDTO(lecture);
 
-        LectureDTO dto = new LectureDTO(lecture);
-        dto.setWatchedTime(history);
-        return dto;
     }
 }
