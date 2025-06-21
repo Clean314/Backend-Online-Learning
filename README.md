@@ -24,3 +24,6 @@
 ## Test API
 
 ## 기여자
+
+## TODO
+코드 리팩토링, 유효성 검사, sql 검색 조건 보강, OWASP ZAP 취약 검사
