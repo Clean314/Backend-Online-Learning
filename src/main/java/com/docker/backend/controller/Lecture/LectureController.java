@@ -2,10 +2,13 @@ package com.docker.backend.controller.Lecture;
 
 import com.docker.backend.dto.Lecture.LectureDTO;
 import com.docker.backend.service.lecture.LectureService;
+import com.docker.backend.config.AuthUtil;
+import com.docker.backend.entity.user.Student;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.List;
 public class LectureController {
 
     private final LectureService lectureService;
+    private final AuthUtil authUtil;
 
     // 강의(동영상)등록
     @PostMapping("/create/url/{id}")
@@ -32,8 +36,10 @@ public class LectureController {
     }
     // 강의 영상 리스트
     @GetMapping("/list/{courseId}")
-    public ResponseEntity<List<LectureDTO>> getLectureList(@PathVariable("courseId") Long courseId){
-        return ResponseEntity.ok(lectureService.getLectureList(courseId));
+    public ResponseEntity<List<LectureDTO>> getLectureList(Authentication authentication, @PathVariable("courseId") Long courseId){
+        // 관리자는 학생이 아니므로, 예시로 null을 넘김 (필요시 로직 보완)
+        Student student = null;
+        return ResponseEntity.ok(lectureService.getLectureList(courseId, student));
     }
 
     // 강의(동영상) 수정

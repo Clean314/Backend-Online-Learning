@@ -1,8 +1,9 @@
 package com.docker.backend.service.lecture;
 
 import com.docker.backend.dto.Lecture.LectureDTO;
-import com.docker.backend.domain.course.Course;
-import com.docker.backend.domain.lecture.Lecture;
+import com.docker.backend.entity.course.Course;
+import com.docker.backend.entity.lecture.Lecture;
+import com.docker.backend.entity.lecture.LectureHistory;
 import com.docker.backend.repository.lecture.LectureHistoryRepository;
 import com.docker.backend.repository.lecture.LectureRepository;
 import com.docker.backend.repository.course.CourseRepository;

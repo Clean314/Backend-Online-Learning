@@ -1,5 +1,6 @@
 package com.docker.backend.controller.Lecture;
 
+import com.docker.backend.dto.Lecture.AttendanceDTO;
 import com.docker.backend.dto.course.CourseAttendanceDTO;
 import com.docker.backend.service.lecture.LectureHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,14 @@ import java.util.List;
 public class LectureHistoryEducatorController {
 
     private final LectureHistoryService lectureHistoryService;
-    @GetMapping("/attendance/{courseId}")
-    public ResponseEntity<List<CourseAttendanceDTO>> getStudentAttendance(@PathVariable Long courseId){
-        return ResponseEntity.ok(lectureHistoryService.getStudentAttendance(courseId));
 
+    @GetMapping("/attendance/{courseId}")
+    public ResponseEntity<Double> avgAttendance(@PathVariable Long courseId){
+        return ResponseEntity.ok(lectureHistoryService.avgAttendance(courseId));
+    }
+
+    @GetMapping("/attendance/{courseId}/list")
+    public ResponseEntity<List<CourseAttendanceDTO>> attendanceList(@PathVariable Long courseId){
+        return ResponseEntity.ok(lectureHistoryService.getStudentAttendance(courseId));
     }
 }

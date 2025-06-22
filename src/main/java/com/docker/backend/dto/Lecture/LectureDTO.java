@@ -34,6 +34,8 @@ public class LectureDTO {
     @JsonProperty("course_id")
     private Course courseId;
 
+    private Boolean attendance;
+
     public LectureDTO(Lecture lecture){
         this.lectureId = lecture.getId();
         this.title = lecture.getTitle();
