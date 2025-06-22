@@ -1,17 +1,15 @@
 package com.docker.backend.service.lecture;
 
 import com.docker.backend.dto.course.CourseAttendanceDTO;
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.enrollment.Enrollment;
-import com.docker.backend.entity.lecture.Lecture;
-import com.docker.backend.entity.lecture.LectureHistory;
-import com.docker.backend.entity.user.Member;
-import com.docker.backend.entity.user.Student;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.enrollment.Enrollment;
+import com.docker.backend.domain.lecture.Lecture;
+import com.docker.backend.domain.lecture.LectureHistory;
+import com.docker.backend.domain.user.Student;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.lecture.LectureHistoryRepository;
 import com.docker.backend.repository.lecture.LectureRepository;
-import com.docker.backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,5 @@
 package com.docker.backend.dto.Lecture;
 
-import com.docker.backend.entity.lecture.Lecture;
-import com.docker.backend.entity.user.Student;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -2,11 +2,11 @@ package com.docker.backend.service.enrollment;
 
 import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.dto.enrollment.EnrollmentCourseDTO;
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.enrollment.Enrollment;
-import com.docker.backend.entity.user.Educator;
-import com.docker.backend.entity.user.Student;
-import com.docker.backend.enums.Status;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.enrollment.Enrollment;
+import com.docker.backend.domain.user.Educator;
+import com.docker.backend.domain.user.Student;
+import com.docker.backend.domain.enums.Status;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import jakarta.persistence.EntityNotFoundException;

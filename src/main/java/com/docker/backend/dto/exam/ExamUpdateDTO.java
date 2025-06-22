@@ -1,6 +1,6 @@
 package com.docker.backend.dto.exam;
 
-import com.docker.backend.enums.ExamStatus;
+import com.docker.backend.domain.enums.ExamStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 

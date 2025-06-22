@@ -1,10 +1,8 @@
 package com.docker.backend.dto.Lecture;
 
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.lecture.Lecture;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.lecture.Lecture;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;

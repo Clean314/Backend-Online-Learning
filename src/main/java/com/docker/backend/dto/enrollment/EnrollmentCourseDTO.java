@@ -1,7 +1,7 @@
 package com.docker.backend.dto.enrollment;
 
-import com.docker.backend.enums.Difficulty;
-import com.docker.backend.enums.Status;
+import com.docker.backend.domain.enums.Difficulty;
+import com.docker.backend.domain.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.docker.backend.dto.user;
 
-import com.docker.backend.enums.MemberRole;
+import com.docker.backend.domain.enums.MemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

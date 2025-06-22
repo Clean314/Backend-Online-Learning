@@ -1,7 +1,7 @@
 package com.docker.backend.config;
 
-import com.docker.backend.entity.user.Educator;
-import com.docker.backend.entity.user.Student;
+import com.docker.backend.domain.user.Educator;
+import com.docker.backend.domain.user.Student;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 

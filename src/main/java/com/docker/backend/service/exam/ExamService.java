@@ -1,14 +1,15 @@
 package com.docker.backend.service.exam;
 
 import com.docker.backend.dto.exam.*;
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.exam.Exam;
-import com.docker.backend.entity.exam.StudentAnswer;
-import com.docker.backend.entity.exam.StudentExamStatus;
-import com.docker.backend.entity.exam.question.Question;
-import com.docker.backend.entity.user.Student;
-import com.docker.backend.enums.ExamStatus;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.exam.Exam;
+import com.docker.backend.domain.exam.StudentAnswer;
+import com.docker.backend.domain.exam.StudentExamStatus;
+import com.docker.backend.domain.exam.question.Question;
+import com.docker.backend.domain.user.Student;
+import com.docker.backend.domain.enums.ExamStatus;
 import com.docker.backend.exception.GlobalExceptionHandler;
+import com.docker.backend.mapper.exam.ExamMapper;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.exam.ExamRepository;
@@ -19,7 +20,7 @@ import com.docker.backend.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.docker.backend.enums.QuestionType;
+import com.docker.backend.domain.enums.QuestionType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

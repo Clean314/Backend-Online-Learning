@@ -1,17 +1,14 @@
 package com.docker.backend.controller.Lecture;
 
 import com.docker.backend.config.AuthUtil;
-import com.docker.backend.dto.course.CourseAttendanceDTO;
-import com.docker.backend.entity.lecture.LectureHistory;
-import com.docker.backend.entity.user.Student;
+import com.docker.backend.domain.lecture.LectureHistory;
+import com.docker.backend.domain.user.Student;
 import com.docker.backend.service.lecture.LectureHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

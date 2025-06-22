@@ -1,7 +1,7 @@
 package com.docker.backend.repository.lecture;
 
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.lecture.Lecture;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.lecture.Lecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

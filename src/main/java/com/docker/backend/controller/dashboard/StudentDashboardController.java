@@ -1,7 +1,7 @@
 package com.docker.backend.controller.dashboard;
 
 import com.docker.backend.dto.course.RecentCourseDTO;
-import com.docker.backend.entity.user.Student;
+import com.docker.backend.domain.user.Student;
 import com.docker.backend.config.CustomUserDetails;
 import com.docker.backend.service.dashboard.StudentDashboardService;
 import lombok.RequiredArgsConstructor;

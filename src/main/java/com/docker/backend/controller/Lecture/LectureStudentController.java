@@ -2,13 +2,11 @@ package com.docker.backend.controller.Lecture;
 
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.Lecture.LectureDTO;
-import com.docker.backend.entity.user.Student;
 import com.docker.backend.service.lecture.LectureService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

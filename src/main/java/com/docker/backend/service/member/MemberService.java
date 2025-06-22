@@ -2,7 +2,7 @@ package com.docker.backend.service.member;
 
 import com.docker.backend.dto.user.MemberDTO;
 import com.docker.backend.dto.user.MemberUpdateDTO;
-import com.docker.backend.entity.user.Member;
+import com.docker.backend.domain.user.Member;
 import com.docker.backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -18,31 +18,38 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member register(Member member) {
-        if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
-        }
+    public void register(Member member) {
+        existsByEmail(member.getEmail());
 
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        return memberRepository.save(member);
+        memberRepository.save(member);
     }
 
     public MemberDTO getProfile(Member member) {
         memberRepository.findById(member.getId());
-        return new MemberDTO(member.getId(),  member.getName(), member.getEmail(), member.getRole(), member.getDescription());
+        return new MemberDTO(
+            member.getId(),  
+            member.getName(), 
+            member.getEmail(),
+            member.getRole(),
+            member.getDescription());
+    }
+
+    public void updateMember(Long memberId, MemberUpdateDTO dto) {
+        Member member = getMemberOrThrow(memberId);
+        
+        member.setName(dto.getName());
+        member.setDescription(dto.getDescription());
+        memberRepository.save(member);
     }
 
     public boolean existsByEmail(String email) {
         return memberRepository.findByEmail(email).isPresent();
     }
 
-    public void updateMember(Long memberId, MemberUpdateDTO dto) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
-        
-        member.setName(dto.getName());
-        member.setDescription(dto.getDescription());
-        memberRepository.save(member);
+    public Member getMemberOrThrow(Long memberId) {
+        return memberRepository.findById(memberId)
+            .orElseThrow(() -> new EntityNotFoundException("Member not found"));
     }
 
 }

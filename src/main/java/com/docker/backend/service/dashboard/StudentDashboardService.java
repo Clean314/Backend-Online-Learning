@@ -1,8 +1,8 @@
 package com.docker.backend.service.dashboard;
 
 import com.docker.backend.dto.course.RecentCourseDTO;
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.user.Student;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.user.Student;
 import com.docker.backend.repository.course.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
