@@ -35,7 +35,6 @@ public class LectureHistoryService {
         Lecture lecture = lectureRepository.findById(dto.getLectureId())
                 .orElseThrow(() -> new IllegalArgumentException("강의 없음"));
 
-        // 기존 기록이 있으면 update, 없으면 새로 생성
         LectureHistory history = lectureHistoryRepository
                 .findByStudentAndLecture(student, lecture)
                 .orElseGet(() -> {
@@ -45,7 +44,9 @@ public class LectureHistoryService {
                     return newHistory;
                 });
 
-        history.setWatchedTime(dto.getWatchedTime());
+        double current = history.getWatchedTime() == null ? 0.0 : history.getWatchedTime();
+        double incoming = dto.getWatchedTime();
+        history.setWatchedTime(Math.max(current, incoming));
         history.setAttendance(dto.getAttendance());
 
         lectureHistoryRepository.save(history);
@@ -103,7 +104,7 @@ public class LectureHistoryService {
             dto.setAttendanceAvg((double) attendanceCount / lectureCount * 100);
 
             result.add(dto);
-            }
+        }
         return result;
     }
 

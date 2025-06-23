@@ -86,7 +86,7 @@ public class ExamService {
 
 
     public void deleteExam(Long courseId, Long examId, Long educatorId) {
-        verifyCourseOwnership(educatorId, courseId);
+        verifyCourseOwnership(courseId, educatorId);
         Exam exam = isExistExam(courseId, examId);
 
         if (Duration.between(LocalDateTime.now(), exam.getStartTime()).toHours() < 24) {
