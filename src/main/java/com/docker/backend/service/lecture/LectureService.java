@@ -1,9 +1,8 @@
 package com.docker.backend.service.lecture;
 
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.lecture.Lecture;
 import com.docker.backend.dto.Lecture.LectureDTO;
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.lecture.Lecture;
-import com.docker.backend.entity.lecture.LectureHistory;
 import com.docker.backend.repository.lecture.LectureHistoryRepository;
 import com.docker.backend.repository.lecture.LectureRepository;
 import com.docker.backend.repository.course.CourseRepository;
@@ -119,16 +118,16 @@ public class LectureService {
         lectureRepository.delete(lecture);
     }
 
-    public LectureDTO viewVideo(Long courseId, Long lectureId){
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(()-> new EntityNotFoundException("해당하는 강의가 없습니다."));
-        Lecture lecture = lectureRepository.findByCourseAndId(course, lectureId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 영상(" + lectureId + ")이 존재하지 않습니다."));
-        double history = lectureHistoryRepository.findByLectureId(lectureId)
-                .getWatchedTime();
-
-        LectureDTO dto = new LectureDTO(lecture);
-        dto.setWatchedTime(history);
-        return dto;
-    }
+//    public LectureDTO viewVideo(Long courseId, Long lectureId){
+//        Course course = courseRepository.findById(courseId)
+//                .orElseThrow(()-> new EntityNotFoundException("해당하는 강의가 없습니다."));
+//        Lecture lecture = lectureRepository.findByCourseAndId(course, lectureId)
+//                .orElseThrow(() -> new EntityNotFoundException("해당 영상(" + lectureId + ")이 존재하지 않습니다."));
+//        double history = lectureHistoryRepository.findByLectureId(lectureId)
+//                .getWatchedTime();
+//
+//        LectureDTO dto = new LectureDTO(lecture);
+//        dto.setWatchedTime(history);
+//        return dto;
+//    }
 }

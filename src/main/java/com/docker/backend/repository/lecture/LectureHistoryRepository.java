@@ -3,6 +3,7 @@ package com.docker.backend.repository.lecture;
 import com.docker.backend.domain.lecture.Lecture;
 import com.docker.backend.domain.lecture.LectureHistory;
 import com.docker.backend.domain.user.Student;
+import com.docker.backend.service.lecture.LectureHistoryService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface LectureHistoryRepository extends JpaRepository<LectureHistory, 
     int countByStudentAndLectureInAndAttendanceTrue(Student student, List<Lecture> lectureList);
     List<LectureHistory> findAllByLecture(Lecture lecture);
     List<LectureHistory> findAllByLectureId(Long lectureId);
+
+    LectureHistoryService findByLectureId(Long lectureId);
 }
