@@ -104,7 +104,7 @@ public class LectureHistoryService {
             dto.setAttendanceAvg((double) attendanceCount / lectureCount * 100);
 
             result.add(dto);
-            }
+        }
         return result;
     }
 
