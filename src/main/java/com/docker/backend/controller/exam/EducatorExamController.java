@@ -25,7 +25,8 @@ public class EducatorExamController {
     private final AuthUtil authUtil;
 
     private Long getEducatorId(Authentication authentication) {
-        return authUtil.getEducator(authentication).getId();
+        Long id = authUtil.getEducator(authentication).getId();
+        return id;
     }
 
     @GetMapping
