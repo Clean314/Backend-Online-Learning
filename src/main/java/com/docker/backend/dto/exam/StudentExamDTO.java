@@ -14,23 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class StudentExamDTO {
-    private Long id;
-    private String title;
-    private String description;
-
-    @JsonProperty("start_time")
-    private LocalDateTime startTime;
-
-    @JsonProperty("end_time")
-    private LocalDateTime endTime;
-
-    private ExamStatus status;
-
-    @JsonProperty("course_id")
-    private Long courseId;
+public class StudentExamDTO extends ExamBaseDTO {
 
     private List<StudentQuestionDTO> questions;
 
