@@ -10,6 +10,8 @@ import com.docker.backend.mapper.exam.question.EducatorQuestionMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {EducatorQuestionMapper.class})
 public interface EducatorExamMapper {
 
@@ -17,15 +19,14 @@ public interface EducatorExamMapper {
     @Mapping(target = "scoreSum", expression = "java(getScoreSum(exam))")
     EducatorExamDTO toDto(Exam exam);
 
+    List<EducatorExamDTO> toDtoList(List<Exam> byCourseId);
+
     @Mapping(source = "course.id", target = "courseId")
     Exam toEntity(ExamCreateDTO dto, Long courseId, ExamStatus examStatus);
 
     @Mapping(source = "course.id", target = "courseId")
     @Mapping(source = "exam.id", target = "examId")
     Exam toEntity(ExamUpdateDTO dto, Long courseId, Long examId);
-
-//    @Mapping(target = "courseId", source = "course.id")
-//    Exam toEntity(EducatorExamDTO dto);
 
     default int getScoreSum(Exam exam) {
         return exam.getQuestions().stream()

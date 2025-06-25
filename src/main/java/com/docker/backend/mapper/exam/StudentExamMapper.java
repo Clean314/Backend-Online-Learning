@@ -6,9 +6,12 @@ import com.docker.backend.mapper.exam.question.StudentQuestionMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {ExamBaseMapper.class, StudentQuestionMapper.class})
 public interface StudentExamMapper {
     @Mapping(source = "course.id", target = "courseId")
-    @Mapping(source = "questions", target = "questions")
     StudentExamDTO toDto(Exam exam);
+
+    List<StudentExamDTO> toDtoList(List<Exam> byCourseId);
 }

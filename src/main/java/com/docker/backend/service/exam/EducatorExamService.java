@@ -10,7 +10,6 @@ import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.mapper.exam.EducatorExamMapper;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.exam.ExamRepository;
-import com.docker.backend.repository.exam.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,26 +22,21 @@ import java.util.List;
 public class EducatorExamService {
     private final CourseRepository courseRepository;
     private final ExamRepository examRepository;
-    private final QuestionRepository questionRepository;
     private final EducatorExamMapper educatorExamMapper;
 
     public List<EducatorExamDTO> getExamsByCourse(Long educatorId, Long courseId) {
         isOwnerOfCourse(educatorId, courseId);
-        return examRepository.findByCourseId(courseId)
-                .stream().map(EducatorExamDTO::of).toList();
+        return educatorExamMapper.toDtoList(examRepository.findByCourseId(courseId));
     }
 
     public EducatorExamDTO getExamByIdAndCourse(Long educatorId, Long courseId, Long examId) {
         isOwnerOfCourse(educatorId, courseId);
-        return educatorExamMapper.toDto(
-                examRepository.findByCourseIdAndId(courseId, educatorId)
-        );
+        return educatorExamMapper.toDto(isExistExam(courseId, examId));
     }
 
     public EducatorExamDTO createExam(Long educatorId, Long courseId, ExamCreateDTO dto) {
-        Course course = isOwnerOfCourse(educatorId, courseId);
+        isOwnerOfCourse(educatorId, courseId);
         validateExamDuration(dto.getStartTime(), dto.getEndTime());
-
         return educatorExamMapper.toDto(
                 educatorExamMapper.toEntity(dto, courseId, ExamStatus.PREPARING)
         );
