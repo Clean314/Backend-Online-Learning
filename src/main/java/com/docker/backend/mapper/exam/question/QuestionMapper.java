@@ -1,17 +1,13 @@
 package com.docker.backend.mapper.exam.question;
 
 import com.docker.backend.domain.exam.question.Question;
+import com.docker.backend.dto.exam.question.EducatorQuestionDTO;
 import com.docker.backend.dto.exam.question.QuestionForm;
+import com.docker.backend.dto.exam.question.StudentQuestionDTO;
+import org.mapstruct.Mapper;
 
-public class QuestionMapper {
-    public static Question toEntity(QuestionForm form) {
-        Question question = new Question();
-        question.setAnswer(form.getAnswer());
-        question.setNumber(form.getNumber());
-        question.setScore(form.getScore());
-        question.setContent(form.getContent());
-        question.setQuestionType(form.getQuestionType());
-        question.setChoices(form.getChoices());
-        return question;
-    }
+@Mapper(componentModel = "spring")
+public interface QuestionMapper {
+    EducatorQuestionDTO toEducatorDto(Question q);
+    StudentQuestionDTO toStudentDto(Question q);
 }

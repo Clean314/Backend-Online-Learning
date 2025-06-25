@@ -1,7 +1,6 @@
 package com.docker.backend.mapper.exam.question;
 
 import com.docker.backend.domain.exam.Exam;
-import com.docker.backend.domain.exam.question.Question;
 import com.docker.backend.dto.exam.EducatorExamDTO;
 import com.docker.backend.mapper.exam.ExamBaseMapper;
 import org.mapstruct.Mapper;

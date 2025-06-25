@@ -1,0 +1,4 @@
+package com.docker.backend.dto.exam;
+
+public class ExamBaseDTO {
+}
