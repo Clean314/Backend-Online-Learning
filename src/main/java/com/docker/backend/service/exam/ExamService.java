@@ -182,6 +182,25 @@ public class ExamService {
                     answer.setCorrect(false);
                     answer.setScore(0);
                 }
+            } else if (question.getQuestionType() == QuestionType.TRUE_FALSE) {
+                List<String> choices = question.getChoices();
+                try {
+                    int choiceIndex = Integer.parseInt(entry.getValue());
+                    if (choiceIndex >= 0 && choiceIndex < choices.size()) {
+                        String selectedChoice = choices.get(choiceIndex);
+                        boolean isCorrect = question.getAnswer().equalsIgnoreCase(selectedChoice);
+                        answer.setCorrect(isCorrect);
+                        int score = isCorrect ? question.getScore() : 0;
+                        answer.setScore(score);
+                        totalScore += score;
+                    } else {
+                        answer.setCorrect(false);
+                        answer.setScore(0);
+                    }
+                } catch (NumberFormatException e) {
+                    answer.setCorrect(false);
+                    answer.setScore(0);
+                }
             } else if (question.getQuestionType() == QuestionType.SENTENCE) {
                 answer.setCorrect(false);
                 answer.setScore(0);
