@@ -33,16 +33,6 @@ public class LectureHistoryStudentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @GetMapping("/attendance-avg/{courseId}")
-    public ResponseEntity<?> getStudentAttendance(@PathVariable Long courseId){
-
-        try {
-            return ResponseEntity.ok().body(lectureHistoryService.getStudentAttendance(courseId));
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
     @GetMapping("/attendance/student/{lectureId}")
     public ResponseEntity<AttendanceDTO> attendance(@PathVariable Long lectureId){
         return ResponseEntity.ok(lectureHistoryService.attendance(lectureId));
