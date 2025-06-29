@@ -2,16 +2,14 @@ package com.docker.backend.service.exam.question;
 
 import com.docker.backend.dto.exam.question.EducatorQuestionDTO;
 import com.docker.backend.dto.exam.question.QuestionForm;
-import com.docker.backend.dto.exam.question.QuestionMapper;
+import com.docker.backend.mapper.exam.question.QuestionMapper;
 import com.docker.backend.dto.exam.question.StudentQuestionDTO;
-import com.docker.backend.entity.exam.Exam;
-import com.docker.backend.entity.exam.question.Question;
+import com.docker.backend.domain.exam.question.Question;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.exam.ExamRepository;
 import com.docker.backend.repository.exam.question.QuestionRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

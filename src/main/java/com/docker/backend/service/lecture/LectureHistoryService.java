@@ -2,21 +2,20 @@ package com.docker.backend.service.lecture;
 
 import com.docker.backend.dto.Lecture.AttendanceDTO;
 import com.docker.backend.dto.course.CourseAttendanceDTO;
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.enrollment.Enrollment;
-import com.docker.backend.entity.lecture.Lecture;
-import com.docker.backend.entity.lecture.LectureHistory;
-import com.docker.backend.entity.user.Member;
-import com.docker.backend.entity.user.Student;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.enrollment.Enrollment;
+import com.docker.backend.domain.lecture.Lecture;
+import com.docker.backend.domain.lecture.LectureHistory;
+import com.docker.backend.domain.user.Student;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.lecture.LectureHistoryRepository;
 import com.docker.backend.repository.lecture.LectureRepository;
-import com.docker.backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.docker.backend.dto.Lecture.LectureHistoryRequestDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,16 +31,22 @@ public class LectureHistoryService {
     private final EnrollmentRepository enrollmentRepository;
 
     // 실시간으로 프론트에서 iframe으로 10초? 정도 간격으로 데이터를 보내주는걸 저장
-    public void saveTimeLine(Student student, LectureHistory dto){
-
-        Lecture lecture = lectureRepository.findById(dto.getId())
+    public void saveTimeLine(Student student, LectureHistoryRequestDTO dto){
+        Lecture lecture = lectureRepository.findById(dto.getLectureId())
                 .orElseThrow(() -> new IllegalArgumentException("강의 없음"));
 
         LectureHistory history = lectureHistoryRepository
                 .findByStudentAndLecture(student, lecture)
-                .orElseThrow(() -> new IllegalArgumentException("수강 기록 없음"));
+                .orElseGet(() -> {
+                    LectureHistory newHistory = new LectureHistory();
+                    newHistory.setStudent(student);
+                    newHistory.setLecture(lecture);
+                    return newHistory;
+                });
 
-        history.setWatchedTime(dto.getWatchedTime());
+        double current = history.getWatchedTime() == null ? 0.0 : history.getWatchedTime();
+        double incoming = dto.getWatchedTime();
+        history.setWatchedTime(Math.max(current, incoming));
         history.setAttendance(dto.getAttendance());
 
         lectureHistoryRepository.save(history);
@@ -92,13 +97,14 @@ public class LectureHistoryService {
 
             CourseAttendanceDTO dto = new CourseAttendanceDTO();
             dto.setStudentName(student.getName());
+            dto.setMemberId(student.getId());
             dto.setTotalCourse(lectureCount);
             dto.setAttendanceTrue(attendanceCount);
             dto.setAttendanceFalse(lectureCount - attendanceCount);
             dto.setAttendanceAvg((double) attendanceCount / lectureCount * 100);
 
             result.add(dto);
-            }
+        }
         return result;
     }
 
@@ -121,6 +127,14 @@ public class LectureHistoryService {
             }
         }
         return list;
+    }
+
+    public double getWatchedTime(Student student, Long lectureId) {
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(() -> new IllegalArgumentException("강의 없음"));
+        LectureHistory history = lectureHistoryRepository.findByStudentAndLecture(student, lecture)
+                .orElseThrow(() -> new IllegalArgumentException("수강 기록 없음"));
+        return history.getWatchedTime();
     }
 
 }

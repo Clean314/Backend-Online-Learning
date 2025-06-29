@@ -2,8 +2,8 @@ package com.docker.backend.dto.exam;
 
 import lombok.*;
 
-import com.docker.backend.entity.exam.StudentAnswer;
-import com.docker.backend.entity.exam.StudentExamStatus;
+import com.docker.backend.domain.exam.StudentAnswer;
+import com.docker.backend.domain.exam.StudentExamStatus;
 
 import java.util.List;
 

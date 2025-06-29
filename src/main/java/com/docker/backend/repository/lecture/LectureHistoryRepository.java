@@ -1,16 +1,13 @@
 package com.docker.backend.repository.lecture;
 
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.enrollment.Enrollment;
-import com.docker.backend.entity.lecture.Lecture;
-import com.docker.backend.entity.lecture.LectureHistory;
-import com.docker.backend.entity.user.Member;
-import com.docker.backend.entity.user.Student;
+import com.docker.backend.domain.lecture.Lecture;
+import com.docker.backend.domain.lecture.LectureHistory;
+import com.docker.backend.domain.user.Student;
+import com.docker.backend.service.lecture.LectureHistoryService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface LectureHistoryRepository extends JpaRepository<LectureHistory, Long> {
     Optional<LectureHistory> findByStudentAndLecture(Student student, Lecture Lecture);
@@ -18,4 +15,6 @@ public interface LectureHistoryRepository extends JpaRepository<LectureHistory, 
     int countByStudentAndLectureInAndAttendanceTrue(Student student, List<Lecture> lectureList);
     List<LectureHistory> findAllByLecture(Lecture lecture);
     List<LectureHistory> findAllByLectureId(Long lectureId);
+
+    LectureHistoryService findByLectureId(Long lectureId);
 }

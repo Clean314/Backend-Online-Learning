@@ -3,7 +3,7 @@ package com.docker.backend.controller.course;
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.course.CourseCreateDTO;
 import com.docker.backend.dto.course.CourseDTO;
-import com.docker.backend.entity.user.Educator;
+import com.docker.backend.domain.user.Educator;
 import com.docker.backend.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

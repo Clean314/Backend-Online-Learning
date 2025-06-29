@@ -1,6 +1,6 @@
 package com.docker.backend.dto.course;
 
-import com.docker.backend.entity.course.Course;
+import com.docker.backend.domain.course.Course;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

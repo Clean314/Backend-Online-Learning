@@ -12,4 +12,5 @@ public class CourseAttendanceDTO {
     private int attendanceTrue;
     private int attendanceFalse;
     private double attendanceAvg;
+    private Long memberId;
 }

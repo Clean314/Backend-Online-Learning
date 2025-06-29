@@ -1,6 +1,6 @@
 package com.docker.backend.dto.exam.question;
 
-import com.docker.backend.enums.QuestionType;
+import com.docker.backend.domain.enums.QuestionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 

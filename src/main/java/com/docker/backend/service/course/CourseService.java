@@ -2,8 +2,8 @@ package com.docker.backend.service.course;
 
 import com.docker.backend.dto.course.CourseCreateDTO;
 import com.docker.backend.dto.course.CourseDTO;
-import com.docker.backend.entity.course.Course;
-import com.docker.backend.entity.user.Educator;
+import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.user.Educator;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import jakarta.transaction.Transactional;

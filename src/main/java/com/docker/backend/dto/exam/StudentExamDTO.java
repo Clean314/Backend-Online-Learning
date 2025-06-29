@@ -1,8 +1,8 @@
 package com.docker.backend.dto.exam;
 
 import com.docker.backend.dto.exam.question.StudentQuestionDTO;
-import com.docker.backend.entity.exam.Exam;
-import com.docker.backend.enums.ExamStatus;
+import com.docker.backend.domain.exam.Exam;
+import com.docker.backend.domain.enums.ExamStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,27 +11,10 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class StudentExamDTO {
-    private Long id;
-    private String title;
-    private String description;
-
-    @JsonProperty("start_time")
-    private LocalDateTime startTime;
-
-    @JsonProperty("end_time")
-    private LocalDateTime endTime;
-
-    private ExamStatus status;
-
-    @JsonProperty("course_id")
-    private Long courseId;
+public class StudentExamDTO extends ExamBaseDTO {
 
     private List<StudentQuestionDTO> questions;
 
