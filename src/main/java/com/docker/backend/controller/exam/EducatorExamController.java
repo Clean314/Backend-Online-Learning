@@ -3,7 +3,6 @@ package com.docker.backend.controller.exam;
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.*;
 import com.docker.backend.service.enrollment.EnrollmentService;
-import com.docker.backend.service.exam.ExamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

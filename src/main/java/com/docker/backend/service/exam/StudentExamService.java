@@ -1,25 +1,40 @@
 package com.docker.backend.service.exam;
 
+import com.docker.backend.domain.enums.QuestionType;
 import com.docker.backend.domain.exam.Exam;
-import com.docker.backend.dto.exam.EducatorExamDTO;
+import com.docker.backend.domain.exam.StudentAnswer;
+import com.docker.backend.domain.exam.StudentExamStatus;
+import com.docker.backend.domain.exam.question.Question;
+import com.docker.backend.domain.user.Student;
+import com.docker.backend.dto.exam.AnswerEvaluationUpdateDTO;
 import com.docker.backend.dto.exam.StudentExamDTO;
+import com.docker.backend.dto.exam.StudentExamSubmissionDTO;
 import com.docker.backend.exception.GlobalExceptionHandler;
-import com.docker.backend.mapper.exam.EducatorExamMapper;
 import com.docker.backend.mapper.exam.StudentExamMapper;
-import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.exam.ExamRepository;
+import com.docker.backend.repository.exam.StudentAnswerRepository;
+import com.docker.backend.repository.exam.StudentExamStatusRepository;
+import com.docker.backend.repository.exam.question.QuestionRepository;
+import com.docker.backend.repository.member.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StudentExamService {
     private final EnrollmentRepository enrollmentRepository;
-    private final CourseRepository courseRepository;
     private final ExamRepository examRepository;
+    private final MemberRepository memberRepository;
+    private final StudentAnswerRepository studentAnswerRepository;
+    private final StudentExamStatusRepository studentExamStatusRepository;
+    private final QuestionRepository questionRepository;
     private final StudentExamMapper studentExamMapper;
 
     public List<StudentExamDTO> getExamsByCourse(Long courseId, Long studentId) {
@@ -32,8 +47,190 @@ public class StudentExamService {
         return studentExamMapper.toDto(isExistExam(courseId, examId));
     }
 
+    public void initializeExamStatus(Long courseId, Long examId, Long studentId) {
+        isEnrolledInCourse(courseId, studentId);
+        Exam exam = isExistExam(courseId, examId);
+        Student student = isExistStudent(studentId);
 
+        studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseGet(() -> {
+                    StudentExamStatus status = new StudentExamStatus();
+                    status.setStudent(student);
+                    status.setExam(exam);
+                    status.setSubmitted(false);
+                    status.setTotalScore(0);
+                    return studentExamStatusRepository.save(status);
+                });
+    }
 
+    @Transactional
+    public void saveStudentAnswers(Long courseId, Long examId, Long studentId, Map<Long, String> answers) {
+        Exam exam = isExistExam(courseId, examId);
+        validateExamPeriod(exam.getStartTime(), exam.getEndTime());
+        StudentExamStatus status = getOrCreateStudentExamStatus(studentId, examId, false);
+
+        for (Map.Entry<Long, String> entry : answers.entrySet()) {
+            Question question = questionRepository.findById(entry.getKey())
+                    .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
+            StudentAnswer answer = findOrCreateAnswer(status, question);
+            answer.setAnswer(entry.getValue());
+            answer.setCorrect(false);
+            answer.setScore(0);
+        }
+    }
+
+    @Transactional
+    public int submitExam(Long courseId, Long examId, Long studentId, Map<Long, String> answers) {
+        Exam exam = isExistExam(courseId, examId);
+        validateExamPeriod(exam.getStartTime(), exam.getEndTime());
+        StudentExamStatus status = getOrCreateStudentExamStatus(studentId, examId, true);
+        int totalScore = 0;
+
+        for (Map.Entry<Long, String> entry : answers.entrySet()) {
+            Question question = questionRepository.findById(entry.getKey())
+                    .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
+            StudentAnswer answer = findOrCreateAnswer(status, question);
+            answer.setAnswer(entry.getValue());
+
+            if (question.getQuestionType() == QuestionType.CHOICE) {
+                List<String> choices = question.getChoices();
+                try {
+                    int choiceIndex = Integer.parseInt(entry.getValue());
+                    if (choiceIndex >= 0 && choiceIndex < choices.size()) {
+                        String selectedChoice = choices.get(choiceIndex);
+                        boolean isCorrect = question.getAnswer().equalsIgnoreCase(selectedChoice);
+                        answer.setCorrect(isCorrect);
+                        int score = isCorrect ? question.getScore() : 0;
+                        answer.setScore(score);
+                        totalScore += score;
+                    } else {
+                        answer.setCorrect(false);
+                        answer.setScore(0);
+                    }
+                } catch (NumberFormatException e) {
+                    answer.setCorrect(false);
+                    answer.setScore(0);
+                }
+            } else if (question.getQuestionType() == QuestionType.TRUE_FALSE) {
+                List<String> choices = question.getChoices();
+                try {
+                    int choiceIndex = Integer.parseInt(entry.getValue());
+                    if (choiceIndex >= 0 && choiceIndex < choices.size()) {
+                        String selectedChoice = choices.get(choiceIndex);
+                        boolean isCorrect = question.getAnswer().equalsIgnoreCase(selectedChoice);
+                        answer.setCorrect(isCorrect);
+                        int score = isCorrect ? question.getScore() : 0;
+                        answer.setScore(score);
+                        totalScore += score;
+                    } else {
+                        answer.setCorrect(false);
+                        answer.setScore(0);
+                    }
+                } catch (NumberFormatException e) {
+                    answer.setCorrect(false);
+                    answer.setScore(0);
+                }
+            } else if (question.getQuestionType() == QuestionType.SENTENCE) {
+                answer.setCorrect(false);
+                answer.setScore(0);
+            }
+        }
+
+        status.setSubmitted(true);
+        status.setSubmittedAt(LocalDateTime.now());
+        status.setTotalScore(totalScore);
+
+        return totalScore;
+    }
+
+    public int getStudentExamScore(Long courseId, Long examId, Long studentId) {
+        isEnrolledInCourse(courseId, studentId);
+        isExistExam(courseId, examId);
+
+        StudentExamStatus status = studentExamStatusRepository
+                .findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("시험 응시 정보가 없습니다."));
+
+        if (!status.isSubmitted()) {
+            throw new GlobalExceptionHandler.AccessDeniedException("아직 시험을 제출하지 않았습니다.");
+        }
+
+        return status.getTotalScore();
+    }
+
+    public Map<Long, String> getSavedAnswers(Long courseId, Long examId, Long studentId) {
+        isEnrolledInCourse(courseId, studentId);
+        isExistExam(courseId, examId);
+
+        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("임시 저장된 시험 정보가 없습니다."));
+
+        List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
+        return answers.stream()
+                .collect(Collectors.toMap(
+                        a -> a.getQuestion().getId(),
+                        StudentAnswer::getAnswer
+                ));
+    }
+
+    public List<StudentExamSubmissionDTO> getStudentSubmissions(Long courseId, Long examId, Long studentId) {
+        isEnrolledInCourse(courseId, studentId);
+        Exam exam = isExistExam(courseId, examId);
+
+        List<StudentExamStatus> statuses = studentExamStatusRepository.findByExamId(examId);
+
+        return statuses.stream().map(status -> {
+            List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
+            return StudentExamSubmissionDTO.of(status, answers);
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateAnswerEvaluation(Long courseId, Long examId, Long studentId, Long questionId,
+                                       AnswerEvaluationUpdateDTO dto) {
+        isEnrolledInCourse(courseId, studentId);
+        Exam exam = isExistExam(courseId, examId);
+        Student student = isExistStudent(studentId);
+
+        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생의 시험 상태를 찾을 수 없습니다."));
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
+
+        StudentAnswer answer = studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 답변이 존재하지 않습니다."));
+
+        answer.setCorrect(dto.isCorrect());
+        answer.setScore(dto.getScore());
+
+        List<StudentAnswer> allAnswers = studentAnswerRepository.findByStudentExamStatus(status);
+        int newTotalScore = allAnswers.stream().mapToInt(StudentAnswer::getScore).sum();
+        status.setTotalScore(newTotalScore);
+    }
+
+    private StudentExamStatus getOrCreateStudentExamStatus(Long studentId, Long examId, boolean createIfNotExist) {
+        return studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseGet(() -> {
+                    if (!createIfNotExist) {
+                        throw new GlobalExceptionHandler.NotFoundException("임시저장을 위해 시험 상태를 찾을 수 없습니다.");
+                    }
+                    StudentExamStatus newStatus = new StudentExamStatus();
+                    newStatus.setStudent((Student) memberRepository.findById(studentId).get());
+                    newStatus.setExam(examRepository.getReferenceById(examId));
+                    return studentExamStatusRepository.save(newStatus);
+                });
+    }
+
+    private StudentAnswer findOrCreateAnswer(StudentExamStatus status, Question question) {
+        return studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
+                .orElseGet(() -> {
+                    StudentAnswer answer = new StudentAnswer();
+                    answer.setStudentExamStatus(status);
+                    answer.setQuestion(question);
+                    return studentAnswerRepository.save(answer);
+                });
+    }
 
     private void isEnrolledInCourse(Long courseId, Long studentId) {
         if (!enrollmentRepository.ExistsByStudentIdAndCourseId(courseId, studentId)) {
@@ -48,4 +245,17 @@ public class StudentExamService {
         }
         return exam;
     }
+
+    private Student isExistStudent(Long studentId) {
+        return (Student) memberRepository.findById(studentId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생을 찾을 수 없습니다."));
+    }
+
+    private void validateExamPeriod(LocalDateTime startTime, LocalDateTime endTime) {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(startTime) || now.isAfter(endTime)) {
+            throw new GlobalExceptionHandler.SubmitExamDurationException(startTime.toString(), endTime.toString(), now.toString());
+        }
+    }
+
 }

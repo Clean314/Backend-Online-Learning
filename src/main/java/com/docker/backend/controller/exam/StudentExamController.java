@@ -1,9 +1,7 @@
 package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
-import com.docker.backend.dto.exam.EducatorExamDTO;
 import com.docker.backend.dto.exam.StudentExamDTO;
-import com.docker.backend.service.exam.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

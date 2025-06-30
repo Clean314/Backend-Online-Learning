@@ -82,6 +82,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         }
     }
 
+    public static class SubmitExamDurationException extends BadRequestException {
+        public SubmitExamDurationException(String start, String end, String now) {
+            super(String.format("응시 가능한 시간 (%s) ~ (%s) 이 아닙니다. 현재 시간 : (%s)", start, end, now));
+        }
+    }
+
     public static class UpdateLimitExamException extends BadRequestException {
         public UpdateLimitExamException() {
             super("생성/변경/삭제하려는 시험은 현재보다 최소 24시간 이후여야 합니다.");
