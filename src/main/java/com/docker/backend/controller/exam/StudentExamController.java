@@ -2,6 +2,7 @@ package com.docker.backend.controller.exam;
 
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.StudentExamDTO;
+import com.docker.backend.service.exam.StudentExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,26 +18,26 @@ import java.util.Map;
 public class StudentExamController {
 
     private final AuthUtil authUtil;
-    private final ExamService examService;
+    private final StudentExamService studentExamService;
 
     @GetMapping
     public ResponseEntity<List<StudentExamDTO>> getExams(@PathVariable("courseId") Long courseId,
                                                          Authentication authentication) {
-        return ResponseEntity.ok(examService.getStudentExamsByCourse(courseId, getStudentId(authentication)));
+        return ResponseEntity.ok(studentExamService.getExamsByCourse(courseId, getStudentId(authentication)));
     }
 
     @GetMapping("/{examId}")
     public ResponseEntity<StudentExamDTO> getExam(@PathVariable("courseId") Long courseId,
                                                   @PathVariable("examId") Long examId,
                                                   Authentication authentication) {
-        return ResponseEntity.ok(examService.getStudentExamByIdAndCourse(courseId, getStudentId(authentication), examId));
+        return ResponseEntity.ok(studentExamService.getExamByIdAndCourse(courseId, getStudentId(authentication), examId));
     }
 
     @PostMapping("/{examId}/start")
     public ResponseEntity<Void> startExam(@PathVariable("courseId") Long courseId,
                                           @PathVariable("examId") Long examId,
                                           Authentication authentication) {
-        examService.initializeExamStatus(courseId, examId, getStudentId(authentication));
+        studentExamService.initializeExamStatus(courseId, examId, getStudentId(authentication));
         return ResponseEntity.ok().build();
     }
 
@@ -45,7 +46,7 @@ public class StudentExamController {
                                              @PathVariable("examId") Long examId,
                                              @RequestBody Map<Long, String> answers,
                                              Authentication authentication) {
-        int score = examService.submitExam(courseId, examId, getStudentId(authentication), answers);
+        int score = studentExamService.submitExam(courseId, examId, getStudentId(authentication), answers);
         return ResponseEntity.ok("제출 완료, 점수: " + score);
     }
 
@@ -54,7 +55,7 @@ public class StudentExamController {
                                                  @PathVariable("examId") Long examId,
                                                  @RequestBody Map<Long, String> answers,
                                                  Authentication authentication) {
-        examService.saveStudentAnswers(courseId, examId, getStudentId(authentication), answers);
+        studentExamService.saveStudentAnswers(courseId, examId, getStudentId(authentication), answers);
         return ResponseEntity.ok().build();
     }
 
@@ -63,7 +64,7 @@ public class StudentExamController {
                                                 @PathVariable("examId") Long examId,
                                                 Authentication authentication) {
         Long studentId = getStudentId(authentication);
-        int score = examService.getStudentExamScore(courseId, examId, studentId);
+        int score = studentExamService.getStudentExamScore(courseId, examId, studentId);
         return ResponseEntity.ok(score);
     }
 
@@ -72,7 +73,7 @@ public class StudentExamController {
                                                              @PathVariable("examId") Long examId,
                                                              Authentication authentication) {
         Long studentId = getStudentId(authentication);
-        Map<Long, String> savedAnswers = examService.getSavedAnswers(courseId, examId, studentId);
+        Map<Long, String> savedAnswers = studentExamService.getSavedAnswers(courseId, examId, studentId);
         return ResponseEntity.ok(savedAnswers);
     }
 

@@ -1,5 +1,6 @@
 package com.docker.backend.mapper.exam;
 
+import com.docker.backend.domain.course.Course;
 import com.docker.backend.domain.enums.ExamStatus;
 import com.docker.backend.domain.exam.Exam;
 import com.docker.backend.domain.exam.question.Question;
@@ -21,12 +22,14 @@ public interface EducatorExamMapper {
 
     List<EducatorExamDTO> toDtoList(List<Exam> byCourseId);
 
-    @Mapping(source = "course.id", target = "courseId")
-    Exam toEntity(ExamCreateDTO dto, Long courseId, ExamStatus examStatus);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "course", target = "course")
+    @Mapping(target = "status", constant = "PREPARING")
+    Exam toEntity(ExamCreateDTO dto, Course course);
 
-    @Mapping(source = "course.id", target = "courseId")
-    @Mapping(source = "exam.id", target = "examId")
-    Exam toEntity(ExamUpdateDTO dto, Long courseId, Long examId);
+    @Mapping(target = "id", source = "examId")
+    @Mapping(source = "course", target = "course")
+    Exam toEntity(ExamUpdateDTO dto, Course course, Long examId);
 
     default int getScoreSum(Exam exam) {
         return exam.getQuestions().stream()

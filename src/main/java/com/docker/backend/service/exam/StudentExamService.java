@@ -173,42 +173,6 @@ public class StudentExamService {
                 ));
     }
 
-    public List<StudentExamSubmissionDTO> getStudentSubmissions(Long courseId, Long examId, Long studentId) {
-        isEnrolledInCourse(courseId, studentId);
-        Exam exam = isExistExam(courseId, examId);
-
-        List<StudentExamStatus> statuses = studentExamStatusRepository.findByExamId(examId);
-
-        return statuses.stream().map(status -> {
-            List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
-            return StudentExamSubmissionDTO.of(status, answers);
-        }).collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void updateAnswerEvaluation(Long courseId, Long examId, Long studentId, Long questionId,
-                                       AnswerEvaluationUpdateDTO dto) {
-        isEnrolledInCourse(courseId, studentId);
-        Exam exam = isExistExam(courseId, examId);
-        Student student = isExistStudent(studentId);
-
-        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생의 시험 상태를 찾을 수 없습니다."));
-
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
-
-        StudentAnswer answer = studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 답변이 존재하지 않습니다."));
-
-        answer.setCorrect(dto.isCorrect());
-        answer.setScore(dto.getScore());
-
-        List<StudentAnswer> allAnswers = studentAnswerRepository.findByStudentExamStatus(status);
-        int newTotalScore = allAnswers.stream().mapToInt(StudentAnswer::getScore).sum();
-        status.setTotalScore(newTotalScore);
-    }
-
     private StudentExamStatus getOrCreateStudentExamStatus(Long studentId, Long examId, boolean createIfNotExist) {
         return studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
                 .orElseGet(() -> {

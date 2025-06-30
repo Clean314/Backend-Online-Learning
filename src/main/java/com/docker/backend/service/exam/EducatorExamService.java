@@ -3,26 +3,38 @@ package com.docker.backend.service.exam;
 import com.docker.backend.domain.course.Course;
 import com.docker.backend.domain.enums.ExamStatus;
 import com.docker.backend.domain.exam.Exam;
-import com.docker.backend.dto.exam.EducatorExamDTO;
-import com.docker.backend.dto.exam.ExamCreateDTO;
-import com.docker.backend.dto.exam.ExamUpdateDTO;
+import com.docker.backend.domain.exam.StudentAnswer;
+import com.docker.backend.domain.exam.StudentExamStatus;
+import com.docker.backend.domain.exam.question.Question;
+import com.docker.backend.domain.user.Student;
+import com.docker.backend.dto.exam.*;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.mapper.exam.EducatorExamMapper;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.exam.ExamRepository;
+import com.docker.backend.repository.exam.StudentAnswerRepository;
+import com.docker.backend.repository.exam.StudentExamStatusRepository;
+import com.docker.backend.repository.exam.question.QuestionRepository;
+import com.docker.backend.repository.member.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EducatorExamService {
     private final CourseRepository courseRepository;
     private final ExamRepository examRepository;
+    private final MemberRepository memberRepository;
     private final EducatorExamMapper educatorExamMapper;
+    private final StudentExamStatusRepository studentExamStatusRepository;
+    private final StudentAnswerRepository studentAnswerRepository;
+    private final QuestionRepository questionRepository;
 
     public List<EducatorExamDTO> getExamsByCourse(Long educatorId, Long courseId) {
         isOwnerOfCourse(educatorId, courseId);
@@ -35,28 +47,64 @@ public class EducatorExamService {
     }
 
     public EducatorExamDTO createExam(Long educatorId, Long courseId, ExamCreateDTO dto) {
-        isOwnerOfCourse(educatorId, courseId);
+        Course course = isOwnerOfCourse(educatorId, courseId);
         validateExamDuration(dto.getStartTime(), dto.getEndTime());
-        return educatorExamMapper.toDto(
-                educatorExamMapper.toEntity(dto, courseId, ExamStatus.PREPARING)
-        );
+
+        Exam exam = educatorExamMapper.toEntity(dto, course);
+        exam = examRepository.save(exam);
+        return educatorExamMapper.toDto(exam);
     }
 
     public EducatorExamDTO updateExam(Long educatorId, Long courseId, Long examId, ExamUpdateDTO dto) {
-        isOwnerOfCourse(educatorId, courseId);
+        Course course = isOwnerOfCourse(educatorId, courseId);
         validateExamDuration(dto.getStartTime(), dto.getEndTime());
         isExistExam(courseId, examId);
 
-        Exam exam = educatorExamMapper
-                .toEntity(dto, courseId, examId);
-
-        return educatorExamMapper.toDto(examRepository.save(exam));
+        Exam exam = educatorExamMapper.toEntity(dto, course, examId);
+        exam = examRepository.save(exam);
+        return educatorExamMapper.toDto(exam);
     }
 
     public void deleteExam(Long educatorId, Long courseId, Long examId) {
         isOwnerOfCourse(educatorId, courseId);
         Exam exam = isExistExam(courseId, examId);
         examRepository.delete(exam);
+    }
+
+    public List<StudentExamSubmissionDTO> getStudentSubmissions(Long courseId, Long examId, Long educatorId) {
+        isOwnerOfCourse(courseId, educatorId);
+        Exam exam = isExistExam(courseId, examId);
+
+        List<StudentExamStatus> statuses = studentExamStatusRepository.findByExamId(examId);
+
+        return statuses.stream().map(status -> {
+            List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
+            return StudentExamSubmissionDTO.of(status, answers);
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateAnswerEvaluation(Long courseId, Long examId, Long educatorId, Long studentId, Long questionId,
+                                       AnswerEvaluationUpdateDTO dto) {
+        isOwnerOfCourse(courseId, educatorId);
+        Exam exam = isExistExam(courseId, examId);
+        Student student = isExistStudent(studentId);
+
+        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생의 시험 상태를 찾을 수 없습니다."));
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
+
+        StudentAnswer answer = studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 답변이 존재하지 않습니다."));
+
+        answer.setCorrect(dto.isCorrect());
+        answer.setScore(dto.getScore());
+
+        List<StudentAnswer> allAnswers = studentAnswerRepository.findByStudentExamStatus(status);
+        int newTotalScore = allAnswers.stream().mapToInt(StudentAnswer::getScore).sum();
+        status.setTotalScore(newTotalScore);
     }
 
     private Course isOwnerOfCourse(Long educatorId, Long courseId) {
@@ -72,6 +120,11 @@ public class EducatorExamService {
         return exam;
     }
 
+    private Student isExistStudent(Long studentId) {
+        return (Student) memberRepository.findById(studentId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생을 찾을 수 없습니다."));
+    }
+
     private void validateExamDuration(LocalDateTime startTime, LocalDateTime endTime) {
         if (Duration.between(LocalDateTime.now(), startTime).toHours() < 24) {
             throw new GlobalExceptionHandler.UpdateLimitExamException();
@@ -83,7 +136,5 @@ public class EducatorExamService {
                     endTime.toString());
         }
     }
-
-
 
 }
