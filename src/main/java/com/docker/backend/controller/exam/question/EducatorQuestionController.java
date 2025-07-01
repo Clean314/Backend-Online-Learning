@@ -3,7 +3,7 @@ package com.docker.backend.controller.exam.question;
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.question.EducatorQuestionDTO;
 import com.docker.backend.dto.exam.question.QuestionForm;
-import com.docker.backend.service.exam.question.QuestionService;
+import com.docker.backend.service.exam.question.EducatorQuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.List;
 @PreAuthorize("hasRole('EDUCATOR')")
 public class EducatorQuestionController {
 
-    private final QuestionService questionService;
+    private final EducatorQuestionService educatorQuestionService;
     private final AuthUtil authUtil;
 
     private Long getEducatorId(Authentication authentication) {
@@ -30,7 +30,7 @@ public class EducatorQuestionController {
     public ResponseEntity<List<EducatorQuestionDTO>> getQuestions(@RequestParam(name = "courseId") Long courseId,
                                                                   @RequestParam(name = "examId") Long examId,
                                                                   Authentication authentication) {
-        return ResponseEntity.ok(questionService.EducatorGetAllQuestionByExamId(getEducatorId(authentication), courseId, examId));
+        return ResponseEntity.ok(educatorQuestionService.getAllQuestionByExamId(getEducatorId(authentication), courseId, examId));
     }
 
     @PostMapping
@@ -38,7 +38,7 @@ public class EducatorQuestionController {
                                                                 @RequestParam(name = "examId") Long examId,
                                                                 @RequestBody QuestionForm questionForm,
                                                                 Authentication authentication){
-        EducatorQuestionDTO created = questionService.EducatorCreateQuestion(getEducatorId(authentication), courseId, examId, questionForm);
+        EducatorQuestionDTO created = educatorQuestionService.createQuestion(getEducatorId(authentication), courseId, examId, questionForm);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -48,7 +48,7 @@ public class EducatorQuestionController {
                                                               @RequestParam(name = "questionId") Long questionId,
                                                               @RequestBody QuestionForm questionForm,
                                                               Authentication authentication){
-        EducatorQuestionDTO updated = questionService.EducatorUpdateQuestionById(getEducatorId(authentication), courseId, examId, questionId, questionForm);
+        EducatorQuestionDTO updated = educatorQuestionService.updateQuestionById(getEducatorId(authentication), courseId, examId, questionId, questionForm);
         return ResponseEntity.ok(updated);
     }
 
@@ -57,7 +57,7 @@ public class EducatorQuestionController {
                                                @RequestParam(name = "examId") Long examId,
                                                @RequestParam(name = "questionId") Long questionId,
                                            Authentication authentication) {
-        questionService.deleteQuestion(getEducatorId(authentication), courseId, examId, questionId);
+        educatorQuestionService.deleteQuestion(getEducatorId(authentication), courseId, examId, questionId);
         return ResponseEntity.noContent().build();
     }
 }

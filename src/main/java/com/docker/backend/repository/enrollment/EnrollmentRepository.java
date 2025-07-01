@@ -30,5 +30,5 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     List<Enrollment> findTop4ByStudentAndStatusOrderByCreatedAtDesc(Student student, Status status);
 
-//    <T> ScopedValue<T> findByStudentIdAndCourseId(Long studentId, Long courseId);
+    Optional<Enrollment>  findByStudentIdAndCourseId(Long studentId, Long courseId);
 }

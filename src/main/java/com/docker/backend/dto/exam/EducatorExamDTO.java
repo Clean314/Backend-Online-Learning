@@ -14,22 +14,16 @@ import java.util.List;
 
 @Getter
 @Setter
-public class EducatorExamDTO extends ExamBaseDTO {
+public class EducatorExamDTO{
+    private Long id;
+    private Long courseId;
+
+    private String title;
+    private String description;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private ExamStatus status;
 
     private List<EducatorQuestionDTO> questions;
-
-    private int scoreSum;
-
-    public static EducatorExamDTO of(Exam exam) {
-        EducatorExamDTO dto = new EducatorExamDTO();
-        dto.setId(exam.getId());
-        dto.setTitle(exam.getTitle());
-        dto.setDescription(exam.getDescription());
-        dto.setStartTime(exam.getStartTime());
-        dto.setEndTime(exam.getEndTime());
-        dto.setStatus(exam.getStatus());
-        dto.setCourseId(exam.getCourse().getId());
-        return dto;
-    }
 
 }

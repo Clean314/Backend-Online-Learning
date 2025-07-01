@@ -1,7 +1,6 @@
 package com.docker.backend.service.exam;
 
 import com.docker.backend.domain.course.Course;
-import com.docker.backend.domain.enums.ExamStatus;
 import com.docker.backend.domain.exam.Exam;
 import com.docker.backend.domain.exam.StudentAnswer;
 import com.docker.backend.domain.exam.StudentExamStatus;
@@ -16,6 +15,7 @@ import com.docker.backend.repository.exam.StudentAnswerRepository;
 import com.docker.backend.repository.exam.StudentExamStatusRepository;
 import com.docker.backend.repository.exam.question.QuestionRepository;
 import com.docker.backend.repository.member.MemberRepository;
+import com.docker.backend.service.VerifyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,26 +28,26 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class EducatorExamService {
-    private final CourseRepository courseRepository;
+    private final VerifyService verifyService;
+
     private final ExamRepository examRepository;
-    private final MemberRepository memberRepository;
     private final EducatorExamMapper educatorExamMapper;
     private final StudentExamStatusRepository studentExamStatusRepository;
     private final StudentAnswerRepository studentAnswerRepository;
     private final QuestionRepository questionRepository;
 
     public List<EducatorExamDTO> getExamsByCourse(Long educatorId, Long courseId) {
-        isOwnerOfCourse(educatorId, courseId);
+        verifyService.isOwnerOfCourse(educatorId, courseId);
         return educatorExamMapper.toDtoList(examRepository.findByCourseId(courseId));
     }
 
     public EducatorExamDTO getExamByIdAndCourse(Long educatorId, Long courseId, Long examId) {
-        isOwnerOfCourse(educatorId, courseId);
-        return educatorExamMapper.toDto(isExistExam(courseId, examId));
+        verifyService.isOwnerOfCourse(educatorId, courseId);
+        return educatorExamMapper.toDto(verifyService.isExistExam(courseId, examId));
     }
 
     public EducatorExamDTO createExam(Long educatorId, Long courseId, ExamCreateDTO dto) {
-        Course course = isOwnerOfCourse(educatorId, courseId);
+        Course course = verifyService.isOwnerOfCourse(educatorId, courseId);
         validateExamDuration(dto.getStartTime(), dto.getEndTime());
 
         Exam exam = educatorExamMapper.toEntity(dto, course);
@@ -56,9 +56,9 @@ public class EducatorExamService {
     }
 
     public EducatorExamDTO updateExam(Long educatorId, Long courseId, Long examId, ExamUpdateDTO dto) {
-        Course course = isOwnerOfCourse(educatorId, courseId);
+        Course course = verifyService.isOwnerOfCourse(educatorId, courseId);
         validateExamDuration(dto.getStartTime(), dto.getEndTime());
-        isExistExam(courseId, examId);
+        verifyService.isExistExam(courseId, examId);
 
         Exam exam = educatorExamMapper.toEntity(dto, course, examId);
         exam = examRepository.save(exam);
@@ -66,14 +66,14 @@ public class EducatorExamService {
     }
 
     public void deleteExam(Long educatorId, Long courseId, Long examId) {
-        isOwnerOfCourse(educatorId, courseId);
-        Exam exam = isExistExam(courseId, examId);
+        verifyService.isOwnerOfCourse(educatorId, courseId);
+        Exam exam = verifyService.isExistExam(courseId, examId);
         examRepository.delete(exam);
     }
 
     public List<StudentExamSubmissionDTO> getStudentSubmissions(Long courseId, Long examId, Long educatorId) {
-        isOwnerOfCourse(courseId, educatorId);
-        Exam exam = isExistExam(courseId, examId);
+        verifyService.isOwnerOfCourse(courseId, educatorId);
+        Exam exam = verifyService.isExistExam(courseId, examId);
 
         List<StudentExamStatus> statuses = studentExamStatusRepository.findByExamId(examId);
 
@@ -86,9 +86,9 @@ public class EducatorExamService {
     @Transactional
     public void updateAnswerEvaluation(Long courseId, Long examId, Long educatorId, Long studentId, Long questionId,
                                        AnswerEvaluationUpdateDTO dto) {
-        isOwnerOfCourse(courseId, educatorId);
-        Exam exam = isExistExam(courseId, examId);
-        Student student = isExistStudent(studentId);
+        verifyService.isOwnerOfCourse(courseId, educatorId);
+        Exam exam = verifyService.isExistExam(courseId, examId);
+        Student student = verifyService.isExistStudent(studentId);
 
         StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생의 시험 상태를 찾을 수 없습니다."));
@@ -105,24 +105,6 @@ public class EducatorExamService {
         List<StudentAnswer> allAnswers = studentAnswerRepository.findByStudentExamStatus(status);
         int newTotalScore = allAnswers.stream().mapToInt(StudentAnswer::getScore).sum();
         status.setTotalScore(newTotalScore);
-    }
-
-    private Course isOwnerOfCourse(Long educatorId, Long courseId) {
-        return courseRepository.findByIdAndEducator_Id(courseId, educatorId)
-                .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
-    }
-
-    private Exam isExistExam(Long courseId, Long examId) {
-        Exam exam = examRepository.findByCourseIdAndId(courseId, examId);
-        if (exam == null) {
-            throw new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다.");
-        }
-        return exam;
-    }
-
-    private Student isExistStudent(Long studentId) {
-        return (Student) memberRepository.findById(studentId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생을 찾을 수 없습니다."));
     }
 
     private void validateExamDuration(LocalDateTime startTime, LocalDateTime endTime) {
