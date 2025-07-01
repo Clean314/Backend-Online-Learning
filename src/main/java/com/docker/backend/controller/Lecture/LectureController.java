@@ -1,9 +1,9 @@
 package com.docker.backend.controller.Lecture;
 
+import com.docker.backend.domain.user.Student;
 import com.docker.backend.dto.Lecture.LectureDTO;
 import com.docker.backend.service.lecture.LectureService;
 import com.docker.backend.config.AuthUtil;
-import com.docker.backend.entity.user.Student;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +34,13 @@ public class LectureController {
             return ResponseEntity.internalServerError().body("오류가 발생하였습니다.");
         }
     }
-    // 강의 영상 리스트
-    @GetMapping("/list/{courseId}")
-    public ResponseEntity<List<LectureDTO>> getLectureList(Authentication authentication, @PathVariable("courseId") Long courseId){
-        // 관리자는 학생이 아니므로, 예시로 null을 넘김 (필요시 로직 보완)
-        Student student = null;
-        return ResponseEntity.ok(lectureService.getLectureList(courseId, student));
-    }
+//    // 강의 영상 리스트
+//    @GetMapping("/list/{courseId}")
+//    public ResponseEntity<List<LectureDTO>> getLectureList(Authentication authentication, @PathVariable("courseId") Long courseId){
+//        // 관리자는 학생이 아니므로, 예시로 null을 넘김 (필요시 로직 보완)
+//        Student student = null;
+//        return ResponseEntity.ok(lectureService.getLectureList(courseId, student));
+//    }
 
     // 강의(동영상) 수정
     @PatchMapping("/list/{courseId}/lecture")

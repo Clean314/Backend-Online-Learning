@@ -1,7 +1,6 @@
 package com.docker.backend.mapper.exam;
 
 import com.docker.backend.domain.course.Course;
-import com.docker.backend.domain.enums.ExamStatus;
 import com.docker.backend.domain.exam.Exam;
 import com.docker.backend.domain.exam.question.Question;
 import com.docker.backend.dto.exam.EducatorExamDTO;
