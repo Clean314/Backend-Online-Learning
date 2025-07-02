@@ -9,12 +9,11 @@ import com.docker.backend.domain.user.Student;
 import com.docker.backend.dto.exam.*;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.mapper.exam.EducatorExamMapper;
-import com.docker.backend.repository.course.CourseRepository;
+import com.docker.backend.mapper.exam.question.SubmissionMapper;
 import com.docker.backend.repository.exam.ExamRepository;
 import com.docker.backend.repository.exam.StudentAnswerRepository;
 import com.docker.backend.repository.exam.StudentExamStatusRepository;
 import com.docker.backend.repository.exam.question.QuestionRepository;
-import com.docker.backend.repository.member.MemberRepository;
 import com.docker.backend.service.VerifyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +31,7 @@ public class EducatorExamService {
 
     private final ExamRepository examRepository;
     private final EducatorExamMapper educatorExamMapper;
+    private final SubmissionMapper submissionMapper;
     private final StudentExamStatusRepository studentExamStatusRepository;
     private final StudentAnswerRepository studentAnswerRepository;
     private final QuestionRepository questionRepository;
@@ -79,7 +79,7 @@ public class EducatorExamService {
 
         return statuses.stream().map(status -> {
             List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
-            return StudentExamSubmissionDTO.of(status, answers);
+            return submissionMapper.toDto(status, answers);
         }).collect(Collectors.toList());
     }
 
@@ -89,15 +89,9 @@ public class EducatorExamService {
         verifyService.isOwnerOfCourse(courseId, educatorId);
         Exam exam = verifyService.isExistExam(courseId, examId);
         Student student = verifyService.isExistStudent(studentId);
-
-        StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생의 시험 상태를 찾을 수 없습니다."));
-
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
-
-        StudentAnswer answer = studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 답변이 존재하지 않습니다."));
+        StudentExamStatus status = verifyService.isExistStudentExamStatus(studentId, examId);
+        Question question = verifyService.isExistQuestion(examId, questionId);
+        StudentAnswer answer = verifyService.isExistStudentAnswer(status.getId(), questionId);
 
         answer.setCorrect(dto.isCorrect());
         answer.setScore(dto.getScore());

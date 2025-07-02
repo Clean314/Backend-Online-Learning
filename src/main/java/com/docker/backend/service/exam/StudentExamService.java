@@ -73,7 +73,9 @@ public class StudentExamService {
         for (Map.Entry<Long, String> entry : answers.entrySet()) {
             Question question = questionRepository.findById(entry.getKey())
                     .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
-            StudentAnswer answer = findOrCreateAnswer(status, question);
+
+            StudentAnswer answer = findOrCreateAnswer(status.getId(), question.getId());
+
             answer.setAnswer(entry.getValue());
             answer.setCorrect(false);
             answer.setScore(0);
@@ -90,7 +92,7 @@ public class StudentExamService {
         for (Map.Entry<Long, String> entry : answers.entrySet()) {
             Question question = questionRepository.findById(entry.getKey())
                     .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
-            StudentAnswer answer = findOrCreateAnswer(status, question);
+            StudentAnswer answer = findOrCreateAnswer(status.getId(), question.getId());
             answer.setAnswer(entry.getValue());
 
             if (question.getQuestionType() == QuestionType.CHOICE) {
@@ -187,12 +189,12 @@ public class StudentExamService {
                 });
     }
 
-    private StudentAnswer findOrCreateAnswer(StudentExamStatus status, Question question) {
-        return studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
+    private StudentAnswer findOrCreateAnswer(Long statusId, Long questionId) {
+        return studentAnswerRepository.findByStudentExamStatusIdAndQuestionId(statusId, questionId)
                 .orElseGet(() -> {
                     StudentAnswer answer = new StudentAnswer();
-                    answer.setStudentExamStatus(status);
-                    answer.setQuestion(question);
+                    answer.setStudentExamStatus(new StudentExamStatus());
+                    answer.setQuestion(new Question());
                     return studentAnswerRepository.save(answer);
                 });
     }

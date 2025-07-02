@@ -1,5 +1,6 @@
 package com.docker.backend.dto.exam;
 
+import com.docker.backend.dto.exam.question.StudentAnswerDTO;
 import lombok.*;
 
 import java.util.List;
@@ -13,5 +14,5 @@ public class StudentExamSubmissionDTO {
     private String studentName;
     private boolean submitted;
     private int totalScore;
-    private List<AnswerDTO> answers;
+    private List<StudentAnswerDTO> answers;
 }

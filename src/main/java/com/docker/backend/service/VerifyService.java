@@ -1,13 +1,18 @@
 package com.docker.backend.service;
 
 import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.enums.Status;
 import com.docker.backend.domain.exam.Exam;
+import com.docker.backend.domain.exam.StudentAnswer;
+import com.docker.backend.domain.exam.StudentExamStatus;
 import com.docker.backend.domain.exam.question.Question;
 import com.docker.backend.domain.user.Student;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.repository.exam.ExamRepository;
+import com.docker.backend.repository.exam.StudentAnswerRepository;
+import com.docker.backend.repository.exam.StudentExamStatusRepository;
 import com.docker.backend.repository.exam.question.QuestionRepository;
 import com.docker.backend.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +26,8 @@ public class VerifyService {
     private final QuestionRepository questionRepository;
     private final ExamRepository examRepository;
     private final MemberRepository memberRepository;
+    private final StudentExamStatusRepository studentExamStatusRepository;
+    private final StudentAnswerRepository studentAnswerRepository;
 
     public Course isOwnerOfCourse(Long educatorId, Long courseId) {
         return courseRepository.findByIdAndEducator_Id(courseId, educatorId)
@@ -51,4 +58,13 @@ public class VerifyService {
                 .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("문제를 찾을 수 없습니다."));
     }
 
+    public StudentExamStatus isExistStudentExamStatus(Long studentId, Long examId){
+        return studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생의 시험 상태를 찾을 수 없습니다."));
+    }
+
+    public StudentAnswer isExistStudentAnswer(Long statusId, Long questionId){
+        return studentAnswerRepository.findByStudentExamStatusIdAndQuestionId(statusId, questionId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("해당 답변이 존재하지 않습니다."));
+    }
 }

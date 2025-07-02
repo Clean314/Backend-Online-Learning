@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {AnswerMapper.class})
+@Mapper(componentModel = "spring")
 public interface SubmissionMapper {
     StudentExamSubmissionDTO toDto(StudentExamStatus status, List<StudentAnswer> answers);
 }
