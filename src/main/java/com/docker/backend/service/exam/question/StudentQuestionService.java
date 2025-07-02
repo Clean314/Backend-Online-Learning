@@ -22,4 +22,5 @@ public class StudentQuestionService {
         return studentQuestionMapper.toDtoList(questionRepository.findByExamId(examId));
     }
 
+
 }
