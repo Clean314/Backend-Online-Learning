@@ -19,7 +19,6 @@ import java.util.List;
 @RequestMapping("/educator/exam")
 @PreAuthorize("hasRole('EDUCATOR')")
 public class EducatorExamController {
-
     private final EnrollmentService enrollmentService;
     private final EducatorExamService educatorExamService;
     private final AuthUtil authUtil;
@@ -43,7 +42,6 @@ public class EducatorExamController {
         EducatorExamDTO created = educatorExamService.createExam(educatorId, courseId, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
-
 
     @GetMapping("/{examId}")
     public ResponseEntity<EducatorExamDTO> getExam(@PathVariable Long examId,
@@ -75,7 +73,7 @@ public class EducatorExamController {
                                                                                 @RequestParam("courseId") Long courseId,
                                                                                 Authentication authentication) {
         Long educatorId = getEducatorId(authentication);
-        List<StudentExamSubmissionDTO> submissions = educatorExamService.getStudentSubmissions(courseId, examId, educatorId);
+        List<StudentExamSubmissionDTO> submissions = educatorExamService.getExamSubmissions(courseId, examId, educatorId);
         return ResponseEntity.ok(submissions);
     }
 

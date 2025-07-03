@@ -19,17 +19,16 @@ public interface EducatorExamMapper {
     @Mapping(source = "course.id", target = "courseId")
     @Mapping(target = "scoreSum", expression = "java(getScoreSum(exam))")
     EducatorExamDTO toDto(Exam exam);
-
     List<EducatorExamDTO> toDtoList(List<Exam> byCourseId);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "course", target = "course")
+//    @Mapping(source = "course", target = "course")
     @Mapping(target = "status", constant = "PREPARING")
-    Exam toEntity(ExamCreateDTO dto, Course course);
+    Exam toEntity(ExamCreateDTO dto, Course course); // 생성
 
     @Mapping(target = "id", source = "examId")
-    @Mapping(source = "course", target = "course")
-    Exam toEntity(ExamUpdateDTO dto, Course course, Long examId);
+//    @Mapping(source = "course", target = "course")
+    Exam toEntity(ExamUpdateDTO dto, Course course, Long examId); // 수정
 
     default int getScoreSum(Exam exam) {
         return exam.getQuestions().stream()

@@ -71,11 +71,12 @@ public class EducatorExamService {
         examRepository.delete(exam);
     }
 
-    public List<StudentExamSubmissionDTO> getStudentSubmissions(Long courseId, Long examId, Long educatorId) {
+    public List<StudentExamSubmissionDTO> getExamSubmissions(Long courseId, Long examId, Long educatorId) {
         isOwnerOfCourse(courseId, educatorId);
         Exam exam = isExistExam(courseId, examId);
 
-        List<StudentExamStatus> statuses = studentExamStatusRepository.findByExamId(examId);
+        List<StudentExamStatus> statuses =
+                studentExamStatusRepository.findByExamId(examId);
 
         return statuses.stream().map(status -> {
             List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
