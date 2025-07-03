@@ -46,6 +46,7 @@ public class EducatorExamService {
         return educatorExamMapper.toDto(verifyService.isExistExam(courseId, examId));
     }
 
+    @Transactional
     public EducatorExamDTO createExam(Long educatorId, Long courseId, ExamCreateDTO dto) {
         Course course = verifyService.isOwnerOfCourse(educatorId, courseId);
         validateExamDuration(dto.getStartTime(), dto.getEndTime());

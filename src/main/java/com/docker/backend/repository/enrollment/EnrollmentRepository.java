@@ -31,4 +31,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Enrollment> findTop4ByStudentAndStatusOrderByCreatedAtDesc(Student student, Status status);
 
     Optional<Enrollment>  findByStudentIdAndCourseId(Long studentId, Long courseId);
+
+    boolean existsByStudentIdAndCourseId(Long studentId, Long courseId);
 }

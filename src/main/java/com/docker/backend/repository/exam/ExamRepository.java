@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Long> {
@@ -24,4 +25,8 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
 
     List<Exam> findByStatusAndStartTimeBefore(ExamStatus status, LocalDateTime time);
     List<Exam> findByStatusAndEndTimeBefore(ExamStatus status, LocalDateTime time);
+
+    Optional<Exam> findByIdAndCourseIdAndCourse_Educator_Id(Long examId, Long courseId, Long educatorId);
+
+    Optional<Exam> findByIdAndCourse_Educator_Id(Long examId, Long educatorId);
 }
