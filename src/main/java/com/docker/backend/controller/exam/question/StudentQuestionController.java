@@ -2,7 +2,7 @@ package com.docker.backend.controller.exam.question;
 
 import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.exam.question.StudentQuestionDTO;
-import com.docker.backend.service.exam.question.QuestionService;
+import com.docker.backend.service.exam.question.StudentQuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/student/question")
 @PreAuthorize("hasRole('STUDENT')")
 public class StudentQuestionController {
-    private final QuestionService questionService;
+    private final StudentQuestionService studentQuestionService;
     private final AuthUtil authUtil;
 
     private Long getStudentId(Authentication authentication) {
@@ -27,7 +27,7 @@ public class StudentQuestionController {
     public ResponseEntity<List<StudentQuestionDTO>> getQuestions(@RequestParam(name = "courseId") Long courseId,
                                                                  @RequestParam(name = "examId") Long examId,
                                                                  Authentication authentication) {
-        return ResponseEntity.ok(questionService.StudentGetAllQuestionsByExamId(getStudentId(authentication), courseId, examId));
+        return ResponseEntity.ok(studentQuestionService.getAllQuestionsByExamId(getStudentId(authentication), courseId, examId));
     }
 
 }

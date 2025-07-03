@@ -20,15 +20,4 @@ public class StudentQuestionDTO {
     private int score;
     private QuestionType questionType;
     private List<String> choices;
-
-    public static StudentQuestionDTO of(Question q) {
-        return new StudentQuestionDTO(
-                q.getId(),
-                q.getNumber(),
-                q.getContent(),
-                q.getScore(),
-                q.getQuestionType(),
-                q.getChoices()
-        );
-    }
 }

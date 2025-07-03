@@ -5,7 +5,7 @@ import com.docker.backend.dto.exam.StudentExamSubmissionDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {AnswerMapper.class})
+@Mapper(componentModel = "spring")
 public interface SubmissionMapper {
 
     // 학생 시험 상태와 답안 리스트를 받아 DTO 로 변환

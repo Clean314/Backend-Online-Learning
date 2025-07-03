@@ -9,9 +9,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface StudentQuestionMapper {
-
-    @Mapping(target = "answer", ignore = true)
     StudentQuestionDTO toDto(Question question);
-
     List<StudentQuestionDTO> toDtoList(List<Question> questions);
 }

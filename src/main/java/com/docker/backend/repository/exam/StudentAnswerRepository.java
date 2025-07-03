@@ -13,5 +13,7 @@ import java.util.Optional;
 public interface StudentAnswerRepository extends JpaRepository<StudentAnswer, Long> {
     Optional<StudentAnswer> findByStudentExamStatusAndQuestion(StudentExamStatus status, Question question);
 
+    Optional<StudentAnswer> findByStudentExamStatusIdAndQuestionId(Long studentExamStatusId, Long questionId);
+
     List<StudentAnswer> findByStudentExamStatus(StudentExamStatus status);
 }

@@ -6,9 +6,7 @@ import com.docker.backend.domain.exam.StudentAnswer;
 import com.docker.backend.domain.exam.StudentExamStatus;
 import com.docker.backend.domain.exam.question.Question;
 import com.docker.backend.domain.user.Student;
-import com.docker.backend.dto.exam.AnswerEvaluationUpdateDTO;
 import com.docker.backend.dto.exam.StudentExamDTO;
-import com.docker.backend.dto.exam.StudentExamSubmissionDTO;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.mapper.exam.StudentExamMapper;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
@@ -17,6 +15,7 @@ import com.docker.backend.repository.exam.StudentAnswerRepository;
 import com.docker.backend.repository.exam.StudentExamStatusRepository;
 import com.docker.backend.repository.exam.question.QuestionRepository;
 import com.docker.backend.repository.member.MemberRepository;
+import com.docker.backend.service.VerifyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StudentExamService {
+    private final VerifyService verifyService;
+
     private final EnrollmentRepository enrollmentRepository;
     private final ExamRepository examRepository;
     private final MemberRepository memberRepository;
@@ -38,19 +39,19 @@ public class StudentExamService {
     private final StudentExamMapper studentExamMapper;
 
     public List<StudentExamDTO> getExamsByCourse(Long courseId, Long studentId) {
-        isEnrolledInCourse(courseId, studentId);
+        verifyService.isEnrolled(courseId, studentId);
         return studentExamMapper.toDtoList(examRepository.findByCourseId(courseId));
     }
 
     public StudentExamDTO getExamByIdAndCourse(Long courseId, Long examId, Long studentId) {
-        isEnrolledInCourse(courseId, studentId);
-        return studentExamMapper.toDto(isExistExam(courseId, examId));
+        verifyService.isEnrolled(courseId, studentId);
+        return studentExamMapper.toDto(verifyService.isExistExam(courseId, examId));
     }
 
     public void initializeExamStatus(Long courseId, Long examId, Long studentId) {
-        isEnrolledInCourse(courseId, studentId);
-        Exam exam = isExistExam(courseId, examId);
-        Student student = isExistStudent(studentId);
+        verifyService.isEnrolled(courseId, studentId);
+        Exam exam = verifyService.isExistExam(courseId, examId);
+        Student student = verifyService.isExistStudent(studentId);
 
         studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
                 .orElseGet(() -> {
@@ -65,14 +66,16 @@ public class StudentExamService {
 
     @Transactional
     public void saveStudentAnswers(Long courseId, Long examId, Long studentId, Map<Long, String> answers) {
-        Exam exam = isExistExam(courseId, examId);
+        Exam exam = verifyService.isExistExam(courseId, examId);
         validateExamPeriod(exam.getStartTime(), exam.getEndTime());
         StudentExamStatus status = getOrCreateStudentExamStatus(studentId, examId, false);
 
         for (Map.Entry<Long, String> entry : answers.entrySet()) {
             Question question = questionRepository.findById(entry.getKey())
                     .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
-            StudentAnswer answer = findOrCreateAnswer(status, question);
+
+            StudentAnswer answer = findOrCreateAnswer(status.getId(), question.getId());
+
             answer.setAnswer(entry.getValue());
             answer.setCorrect(false);
             answer.setScore(0);
@@ -81,7 +84,7 @@ public class StudentExamService {
 
     @Transactional
     public int submitExam(Long courseId, Long examId, Long studentId, Map<Long, String> answers) {
-        Exam exam = isExistExam(courseId, examId);
+        Exam exam = verifyService.isExistExam(courseId, examId);
         validateExamPeriod(exam.getStartTime(), exam.getEndTime());
         StudentExamStatus status = getOrCreateStudentExamStatus(studentId, examId, true);
         int totalScore = 0;
@@ -89,7 +92,7 @@ public class StudentExamService {
         for (Map.Entry<Long, String> entry : answers.entrySet()) {
             Question question = questionRepository.findById(entry.getKey())
                     .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("문제를 찾을 수 없습니다."));
-            StudentAnswer answer = findOrCreateAnswer(status, question);
+            StudentAnswer answer = findOrCreateAnswer(status.getId(), question.getId());
             answer.setAnswer(entry.getValue());
 
             if (question.getQuestionType() == QuestionType.CHOICE) {
@@ -144,8 +147,8 @@ public class StudentExamService {
     }
 
     public int getStudentExamScore(Long courseId, Long examId, Long studentId) {
-        isEnrolledInCourse(courseId, studentId);
-        isExistExam(courseId, examId);
+        verifyService.isEnrolled(courseId, studentId);
+        verifyService.isExistExam(courseId, examId);
 
         StudentExamStatus status = studentExamStatusRepository
                 .findByStudentIdAndExamId(studentId, examId)
@@ -159,8 +162,8 @@ public class StudentExamService {
     }
 
     public Map<Long, String> getSavedAnswers(Long courseId, Long examId, Long studentId) {
-        isEnrolledInCourse(courseId, studentId);
-        isExistExam(courseId, examId);
+        verifyService.isEnrolled(courseId, studentId);
+        verifyService.isExistExam(courseId, examId);
 
         StudentExamStatus status = studentExamStatusRepository.findByStudentIdAndExamId(studentId, examId)
                 .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("임시 저장된 시험 정보가 없습니다."));
@@ -186,33 +189,14 @@ public class StudentExamService {
                 });
     }
 
-    private StudentAnswer findOrCreateAnswer(StudentExamStatus status, Question question) {
-        return studentAnswerRepository.findByStudentExamStatusAndQuestion(status, question)
+    private StudentAnswer findOrCreateAnswer(Long statusId, Long questionId) {
+        return studentAnswerRepository.findByStudentExamStatusIdAndQuestionId(statusId, questionId)
                 .orElseGet(() -> {
                     StudentAnswer answer = new StudentAnswer();
-                    answer.setStudentExamStatus(status);
-                    answer.setQuestion(question);
+                    answer.setStudentExamStatus(new StudentExamStatus());
+                    answer.setQuestion(new Question());
                     return studentAnswerRepository.save(answer);
                 });
-    }
-
-    private void isEnrolledInCourse(Long courseId, Long studentId) {
-        if (!enrollmentRepository.ExistsByStudentIdAndCourseId(courseId, studentId)) {
-            throw new GlobalExceptionHandler.AccessDeniedException("해당 강의에 대한 수강 정보가 없습니다.");
-        }
-    }
-
-    private Exam isExistExam(Long courseId, Long examId) {
-        Exam exam = examRepository.findByCourseIdAndId(courseId, examId);
-        if (exam == null) {
-            throw new GlobalExceptionHandler.NotFoundException("시험을 찾을 수 없습니다.");
-        }
-        return exam;
-    }
-
-    private Student isExistStudent(Long studentId) {
-        return (Student) memberRepository.findById(studentId)
-                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("학생을 찾을 수 없습니다."));
     }
 
     private void validateExamPeriod(LocalDateTime startTime, LocalDateTime endTime) {
