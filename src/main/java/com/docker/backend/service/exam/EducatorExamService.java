@@ -73,8 +73,8 @@ public class EducatorExamService {
     }
 
     public List<StudentExamSubmissionDTO> getExamSubmissions(Long courseId, Long examId, Long educatorId) {
-        isOwnerOfCourse(courseId, educatorId);
-        Exam exam = isExistExam(courseId, examId);
+        verifyService.isOwnerOfCourse(educatorId, courseId);
+        Exam exam = verifyService.isExistExam(courseId, examId);
 
         List<StudentExamStatus> statuses =
                 studentExamStatusRepository.findByExamId(examId);

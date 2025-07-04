@@ -17,14 +17,11 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ErrorResponse> handleApiException(
-            ApiException ex,
-            HttpServletRequest request
-    ) {
+    public ResponseEntity<ErrorResponse> handleApiException(ApiException ex, HttpServletRequest request) {
         ErrorResponse body = new ErrorResponse(
                 ex.getStatus().value(),
                 ex.getStatus().getReasonPhrase(),
-                ex.getMessage() != null ? ex.getMessage() : "An error occurred",
+                ex.getMessage(),
                 request.getRequestURI()
         );
         return new ResponseEntity<>(body, ex.getStatus());

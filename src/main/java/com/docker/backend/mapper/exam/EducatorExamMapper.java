@@ -14,8 +14,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {EducatorQuestionMapper.class})
 public interface EducatorExamMapper {
 
-    @Mapping(source = "course.id", target = "courseId")
+    @Mapping(source = "exam.course.id", target = "courseId")
     EducatorExamDTO toDto(Exam exam);
+
     List<EducatorExamDTO> toDtoList(List<Exam> byCourseId);
 
     @Mapping(target = "id", ignore = true)

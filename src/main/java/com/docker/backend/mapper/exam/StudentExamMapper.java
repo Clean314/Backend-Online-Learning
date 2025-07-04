@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {StudentQuestionMapper.class})
 public interface StudentExamMapper {
-    @Mapping(source = "course.id", target = "courseId")
+    @Mapping(source = "exam.Course.id", target = "courseId")
     StudentExamDTO toDto(Exam exam);
 
     List<StudentExamDTO> toDtoList(List<Exam> byCourseId);

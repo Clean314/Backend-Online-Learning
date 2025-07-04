@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByExamId(Long examId);
     Optional<Question> findByExamIdAndId(Long examId, Long questionId);
-    boolean existsByExamIdAndId(Long questionId);
+//    boolean existsByExamIdAndId(Long questionId);
     void deleteByExamIdAndId(Long examId, Long questionId);
 }
