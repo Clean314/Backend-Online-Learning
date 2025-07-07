@@ -27,8 +27,8 @@ public class EducatorQuestionService {
     public EducatorQuestionDTO createQuestion(Long educatorId, Long courseId,
                                               Long examId, QuestionForm questionForm) {
         verifyService.isOwnerOfCourse(educatorId, courseId);
-        Question question = educatorQuestionMapper.toEntity(questionForm);
-        question.setExam(verifyService.isExistExam(courseId, examId));
+        Question question =
+                educatorQuestionMapper.toEntity(questionForm, verifyService.isExistExam(courseId, examId));
 
         return educatorQuestionMapper.toDto(questionRepository.save(question));
     }
@@ -36,9 +36,9 @@ public class EducatorQuestionService {
     public EducatorQuestionDTO updateQuestionById(Long educatorId, Long courseId, Long examId,
                                                   Long questionId, QuestionForm questionForm) {
         verifyService.isOwnerOfCourse(educatorId, courseId);
-        Question question = verifyService.isExistQuestion(courseId, questionId);
         return educatorQuestionMapper.toDto(
-                questionRepository.save(educatorQuestionMapper.toEntity(questionForm)));
+                questionRepository.save(educatorQuestionMapper.toEntity(questionForm,
+                        verifyService.isExistExam(courseId, examId))));
     }
 
     public void deleteQuestion(Long educatorId, Long courseId, Long examId, Long questionId) {

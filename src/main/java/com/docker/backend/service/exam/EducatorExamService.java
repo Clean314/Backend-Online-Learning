@@ -9,7 +9,7 @@ import com.docker.backend.domain.user.Student;
 import com.docker.backend.dto.exam.*;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.mapper.exam.EducatorExamMapper;
-import com.docker.backend.mapper.exam.question.SubmissionMapper;
+import com.docker.backend.mapper.exam.question.StudentExamSubmissionMapper;
 import com.docker.backend.repository.exam.ExamRepository;
 import com.docker.backend.repository.exam.StudentAnswerRepository;
 import com.docker.backend.repository.exam.StudentExamStatusRepository;
@@ -17,6 +17,7 @@ import com.docker.backend.repository.exam.question.QuestionRepository;
 import com.docker.backend.service.VerifyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -30,11 +31,10 @@ public class EducatorExamService {
     private final VerifyService verifyService;
 
     private final ExamRepository examRepository;
-    private final EducatorExamMapper educatorExamMapper;
-    private final SubmissionMapper submissionMapper;
+    private EducatorExamMapper educatorExamMapper;
+    private StudentExamSubmissionMapper submissionMapper;
     private final StudentExamStatusRepository studentExamStatusRepository;
     private final StudentAnswerRepository studentAnswerRepository;
-    private final QuestionRepository questionRepository;
 
     public List<EducatorExamDTO> getExamsByCourse(Long educatorId, Long courseId) {
         verifyService.isOwnerOfCourse(educatorId, courseId);
@@ -81,7 +81,7 @@ public class EducatorExamService {
 
         return statuses.stream().map(status -> {
             List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
-            return submissionMapper.toDto(status, answers);
+            return submissionMapper.toDto(status);
         }).collect(Collectors.toList());
     }
 

@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {EducatorQuestionMapper.class})
+@Mapper(componentModel = "spring")
 public interface EducatorExamMapper {
 
     @Mapping(source = "exam.course.id", target = "courseId")
@@ -19,13 +19,16 @@ public interface EducatorExamMapper {
 
     List<EducatorExamDTO> toDtoList(List<Exam> byCourseId);
 
-    @Mapping(target = "id", ignore = true)
-//    @Mapping(source = "course", target = "course")
     @Mapping(target = "status", constant = "PREPARING")
-    Exam toEntity(ExamCreateDTO dto, Course course); // 생성
+    @Mapping(target = "questions", ignore = true)
+    @Mapping(target = "description", source = "dto.description")
+    @Mapping(target = "course", source = "course")
+    Exam toEntity(ExamCreateDTO dto, Course course);
 
     @Mapping(target = "id", source = "examId")
-//    @Mapping(source = "course", target = "course")
-    Exam toEntity(ExamUpdateDTO dto, Course course, Long examId); // 수정
+    @Mapping(target = "questions", ignore = true)
+    @Mapping(target = "description", source = "dto.description")
+    @Mapping(target = "course", source = "course")
+    Exam toEntity(ExamUpdateDTO dto, Course course, Long examId);
 
 }
