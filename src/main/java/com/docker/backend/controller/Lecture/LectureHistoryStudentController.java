@@ -21,7 +21,7 @@ public class LectureHistoryStudentController {
     private final LectureHistoryService lectureHistoryService;
     private final AuthUtil authUtil;
 
-    @PostMapping("/time-line")
+//    @PostMapping("/time-line")
 //    public ResponseEntity<String> saveTimeLine(Authentication authentication, @RequestBody LectureHistory dto){
 //        Student student = authUtil.getStudent(authentication);
 //        try{
@@ -32,13 +32,13 @@ public class LectureHistoryStudentController {
 //        }
 //    }
 
-    @GetMapping("/attendance-avg/{courseId}")
-    public ResponseEntity<?> avgAttendance(@PathVariable Long courseId){
-
-        try {
-            return ResponseEntity.ok().body(lectureHistoryService.avgAttendance(courseId));
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @GetMapping("/attendance-avg/{courseId}")
+//    public ResponseEntity<?> avgAttendance(@PathVariable Long courseId){
+//
+//        try {
+//            return ResponseEntity.ok().body(lectureHistoryService.avgAttendance(courseId));
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 }
