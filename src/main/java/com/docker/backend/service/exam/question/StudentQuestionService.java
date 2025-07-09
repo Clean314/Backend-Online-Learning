@@ -19,8 +19,8 @@ public class StudentQuestionService {
 
     public List<StudentQuestionDTO> getAllQuestionsByExamId(Long studentId, Long courseId, Long examId) {
         verifyService.isEnrolled(studentId, courseId);
-        return studentQuestionMapper.toDtoList(questionRepository.findByExamId(examId));
+        return studentQuestionMapper.toDtoList(
+                questionRepository.findByExamId(examId));
     }
-
 
 }

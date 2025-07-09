@@ -9,6 +9,7 @@ import com.docker.backend.domain.user.Student;
 import com.docker.backend.domain.enums.Status;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
+import com.docker.backend.service.VerifyService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,22 +24,20 @@ import java.util.stream.Collectors;
 @Transactional
 public class EnrollmentService {
 
+    private final VerifyService verifyService;
     private final EnrollmentRepository enrollmentRepository;
     private final CourseRepository courseRepository;
 
     public void enroll(Student student, Long courseId) {
-        Course course = courseRepository.findByIdForUpdate(courseId)
-                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
-
-        if (enrollmentRepository.existsByStudentAndCourse(student, course)) {
-            throw new IllegalArgumentException("Already enrolled.");
-        }
+        Course course = verifyService.isExistCourse(courseId);
+        verifyService.isEnrolled(student.getId(), courseId);
 
         if (course.getAvailableEnrollment() <= 0) {
             throw new IllegalStateException("Course is full.");
         }
 
         Enrollment enrollment = new Enrollment(student, course, Status.ENROLLED);
+
         course.setAvailableEnrollment(course.getAvailableEnrollment() - 1);
         courseRepository.save(course);
         enrollmentRepository.save(enrollment);

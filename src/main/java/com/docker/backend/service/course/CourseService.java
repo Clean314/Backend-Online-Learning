@@ -28,19 +28,7 @@ public class CourseService {
     private CourseMapper courseMapper;
 
     public CourseDTO getCourse(Educator educator, Long courseId) {
-        Course course = verifyService.isExistCourse(courseId);
-
-        return new CourseDTO(
-                course.getId(),
-                course.getCourseName(),
-                educator.getName(),
-                course.getCategory(),
-                course.getDifficulty(),
-                course.getPoint(),
-                course.getDescription(),
-                course.getMaxEnrollment(),
-                course.getAvailableEnrollment()
-        );
+        return courseMapper.toDTO(verifyService.isExistCourse(courseId));
     }
 
     public List<CourseDTO> getAllCourses() {
