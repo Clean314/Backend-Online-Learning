@@ -15,6 +15,7 @@ import com.docker.backend.repository.exam.StudentAnswerRepository;
 import com.docker.backend.repository.exam.StudentExamStatusRepository;
 import com.docker.backend.repository.exam.question.QuestionRepository;
 import com.docker.backend.repository.member.MemberRepository;
+import com.docker.backend.service.enrollment.EnrollmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,11 @@ public class VerifyService {
                 ));
     }
 
+    public Course isExistCourse(Long courseId) {
+        return courseRepository.findById(courseId)
+                .orElseThrow(() -> new GlobalExceptionHandler.NotFoundException("강의를 찾을 수 없습니다."));
+    }
+
     public Course isOwnerOfCourse(Long educatorId, Long courseId) {
         return courseRepository.findByIdAndEducator_Id(courseId, educatorId)
                 .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
@@ -45,6 +51,11 @@ public class VerifyService {
         if (!enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)) {
             throw new GlobalExceptionHandler.AccessDeniedException("해당 강의에 대한 수강 정보가 없습니다.");
         }
+    }
+
+    public void isExistEnrollment(Long courseId) {
+        if (enrollmentRepository.countByCourseId(courseId) > 0)
+            throw new IllegalArgumentException("이미 수강 등록된 강의는 수정 또는 삭제할 수 없습니다.");
     }
 
     public Exam isExistExam(Long courseId, Long examId) {
@@ -82,6 +93,4 @@ public class VerifyService {
                         "해당 시험이 강좌에 속하지 않거나 권한이 없습니다."
                 ));
     }
-
-    
 }

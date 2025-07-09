@@ -133,8 +133,4 @@ public class EnrollmentService {
             );
         }).collect(Collectors.toList());
     }
-
-    public Integer getCountByCourseId(Long courseId) {
-        return enrollmentRepository.countByCourseId(courseId);
-    }
 }
