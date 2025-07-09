@@ -189,16 +189,6 @@ public class StudentExamService {
                 });
     }
 
-//    private StudentAnswer findOrCreateAnswer(Long statusId, Long questionId) {
-//        return studentAnswerRepository.findByStudentExamStatusIdAndQuestionId(statusId, questionId)
-//                .orElseGet(() -> {
-//                    StudentAnswer answer = new StudentAnswer();
-//                    answer.setStudentExamStatus(new StudentExamStatus());
-//                    answer.setQuestion(new Question());
-//                    return studentAnswerRepository.save(answer);
-//                });
-//    }
-
     private StudentAnswer findOrCreateAnswer(Long statusId, Long questionId) {
         return studentAnswerRepository.findByStudentExamStatusIdAndQuestionId(statusId, questionId)
                 .orElseGet(() -> {
@@ -210,7 +200,6 @@ public class StudentExamService {
                     return studentAnswerRepository.save(answer);
                 });
     }
-
 
     private void validateExamPeriod(LocalDateTime startTime, LocalDateTime endTime) {
         LocalDateTime now = LocalDateTime.now();

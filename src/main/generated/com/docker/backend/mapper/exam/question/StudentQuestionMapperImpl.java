@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-07-04T15:25:29+0900",
+    date = "2025-07-09T10:17:01+0900",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
 )
 @Component
@@ -22,6 +22,16 @@ public class StudentQuestionMapperImpl implements StudentQuestionMapper {
         }
 
         StudentQuestionDTO studentQuestionDTO = new StudentQuestionDTO();
+
+        studentQuestionDTO.setId( question.getId() );
+        studentQuestionDTO.setNumber( question.getNumber() );
+        studentQuestionDTO.setContent( question.getContent() );
+        studentQuestionDTO.setScore( question.getScore() );
+        studentQuestionDTO.setQuestionType( question.getQuestionType() );
+        List<String> list = question.getChoices();
+        if ( list != null ) {
+            studentQuestionDTO.setChoices( new ArrayList<String>( list ) );
+        }
 
         return studentQuestionDTO;
     }

@@ -9,15 +9,13 @@ import com.docker.backend.domain.user.Student;
 import com.docker.backend.dto.exam.*;
 import com.docker.backend.exception.GlobalExceptionHandler;
 import com.docker.backend.mapper.exam.EducatorExamMapper;
-import com.docker.backend.mapper.exam.question.StudentExamSubmissionMapper;
+import com.docker.backend.mapper.exam.ExamSubmissionMapper;
 import com.docker.backend.repository.exam.ExamRepository;
 import com.docker.backend.repository.exam.StudentAnswerRepository;
 import com.docker.backend.repository.exam.StudentExamStatusRepository;
-import com.docker.backend.repository.exam.question.QuestionRepository;
 import com.docker.backend.service.VerifyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -30,11 +28,11 @@ import java.util.stream.Collectors;
 public class EducatorExamService {
     private final VerifyService verifyService;
 
-    private final ExamRepository examRepository;
-    private EducatorExamMapper educatorExamMapper;
-    private StudentExamSubmissionMapper submissionMapper;
     private final StudentExamStatusRepository studentExamStatusRepository;
     private final StudentAnswerRepository studentAnswerRepository;
+    private final ExamRepository examRepository;
+    private EducatorExamMapper educatorExamMapper;
+    private ExamSubmissionMapper submissionMapper;
 
     public List<EducatorExamDTO> getExamsByCourse(Long educatorId, Long courseId) {
         verifyService.isOwnerOfCourse(educatorId, courseId);
@@ -47,23 +45,25 @@ public class EducatorExamService {
     }
 
     @Transactional
-    public EducatorExamDTO createExam(Long educatorId, Long courseId, ExamCreateDTO dto) {
+    public EducatorExamDTO createExam(Long educatorId, Long courseId, ExamCreateDTO createDTO) {
         Course course = verifyService.isOwnerOfCourse(educatorId, courseId);
-        validateExamDuration(dto.getStartTime(), dto.getEndTime());
+        validateExamDuration(createDTO.getStartTime(), createDTO.getEndTime());
 
-        Exam exam = educatorExamMapper.toEntity(dto, course);
-        exam = examRepository.save(exam);
-        return educatorExamMapper.toDto(exam);
+        return educatorExamMapper.toDto(
+                examRepository.save(
+                    educatorExamMapper.toEntity(createDTO, course)
+                ));
     }
 
-    public EducatorExamDTO updateExam(Long educatorId, Long courseId, Long examId, ExamUpdateDTO dto) {
+    public EducatorExamDTO updateExam(Long educatorId, Long courseId, Long examId, ExamUpdateDTO updateDTO) {
         Course course = verifyService.isOwnerOfCourse(educatorId, courseId);
-        validateExamDuration(dto.getStartTime(), dto.getEndTime());
+        validateExamDuration(updateDTO.getStartTime(), updateDTO.getEndTime());
         verifyService.isExistExam(courseId, examId);
 
-        Exam exam = educatorExamMapper.toEntity(dto, course, examId);
-        exam = examRepository.save(exam);
-        return educatorExamMapper.toDto(exam);
+        return educatorExamMapper.toDto(
+                examRepository.save(
+                        educatorExamMapper.toEntity(updateDTO, course, examId)
+                ));
     }
 
     public void deleteExam(Long educatorId, Long courseId, Long examId) {
@@ -75,24 +75,17 @@ public class EducatorExamService {
     public List<StudentExamSubmissionDTO> getExamSubmissions(Long courseId, Long examId, Long educatorId) {
         verifyService.isOwnerOfCourse(educatorId, courseId);
         Exam exam = verifyService.isExistExam(courseId, examId);
-
         List<StudentExamStatus> statuses =
                 studentExamStatusRepository.findByExamId(examId);
 
-        return statuses.stream().map(status -> {
-            List<StudentAnswer> answers = studentAnswerRepository.findByStudentExamStatus(status);
-            return submissionMapper.toDto(status);
-        }).collect(Collectors.toList());
+        return submissionMapper.toDtoList(statuses);
     }
 
     @Transactional
     public void updateAnswerEvaluation(Long courseId, Long examId, Long educatorId, Long studentId, Long questionId,
                                        AnswerEvaluationUpdateDTO dto) {
         verifyService.isOwnerOfCourse(courseId, educatorId);
-        Exam exam = verifyService.isExistExam(courseId, examId);
-        Student student = verifyService.isExistStudent(studentId);
         StudentExamStatus status = verifyService.isExistStudentExamStatus(studentId, examId);
-        Question question = verifyService.isExistQuestion(examId, questionId);
         StudentAnswer answer = verifyService.isExistStudentAnswer(status.getId(), questionId);
 
         answer.setCorrect(dto.isCorrect());

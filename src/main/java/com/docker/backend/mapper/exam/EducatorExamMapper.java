@@ -22,13 +22,11 @@ public interface EducatorExamMapper {
     @Mapping(target = "status", constant = "PREPARING")
     @Mapping(target = "questions", ignore = true)
     @Mapping(target = "description", source = "dto.description")
-    @Mapping(target = "course", source = "course")
     Exam toEntity(ExamCreateDTO dto, Course course);
 
     @Mapping(target = "id", source = "examId")
     @Mapping(target = "questions", ignore = true)
     @Mapping(target = "description", source = "dto.description")
-    @Mapping(target = "course", source = "course")
     Exam toEntity(ExamUpdateDTO dto, Course course, Long examId);
 
 }
