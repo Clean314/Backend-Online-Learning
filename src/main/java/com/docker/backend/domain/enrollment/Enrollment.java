@@ -42,9 +42,10 @@ public class Enrollment {
     @Version
     private Long version; // 낙관적 락 (동시성 방지)
 
-    public Enrollment(Student student, Course course, Status status) {
-        this.student = student;
-        this.course = course;
-        this.status = status;
+    public Enrollment(Student student, Course course, Status status){
+        this.setStatus(status);
+        this.setStudent(student);
+        this.setCourse(course);
     }
+
 }

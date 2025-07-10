@@ -79,6 +79,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         }
     }
 
+    public static class EnrollmentUnavailableException extends BadRequestException {
+        public EnrollmentUnavailableException() {
+            super("여석이 없습니다.");
+        }
+    }
+
     public static class SubmitExamDurationException extends BadRequestException {
         public SubmitExamDurationException(String start, String end, String now) {
             super(String.format("응시 가능한 시간 (%s) ~ (%s) 이 아닙니다. 현재 시간 : (%s)", start, end, now));

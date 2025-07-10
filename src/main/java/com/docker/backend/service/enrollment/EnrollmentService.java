@@ -7,6 +7,8 @@ import com.docker.backend.domain.enrollment.Enrollment;
 import com.docker.backend.domain.user.Educator;
 import com.docker.backend.domain.user.Student;
 import com.docker.backend.domain.enums.Status;
+import com.docker.backend.exception.GlobalExceptionHandler;
+import com.docker.backend.mapper.enrollment.EnrollmentCourseMapper;
 import com.docker.backend.repository.course.CourseRepository;
 import com.docker.backend.repository.enrollment.EnrollmentRepository;
 import com.docker.backend.service.VerifyService;
@@ -28,33 +30,30 @@ public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final CourseRepository courseRepository;
 
+    private EnrollmentCourseMapper enrollmentCourseMapper;
+
     public void enroll(Student student, Long courseId) {
         Course course = verifyService.isExistCourse(courseId);
         verifyService.isEnrolled(student.getId(), courseId);
-
-        if (course.getAvailableEnrollment() <= 0) {
-            throw new IllegalStateException("Course is full.");
-        }
-
-        Enrollment enrollment = new Enrollment(student, course, Status.ENROLLED);
+        isAvailableEnrollment(course);
 
         course.setAvailableEnrollment(course.getAvailableEnrollment() - 1);
         courseRepository.save(course);
+
+        Enrollment enrollment = new Enrollment(student, course, Status.ENROLLED);
         enrollmentRepository.save(enrollment);
     }
 
     public void cancelEnroll(Student student, Long courseId) {
-        Enrollment enrollment = enrollmentRepository.findByStudentAndCourseId(student, courseId)
-                .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
-
+        Enrollment enrollment = verifyService.isEnrolled(student.getId(), courseId);
         if (enrollment.getStatus() == Status.COMPLETED) {
             return;
         }
-        courseRepository.findById(enrollment.getCourse().getId())
-                .ifPresent(course -> {
-                    course.setAvailableEnrollment(course.getAvailableEnrollment() + 1);
-                    courseRepository.save(course);
-                });
+
+        Course course = verifyService.isExistCourse(courseId);
+        course.setAvailableEnrollment(course.getAvailableEnrollment() + 1);
+        courseRepository.save(course);
+
         enrollmentRepository.delete(enrollment);
     }
 
@@ -111,12 +110,10 @@ public class EnrollmentService {
         );
     }
 
-
-    private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) { // Enrollment -> EnrollmentCourseDTO 로 변환하는 메서드
+    private List<EnrollmentCourseDTO> mapToDTO(List<Enrollment> enrollments) {
         return enrollments.stream().map(enrollment -> {
             Course course = enrollment.getCourse();
             Educator educator = course.getEducator();
-            long enrolled = enrollmentRepository.countByCourseAndStatus(course, Status.ENROLLED);
 
             return new EnrollmentCourseDTO(
                     course.getId(),
@@ -131,5 +128,11 @@ public class EnrollmentService {
                     course.getDescription()
             );
         }).collect(Collectors.toList());
+    }
+
+    private void isAvailableEnrollment(Course course){
+        if (course.getAvailableEnrollment() <= 0) {
+            throw new GlobalExceptionHandler.EnrollmentUnavailableException();
+        }
     }
 }

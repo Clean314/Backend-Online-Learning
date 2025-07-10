@@ -1,6 +1,7 @@
 package com.docker.backend.service;
 
 import com.docker.backend.domain.course.Course;
+import com.docker.backend.domain.enrollment.Enrollment;
 import com.docker.backend.domain.enums.Status;
 import com.docker.backend.domain.exam.Exam;
 import com.docker.backend.domain.exam.StudentAnswer;
@@ -47,10 +48,9 @@ public class VerifyService {
                 .orElseThrow(() -> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 접근 권한이 없습니다."));
     }
 
-    public void isEnrolled(Long studentId, Long courseId) {
-        if (!enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)) {
-            throw new GlobalExceptionHandler.AccessDeniedException("해당 강의에 대한 수강 정보가 없습니다.");
-        }
+    public Enrollment isEnrolled(Long studentId, Long courseId) {
+        return enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
+                .orElseThrow(()-> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 수강 정보가 없습니다."));
     }
 
     public void isExistEnrollment(Long courseId) {
