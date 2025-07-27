@@ -30,13 +30,4 @@ public class CourseDTO {
 
     @JsonProperty("available_enrollment")
     private int availableEnrollment;
-
-    public CourseDTO(Course course) {
-        this.courseName = course.getCourseName();
-        this.category = course.getCategory();
-        this.difficulty = course.getDifficulty();
-        this.description = course.getDescription();
-        this.point = course.getPoint();
-        this.maxEnrollment = course.getMaxEnrollment();
-    }
 }

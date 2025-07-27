@@ -17,14 +17,11 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ErrorResponse> handleApiException(
-            ApiException ex,
-            HttpServletRequest request
-    ) {
+    public ResponseEntity<ErrorResponse> handleApiException(ApiException ex, HttpServletRequest request) {
         ErrorResponse body = new ErrorResponse(
                 ex.getStatus().value(),
                 ex.getStatus().getReasonPhrase(),
-                ex.getMessage() != null ? ex.getMessage() : "An error occurred",
+                ex.getMessage(),
                 request.getRequestURI()
         );
         return new ResponseEntity<>(body, ex.getStatus());
@@ -79,6 +76,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static class AccessDeniedException extends ApiException {
         public AccessDeniedException(String message) {
             super(HttpStatus.FORBIDDEN, message);
+        }
+    }
+
+    public static class EnrollmentUnavailableException extends BadRequestException {
+        public EnrollmentUnavailableException() {
+            super("여석이 없습니다.");
+        }
+    }
+
+    public static class SubmitExamDurationException extends BadRequestException {
+        public SubmitExamDurationException(String start, String end, String now) {
+            super(String.format("응시 가능한 시간 (%s) ~ (%s) 이 아닙니다. 현재 시간 : (%s)", start, end, now));
         }
     }
 

@@ -8,13 +8,12 @@ import java.util.List;
 
 @Getter
 public class QuestionForm {
+    private Long id;
     private int number;
     private String content;
     private String answer;
     private int score;
-
     @JsonProperty("question_type")
     private QuestionType questionType;
-
     private List<String> choices;
 }

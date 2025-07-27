@@ -17,7 +17,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     Optional<Enrollment> findByStudentAndCourseId(Student student, Long courseId);
 
-    boolean ExistsByStudentIdAndCourseId(Long studentId, Long courseId);
+//    boolean ExistsByStudentIdAndCourseId(Long studentId, Long courseId);
 
     List<Enrollment> findByStudentAndStatus(Student student, Status status);
 
@@ -26,7 +26,12 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     boolean existsByCourse(Course course);
     boolean existsByStudent(Student student);
     List<Enrollment> findAllByCourseId(Long courseId);
+
     Integer countByCourseId(Long courseId);
 
     List<Enrollment> findTop4ByStudentAndStatusOrderByCreatedAtDesc(Student student, Status status);
+
+    Optional<Enrollment>  findByStudentIdAndCourseId(Long studentId, Long courseId);
+
+    boolean existsByStudentIdAndCourseId(Long studentId, Long courseId);
 }

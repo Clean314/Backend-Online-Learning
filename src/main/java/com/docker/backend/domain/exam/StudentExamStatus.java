@@ -25,8 +25,10 @@ public class StudentExamStatus {
     private Exam exam;
 
     private boolean submitted;
-    private LocalDateTime submittedAt;
+
     private int totalScore;
+
+    private LocalDateTime submittedAt;
 
     @OneToMany(mappedBy = "studentExamStatus", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentAnswer> answers = new ArrayList<>();

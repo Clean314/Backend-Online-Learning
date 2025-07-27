@@ -3,15 +3,17 @@ package com.docker.backend.dto.enrollment;
 import com.docker.backend.domain.enums.Difficulty;
 import com.docker.backend.domain.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
-@AllArgsConstructor
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class EnrollmentCourseDTO {
 
     @JsonProperty("course_id")
-    private Long courseId;
+    private Long id;
 
     @JsonProperty("course_name")
     private String courseName;
@@ -24,12 +26,7 @@ public class EnrollmentCourseDTO {
     private Status status;
 
     private int point;
-
-    @JsonProperty("max_enrollment")
     private int maxEnrollment;
-
-    @JsonProperty("available_enrollment")
     private int availableEnrollment;
-
     private String description;
 }

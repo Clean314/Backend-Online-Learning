@@ -22,16 +22,4 @@ public class EducatorQuestionDTO {
     @JsonProperty("question_type")
     private QuestionType questionType;
     private List<String> choices;
-
-    public static EducatorQuestionDTO of(Question q) {
-        return new EducatorQuestionDTO(
-                q.getId(),
-                q.getNumber(),
-                q.getContent(),
-                q.getAnswer(),
-                q.getScore(),
-                q.getQuestionType(),
-                q.getChoices()
-        );
-    }
 }

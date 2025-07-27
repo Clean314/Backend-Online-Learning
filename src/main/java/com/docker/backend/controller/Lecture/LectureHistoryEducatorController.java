@@ -21,23 +21,13 @@ public class LectureHistoryEducatorController {
 
     private final LectureHistoryService lectureHistoryService;
 
-    @GetMapping("/attendance/{courseId}")
-    public ResponseEntity<Double> avgAttendance(@PathVariable Long courseId){
-        return ResponseEntity.ok(lectureHistoryService.avgAttendance(courseId));
-    }
-
-    @GetMapping("/attendance/{courseId}/list")
-    public ResponseEntity<List<CourseAttendanceDTO>> attendanceList(@PathVariable Long courseId){
-        return ResponseEntity.ok(lectureHistoryService.getStudentAttendance(courseId));
-    }
-
-    @GetMapping("/attendance-avg/{courseId}/list")
-    public ResponseEntity<?> getStudentAttendance(@PathVariable Long courseId){
-
-        try {
-            return ResponseEntity.ok().body(lectureHistoryService.getStudentAttendance(courseId));
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @GetMapping("/attendance/{courseId}")
+//    public ResponseEntity<Double> avgAttendance(@PathVariable Long courseId){
+//        return ResponseEntity.ok(lectureHistoryService.avgAttendance(courseId));
+//    }
+//
+//    @GetMapping("/attendance/{courseId}/list")
+//    public ResponseEntity<List<CourseAttendanceDTO>> attendanceList(@PathVariable Long courseId){
+//        return ResponseEntity.ok(lectureHistoryService.getStudentAttendance(courseId));
+//    }
 }

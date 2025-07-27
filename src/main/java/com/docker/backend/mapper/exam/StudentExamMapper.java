@@ -8,10 +8,12 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {ExamBaseMapper.class, StudentQuestionMapper.class})
+@Mapper(componentModel = "spring", uses = {StudentQuestionMapper.class})
 public interface StudentExamMapper {
-    @Mapping(source = "course.id", target = "courseId")
+
+    @Mapping(target = "courseId", source = "exam.course.id")
     StudentExamDTO toDto(Exam exam);
 
     List<StudentExamDTO> toDtoList(List<Exam> byCourseId);
+
 }
