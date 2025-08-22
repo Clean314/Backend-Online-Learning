@@ -4,6 +4,7 @@ import com.docker.backend.config.AuthUtil;
 import com.docker.backend.dto.course.CourseCreateDTO;
 import com.docker.backend.dto.course.CourseDTO;
 import com.docker.backend.domain.user.Educator;
+import com.docker.backend.dto.course.CourseUpdateDTO;
 import com.docker.backend.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,7 +53,7 @@ public class CourseController {
     @PatchMapping("/course-id/{courseId}")
     public ResponseEntity<Long> updateCourse(Authentication authentication,
                                              @PathVariable("courseId") Long courseId,
-                                             @RequestBody CourseDTO req) {
+                                             @RequestBody CourseUpdateDTO req) {
         Educator educator = authUtil.getEducator(authentication);
         ;
         return ResponseEntity.ok(courseService.updateCourse(educator, courseId, req));

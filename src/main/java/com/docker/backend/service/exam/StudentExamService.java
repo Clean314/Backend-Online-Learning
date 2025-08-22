@@ -39,7 +39,7 @@ public class StudentExamService {
     private final StudentExamMapper studentExamMapper;
 
     public List<StudentExamDTO> getExamsByCourse(Long courseId, Long studentId) {
-        verifyService.isEnrolled(courseId, studentId);
+        verifyService.isEnrolled(studentId, courseId);
         return studentExamMapper.toDtoList(examRepository.findByCourseId(courseId));
     }
 

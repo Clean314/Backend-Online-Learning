@@ -34,7 +34,7 @@ public class EnrollmentService {
 
     public void enroll(Student student, Long courseId) {
         Course course = verifyService.isExistCourse(courseId);
-        verifyService.isEnrolled(student.getId(), courseId);
+        verifyService.isNotEnrolled(student.getId(), courseId);
         isAvailableEnrollment(course);
 
         course.setAvailableEnrollment(course.getAvailableEnrollment() - 1);

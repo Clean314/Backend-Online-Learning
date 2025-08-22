@@ -53,6 +53,12 @@ public class VerifyService {
                 .orElseThrow(()-> new GlobalExceptionHandler.AccessDeniedException("강의에 대한 수강 정보가 없습니다."));
     }
 
+    public void isNotEnrolled(Long studentId, Long courseId) {
+        if (enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId).isPresent()) {
+            throw new GlobalExceptionHandler.AccessDeniedException("이미 수강 중인 강의입니다.");
+        }
+    }
+
     public void isExistEnrollment(Long courseId) {
         if (enrollmentRepository.countByCourseId(courseId) > 0)
             throw new IllegalArgumentException("이미 수강 등록된 강의는 수정 또는 삭제할 수 없습니다.");

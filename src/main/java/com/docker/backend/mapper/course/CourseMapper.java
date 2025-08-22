@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CourseMapper {
 
-    @Mapping(target = "id", source = "courseId")
+    @Mapping(target = "courseId", source = "id")
     CourseDTO toDTO(Course course);
 
     @Mapping(target = "courseId", source = "id")
@@ -21,6 +21,6 @@ public interface CourseMapper {
     Course toEntity(Long id, CourseUpdateDTO courseUpdateDTO);
 
     @Mapping(target = "educator.id", source = "id")
-    @Mapping(target = "availableEnrollment", source = "maxEnrollment")
+    @Mapping(target = "availableEnrollment", source = "courseCreateDTO.maxEnrollment")
     Course toEntity(Long id, CourseCreateDTO courseCreateDTO);
 }
