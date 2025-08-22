@@ -26,7 +26,6 @@
 ## 기여자
 
 ## TODO
-코드 리팩토링, 유효성 검사, sql 검색 조건 보강, OWASP ZAP 취약 검사<br>
+코드 리팩토링 (Mapper, Log, Swagger, TestAPI, Profile 분리) <br>
+유효성 검사, sql 검색 조건 보강, OWASP ZAP 취약 검사<br>
 Mapper 클래스를 별도로 분리하는 게 단일책임원칙에 위배되지 않는다고 한다. <br>
-MapStruct를 사용할 수 있다. <br>
-현재 테스트 API가 없다.
