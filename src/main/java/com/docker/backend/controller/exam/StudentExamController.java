@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/student/exam/{courseId}")
+@RequestMapping("/students/courses/{courseId}/exams")
 @PreAuthorize("hasRole('STUDENT')")
 public class StudentExamController {
 
@@ -21,7 +22,7 @@ public class StudentExamController {
     private final StudentExamService studentExamService;
 
     @GetMapping
-    public ResponseEntity<List<StudentExamDTO>> getExams(@PathVariable("courseId") Long courseId,
+    public ResponseEntity<List<StudentExamDTO>> getExams(@PathVariable Long courseId,
                                                          Authentication authentication) {
         return ResponseEntity.ok(studentExamService.getExamsByCourse(courseId, getStudentId(authentication)));
     }

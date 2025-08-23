@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/educator/exam")
+@RequestMapping("/educators/courses/{courseId}/exams")
 @PreAuthorize("hasRole('EDUCATOR')")
 public class EducatorExamController {
     private final EnrollmentService enrollmentService;
@@ -29,13 +29,13 @@ public class EducatorExamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EducatorExamDTO>> getExams(@RequestParam("courseId") Long courseId,
+    public ResponseEntity<List<EducatorExamDTO>> getExams(@PathVariable Long courseId,
                                                           Authentication authentication) {
         return ResponseEntity.ok(educatorExamService.getExamsByCourse(courseId, getEducatorId(authentication)));
     }
 
     @PostMapping
-    public ResponseEntity<EducatorExamDTO> createExam(@RequestParam("courseId") Long courseId,
+    public ResponseEntity<EducatorExamDTO> createExam(@PathVariable Long courseId,
                                                       @RequestBody @Valid ExamCreateDTO dto,
                                                       Authentication authentication) {
         Long educatorId = getEducatorId(authentication);
@@ -44,15 +44,15 @@ public class EducatorExamController {
     }
 
     @GetMapping("/{examId}")
-    public ResponseEntity<EducatorExamDTO> getExam(@PathVariable Long examId,
-                                                   @RequestParam("courseId") Long courseId,
+    public ResponseEntity<EducatorExamDTO> getExam(@PathVariable Long courseId,
+                                                   @PathVariable Long examId,
                                                    Authentication authentication) {
         return ResponseEntity.ok(educatorExamService.getExamByIdAndCourse(getEducatorId(authentication), courseId, examId));
     }
 
     @PutMapping("/{examId}")
-    public ResponseEntity<EducatorExamDTO> updateExam(@PathVariable Long examId,
-                                                      @RequestParam("courseId") Long courseId,
+    public ResponseEntity<EducatorExamDTO> updateExam(@PathVariable Long courseId,
+                                                      @PathVariable Long examId,
                                                       @RequestBody @Valid ExamUpdateDTO dto,
                                                       Authentication authentication) {
         Long educatorId = getEducatorId(authentication);
@@ -61,16 +61,16 @@ public class EducatorExamController {
     }
 
     @DeleteMapping("/{examId}")
-    public ResponseEntity<Void> deleteExam(@PathVariable Long examId,
-                                           @RequestParam("courseId") Long courseId,
+    public ResponseEntity<Void> deleteExam(@PathVariable Long courseId,
+                                           @PathVariable Long examId,
                                            Authentication authentication) {
         educatorExamService.deleteExam(courseId, examId, getEducatorId(authentication));
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{examId}/student-submits")
-    public ResponseEntity<List<StudentExamSubmissionDTO>> getStudentSubmissions(@PathVariable("examId") Long examId,
-                                                                                @RequestParam("courseId") Long courseId,
+    @GetMapping("/{examId}/submissions")
+    public ResponseEntity<List<StudentExamSubmissionDTO>> getStudentSubmissions(@PathVariable Long courseId,
+                                                                                @PathVariable Long examId,
                                                                                 Authentication authentication) {
         Long educatorId = getEducatorId(authentication);
         List<StudentExamSubmissionDTO> submissions = educatorExamService.getExamSubmissions(courseId, examId, educatorId);
@@ -78,11 +78,11 @@ public class EducatorExamController {
     }
 
 
-    @PatchMapping("/{examId}/student-submits/{studentId}/answers/{questionId}")
-    public ResponseEntity<Void> updateAnswerEvaluation(@PathVariable("examId") Long examId,
-                                                       @PathVariable("studentId") Long studentId,
-                                                       @PathVariable("questionId") Long questionId,
-                                                       @RequestParam("courseId") Long courseId,
+    @PatchMapping("/{examId}/submissions/{studentId}/answers/{questionId}")
+    public ResponseEntity<Void> updateAnswerEvaluation(@PathVariable Long courseId,
+                                                       @PathVariable Long examId,
+                                                       @PathVariable Long studentId,
+                                                       @PathVariable Long questionId,
                                                        @RequestBody @Valid AnswerEvaluationUpdateDTO dto,
                                                        Authentication authentication) {
         Long educatorId = getEducatorId(authentication);

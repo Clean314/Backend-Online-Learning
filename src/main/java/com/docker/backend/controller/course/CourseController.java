@@ -29,13 +29,13 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
-    @GetMapping("/my")
+    @GetMapping("/mine")
     public ResponseEntity<List<CourseDTO>> getMyCourses(Authentication authentication) { // Authentication 은 요청 헤더에서 토큰을 받아오게 됨
         Educator educator = authUtil.getEducator(authentication); // 목적에 맞는 사용자 추출해오기
         return ResponseEntity.ok(courseService.getMyCourses(educator));
     }
 
-    @GetMapping("/course-id/{courseId}")
+    @GetMapping("/{courseId}")
     public ResponseEntity<CourseDTO> getCourse(Authentication authentication,
                                                @PathVariable("courseId") Long courseId) {
         Educator educator = authUtil.getEducator(authentication);
@@ -50,7 +50,7 @@ public class CourseController {
                 .body(courseService.createCourse(educator, courseCreateDTO)); // 201 Created HTTP 상태 반환 (어떤 거는 안되어있을 수도 있는데 추후 만들 예정
     }
 
-    @PatchMapping("/course-id/{courseId}")
+    @PatchMapping("/{courseId}")
     public ResponseEntity<Long> updateCourse(Authentication authentication,
                                              @PathVariable("courseId") Long courseId,
                                              @RequestBody CourseUpdateDTO req) {
@@ -59,7 +59,7 @@ public class CourseController {
         return ResponseEntity.ok(courseService.updateCourse(educator, courseId, req));
     }
 
-    @DeleteMapping("/course-id/{courseId}")
+    @DeleteMapping("/{courseId}")
     public ResponseEntity<Void> deleteCourse(Authentication authentication,
                                              @PathVariable("courseId") Long courseId) {
         Educator educator = authUtil.getEducator(authentication);

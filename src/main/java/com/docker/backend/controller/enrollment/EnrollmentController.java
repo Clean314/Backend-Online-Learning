@@ -29,20 +29,20 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getAllEnrollmentCourses(student));
     }
 
-    @GetMapping("/my")
+    @GetMapping("/mine")
     public ResponseEntity<List<EnrollmentCourseDTO>> getMyEnrollments(Authentication authentication) {
         Student student = authUtil.getStudent(authentication);
         return ResponseEntity.ok(enrollmentService.getEnrolledCourses(student));
     }
 
-    @GetMapping("/course-id/{courseId}")
+    @GetMapping("/{courseId}")
     public ResponseEntity<CourseDTO> getEnrolledCourseById(Authentication authentication,
                                                            @PathVariable("courseId") Long courseId) {
         Student student = authUtil.getStudent(authentication);
         return ResponseEntity.ok(enrollmentService.getEnrolledCourseById(student, courseId));
     }
 
-    @PostMapping("/course-id/{courseId}") // path 변수 url
+    @PostMapping("/{courseId}") // path 변수 url
     public ResponseEntity<Void> enroll(Authentication authentication,
                                        @PathVariable("courseId") Long courseId) { // @PathVariable 은 url 에서 path 로 들어온 데이터를 가져옴. ex) /enrollments/1
         Student student = authUtil.getStudent(authentication);
@@ -50,7 +50,7 @@ public class EnrollmentController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/course-id/{courseId}")
+    @DeleteMapping("/{courseId}")
     public ResponseEntity<Void> cancel(Authentication authentication,
                                        @PathVariable("courseId") Long courseId) {
         Student student = authUtil.getStudent(authentication);
