@@ -36,6 +36,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
+	implementation 'com.h2database:h2'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 
@@ -44,6 +45,8 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	implementation 'mysql:mysql-connector-java:8.0.33'
+	implementation("io.swagger.core.v3:swagger-annotations:2.2.34")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
 }
 
 tasks.named('test') {
