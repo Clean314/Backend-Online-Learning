@@ -11,6 +11,7 @@ import com.docker.backend.service.VerifyService;
 import com.docker.backend.service.enrollment.EnrollmentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,8 @@ public class CourseService {
     private final EnrollmentService enrollmentService;
     private final VerifyService verifyService;
 
-    private CourseMapper courseMapper;
+    @Autowired
+    private final CourseMapper courseMapper;
 
     public CourseDTO getCourse(Educator educator, Long courseId) {
         return courseMapper.toDTO(verifyService.isExistCourse(courseId));

@@ -8,14 +8,18 @@ import com.docker.backend.dto.course.CourseUpdateDTO;
 import com.docker.backend.service.course.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.List;
 @RequestMapping("/educators/courses")
 @PreAuthorize("hasRole('EDUCATOR')")
 @Tag(name = "Course API", description = "강의 관리 (교육자)")
+@SecurityRequirement(name = "bearerAuth")
 public class CourseController {
 
     private final CourseService courseService;
@@ -32,14 +37,24 @@ public class CourseController {
 
     @GetMapping
     @Operation(summary = "전체 강의 조회", description = "모든 강의 목록을 조회합니다.")
+    @ApiResponse(
+            responseCode = "200",
+            description = "조회 성공",
+            content = @Content(schema = @Schema(implementation = CourseDTO.class))
+    )
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
     @GetMapping("/mine")
     @Operation(summary = "내 강의 목록 조회", description = "현재 로그인한 교육자의 모든 강의를 조회합니다.")
+    @ApiResponse(
+            responseCode = "200",
+            description = "조회 성공",
+            content = @Content(schema = @Schema(implementation = CourseDTO.class))
+    )
     public ResponseEntity<List<CourseDTO>> getMyCourses(
-            @Parameter(hidden = true) Authentication authentication) { // Authentication 은 요청 헤더에서 토큰을 받아오게 됨
+            @AuthenticationPrincipal Authentication authentication) { // Authentication 은 요청 헤더에서 토큰을 받아오게 됨
         Educator educator = authUtil.getEducator(authentication); // 목적에 맞는 사용자 추출해오기
         return ResponseEntity.ok(courseService.getMyCourses(educator));
     }
@@ -47,10 +62,11 @@ public class CourseController {
     @GetMapping("/{courseId}")
     @Operation(summary = "강의 단건 조회", description = "특정 강의의 상세 정보를 조회합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "조회 성공"),
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                content = @Content(schema = @Schema(implementation = CourseDTO.class))),
             @ApiResponse(responseCode = "404", description = "강의를 찾을 수 없음")
     })
-    public ResponseEntity<CourseDTO> getCourse(@Parameter(hidden = true) Authentication authentication,
+    public ResponseEntity<CourseDTO> getCourse(@AuthenticationPrincipal Authentication authentication,
                                                @Parameter(description = "조회할 강좌 ID") @PathVariable("courseId") Long courseId) {
         Educator educator = authUtil.getEducator(authentication);
         return ResponseEntity.ok(courseService.getCourse(educator, courseId));
@@ -62,7 +78,7 @@ public class CourseController {
             @ApiResponse(responseCode = "201", description = "생성 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청")
     })
-    public ResponseEntity<Long> createCourse(@Parameter(hidden = true) Authentication authentication,
+    public ResponseEntity<Long> createCourse(@AuthenticationPrincipal Authentication authentication,
                                              @RequestBody CourseCreateDTO courseCreateDTO) { // @RequestBody 는 요청 body 에 json 형태로 들어온 데이터를 가져옴
         Educator educator = authUtil.getEducator(authentication);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -71,7 +87,7 @@ public class CourseController {
 
     @PatchMapping("/{courseId}")
     @Operation(summary = "강의 수정", description = "특정 강의 정보를 수정합니다.")
-    public ResponseEntity<Long> updateCourse(@Parameter(hidden = true) Authentication authentication,
+    public ResponseEntity<Long> updateCourse(@AuthenticationPrincipal Authentication authentication,
                                              @Parameter(description = "수정할 강좌 ID") @PathVariable("courseId") Long courseId,
                                              @RequestBody CourseUpdateDTO req) {
         Educator educator = authUtil.getEducator(authentication);
@@ -85,7 +101,7 @@ public class CourseController {
             @ApiResponse(responseCode = "403", description = "권한 없음"),
             @ApiResponse(responseCode = "404", description = "강의를 찾을 수 없음")
     })
-    public ResponseEntity<Void> deleteCourse(Authentication authentication,
+    public ResponseEntity<Void> deleteCourse(@AuthenticationPrincipal Authentication authentication,
                                              @PathVariable("courseId") Long courseId) {
         Educator educator = authUtil.getEducator(authentication);
         courseService.deleteCourse(educator, courseId);
