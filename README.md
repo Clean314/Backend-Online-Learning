@@ -3,7 +3,6 @@
 교육자와 학습자를 위한 확장 가능하고 안전한 온라인 평생학습(온라인 교육) 플랫폼의 백엔드 서버입니다. 이 프로젝트는 사용 편의성과 유지보수성을 고려해 설계되었으며, 역할 기반 접근 제어와 콘텐츠·평가·커뮤니케이션 기능을 제공합니다.
 
 # 프로젝트 개요
-
 **Backend-Online-Learning**은 강의 관리, 수강 관리, 시험·과제, 게시판, 설문 등 온라인 교육 운영에 필요한 핵심 기능을 제공하는 서버 애플리케이션입니다. 관리자, 강사, 학생 등 다양한 사용자 역할에 따라 권한이 분리되어 있으며 JWT 기반의 인증으로 보안을 강화했습니다.
 
 ## 주요 기능
@@ -65,8 +64,8 @@ JWT_SECRET=your_jwt_secret</code>
 
 
 ## 🤝 기여자
-* [Backend Ok-ChanMi](https://github.com/Ok-ChanMi)
-* [Frontend yun0612](https://github.com/yun0612)
+* [Backend : Ok-ChanMi](https://github.com/Ok-ChanMi)
+* [Frontend : yun0612](https://github.com/yun0612)
 
 ## FrontEnd Repository
 * [사용자 UI 프론트엔드](https://github.com/Clean314/Frontend-Online-Learning)
