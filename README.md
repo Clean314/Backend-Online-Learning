@@ -65,4 +65,5 @@ JWT_SECRET=your_jwt_secret</code>
 
 
 ## 🤝 기여자
-
+* [Backend Ok-ChanMi](https://github.com/Ok-ChanMi)
+* [Frontend yun0612](https://github.com/yun0612)
